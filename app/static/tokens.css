@@ -1,0 +1,77 @@
+/* Tausendkorn UI-System · Tokens (Richtung B „Labor“, gewählt 27.10.2026)
+   Ruhiges Messinstrument: Graphit auf kühlem Papier, ein Blau, viel Luft.
+   Alle Werte nur hier ändern; Komponenten (tausendkorn.css) nutzen nur var(--…).
+   Regeln und Begründung: docs/design/UI_SYSTEM.md */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Farbe -------------------------------------------------------------
+     Kontrast auf --bg: ink 16:1, ink-2 8:1, unsure-ink 7:1. Farbe trägt nie
+     allein eine Bedeutung: immer Form + Wort dazu. */
+  --bg: #F4F5F3;          /* Seitengrund, kühles Papier (blendet weniger als #FFF) */
+  --surface: #FFFFFF;     /* Karten, Eingabefelder */
+  --sunken: #E9ECEB;      /* Segment-Schalter, Fortschritt-Spur, Formel */
+  --ink: #14181B;         /* Text, Hauptknopf, Rahmen mit Bedeutung */
+  --ink-2: #434A50;       /* Nebentext, Einheiten, Labels */
+  --rule: #B9C0C4;        /* Haarlinien: nur Struktur, nie Inhalt */
+  --grid: #E2E6E7;        /* Millimeterraster, Hintergrundlinien */
+
+  --mark: #005FB8;        /* gezählt / bestätigt / Fokus (Okabe-Ito-Blau, abgedunkelt) */
+  --mark-ring: #FFFFFF;   /* Ring um jede Marke auf dem Foto */
+  --mark-soft: #E3EEF8;   /* Fläche für „bestätigt“ */
+  --unsure: #E08A00;      /* unsicher: gestrichelter Rahmen, Nummernknopf */
+  --unsure-ink: #8A4B00;  /* Text in Unsicher-Farbe auf hell */
+  --unsure-soft: #FFF5E6; /* Fläche hinter Unsicher-Hinweisen */
+  --bad: #A3261B;         /* „hat nicht geklappt“, Löschen. Nur mit Symbol + Wort. */
+  --bad-soft: #FBECEA;
+  --photo-bg: #2A2F33;    /* hinter dem Foto */
+
+  /* ---- Schrift -----------------------------------------------------------
+     Plex Sans für Text, Plex Mono für jede Zahl, jedes Label, die Rechenzeile. */
+  --f-sans: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Typo-Skala (px). Text nie unter 15, Fließtext 18, Ergebniszahl ≥ 54. */
+  --fs-label: 13px;   /* Mono, Großbuchstaben, +0,08em */
+  --fs-small: 15px;
+  --fs-body: 18px;
+  --fs-lead: 20px;
+  --fs-h2: 24px;
+  --fs-h1: 34px;
+  --fs-num: 40px;     /* Eingabefelder, Zwischenwerte */
+  --fs-num-l: 54px;   /* Körner, TKG */
+  --fs-num-xl: 88px;  /* Aussaatmenge */
+  --fw-text: 400;
+  --fw-strong: 600;
+  --fw-num: 600;      /* Zahlen nie dünner als 600: Sonne */
+
+  /* ---- Raum --------------------------------------------------------------- */
+  --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px; --s5: 40px; --s6: 64px;
+  --page-max: 600px;      /* eine Spalte, auch auf dem iPad */
+  --gutter: 16px;
+
+  /* ---- Form --------------------------------------------------------------- */
+  --r: 12px;              /* Karten, Knöpfe */
+  --r-s: 8px;             /* Foto, kleine Flächen */
+  --r-pill: 99px;
+  --hair: 1.5px;          /* Haarlinie, dünner nie */
+  --line-strong: 2px;     /* Unterstrich von Eingabefeldern, Abschnittslinie */
+  --tap: 60px;            /* kleinstes Tippziel */
+  --tap-l: 72px;          /* Hauptknopf */
+
+  /* ---- Marken auf dem Foto (Bildschirm-Pixel, siehe UI_SYSTEM.md §5) ---- */
+  --mk-dot-min: 2px;  --mk-dot-max: 10px;   /* Radius, wächst mit dem Zoom */
+  --mk-ring-min: .8px; --mk-ring-max: 3px;
+  --mk-hit: 24px;                           /* Trefferradius beim Tippen */
+
+  /* ---- Bewegung ----------------------------------------------------------
+     Weich abbremsen, nie überschwingen. Bewegung erklärt, was die Zählung tut. */
+  --t-1: 160ms;   /* Knopf, Schalter */
+  --t-2: 280ms;   /* Bildschirmwechsel, Einblenden */
+  --t-3: 460ms;   /* Kamerafahrt auf eine Prüfstelle */
+  --t-4: 700ms;   /* Ergebniszahl, Messbalken */
+  --t-look: 2.8s; /* Atmen einer unsicheren Stelle */
+  --e-out: cubic-bezier(.16, 1, .3, 1);
+  --e-io: cubic-bezier(.65, 0, .35, 1);
+}

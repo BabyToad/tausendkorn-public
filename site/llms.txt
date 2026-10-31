@@ -1,0 +1,20 @@
+# Tausendkorn · Team Goldpfanne
+
+> Körner zählen mit einem Handyfoto: Eine Handvoll Getreide auf weißem A4, ein Foto von oben, jedes Korn bekommt einen Punkt. Daraus Tausendkorngewicht (TKG), Aussaatmenge in kg/ha und das Sollgewicht der Abdrehprobe. Beitrag von Team Goldpfanne (Leon Böhlau, Jonas Heinke) zum Tausendkorn-Hackathon 2026, Smart Farming Lab, Universität Leipzig.
+
+Statische Projektseite auf Deutsch. Die Demo zeigt aufgezeichnete Ergebnisse der eingefrorenen Pipeline v1.0.2, sie zählt nicht live. Messwerte: Holdout (gleiche Aufnahmetage wie Training, 30 von 40 Fotos, 170–482 Körner) mittlerer Fehler 5,9 Körner = 1,85 %; Test (Testfotos von einem anderen Aufnahmetag, 26.10.; 1000 Körner, 6 von 85 Fotos) MAE 15,8 Körner. Hartweizen-Testbild: Label 1000, beide Zähler finden rund 945 Körner; Ursache offen, gewertet gegen das offizielle Label.
+
+## Seiten
+
+- [Projektseite](https://goldpfanne-tausendkorn.pages.dev/): Problem, Ablauf, Demo mit gespeicherten Kornmarken, Saatgutrechner, Ergebnisse, Team
+- [Pitch-Deck](https://goldpfanne-tausendkorn.pages.dev/pitch/): fünf Folien zum Pitch am 28.10.2026
+- [Zählpipeline](https://goldpfanne-tausendkorn.pages.dev/pipeline/): alle Schritte der Pipeline v1.0.2 mit Zwischenbildern (Maske, adaptive Kacheln, Halo, Naht-Abgleich, Prüfdurchgang) und bekannten Schwächen
+- [Volltext](https://goldpfanne-tausendkorn.pages.dev/llms-full.txt): alle Inhalte der Projektseite als Markdown, mit Formeln und Messwerten
+
+## Daten
+
+- [Ergebnisliste](https://goldpfanne-tausendkorn.pages.dev/data/samples.json): alle 36 gemessenen Fotos mit Art, Kamera, Soll und gezählter Zahl (JSON)
+
+## Optional
+
+- [Datensatz corn1000](https://huggingface.co/datasets/SmartFarmingLab/corn1000): Fotos von Smart Farming Lab, Universität Leipzig, CC BY-NC 4.0

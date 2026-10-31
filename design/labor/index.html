@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tausendkorn · B Labor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* B · Labor — ruhiges Präzisionsinstrument. Eine Anzeige, viel Luft, Millimeterraster. */
+:root {
+  --bg: #F4F5F3;         /* kühles Papier */
+  --surface: #FFFFFF;
+  --ink: #14181B;        /* Graphit, 16:1 */
+  --ink-2: #434A50;      /* 8:1 auf bg */
+  --rule: #B9C0C4;       /* Haarlinien, nur Struktur */
+  --grid: #E2E6E7;       /* Millimeterraster */
+  --mark: #005FB8;       /* gezählt */
+  --mark-ring: #FFFFFF;
+  --unsure: #E08A00;     /* unsicher: Strich-Rahmen + Nummer */
+  --unsure-ink: #8A4B00; /* Text auf hell, 7:1 */
+  --ok: #005FB8;
+
+  --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px; --s5: 40px; --s6: 64px;
+  --r: 12px; --r-s: 8px;
+  --hair: 1.5px;
+  --tap: 60px;
+
+  --t-1: 160ms; --t-2: 280ms; --t-3: 460ms; --t-4: 700ms;
+  --e-out: cubic-bezier(.16, 1, .3, 1);      /* weich abbremsen, kein Überschwingen */
+  --e-io: cubic-bezier(.65, 0, .35, 1);
+
+  --f-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body { margin: 0; color: var(--ink); font: 400 18px/1.5 var(--f-sans); background: var(--bg); font-variant-numeric: tabular-nums; }
+button, input { font: inherit; color: inherit; }
+.app { max-width: 600px; margin: 0 auto; min-height: 100vh; }
+[hidden] { display: none !important; }
+
+.head { display: flex; align-items: center; gap: var(--s3); padding: calc(env(safe-area-inset-top) + var(--s3)) var(--s3) var(--s3);
+  border-bottom: var(--hair) solid var(--rule); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+.mark-logo { width: 28px; height: 28px; }
+.brand { font: 600 20px/1 var(--f-sans); letter-spacing: -.01em; }
+.serial { font: 500 13px var(--f-mono); color: var(--ink-2); letter-spacing: .04em; margin-left: auto; }
+.back { width: 52px; height: 52px; border: var(--hair) solid var(--rule); border-radius: 50%; background: var(--surface); cursor: pointer; font-size: 22px; display: grid; place-items: center; }
+
+.screen { display: none; padding: var(--s4) var(--s3) calc(var(--s6) + env(safe-area-inset-bottom)); }
+.screen.is-active { display: block; animation: enter var(--t-2) var(--e-out); }
+@keyframes enter { from { opacity: 0; transform: translateY(6px); } }
+.rm .screen.is-active { animation: none; }
+
+.eyebrow { font: 500 13px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+h1 { font: 600 34px/1.1 var(--f-sans); letter-spacing: -.02em; margin: var(--s2) 0 var(--s4); }
+p { margin: 0 0 var(--s3); }
+.muted { color: var(--ink-2); }
+
+.btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap);
+  border: 0; border-radius: var(--r); background: var(--ink); color: #fff; font: 600 20px var(--f-sans);
+  cursor: pointer; touch-action: manipulation; transition: transform var(--t-1) var(--e-out), background var(--t-1); }
+.btn:active { transform: scale(.985); background: #000; }
+.btn.lg { min-height: 72px; font-size: 22px; }
+.btn.line { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 var(--hair) var(--ink); }
+.btn + .btn { margin-top: var(--s2); }
+.txt { display: block; width: 100%; min-height: 56px; background: none; border: 0; font: 500 18px var(--f-sans); color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.row { display: flex; gap: var(--s2); } .row > * { flex: 1; margin: 0 !important; }
+
+/* Verlauf */
+.list { margin: var(--s5) 0 0; padding: 0; list-style: none; }
+.list-h { display: flex; justify-content: space-between; border-bottom: var(--hair) solid var(--ink); padding-bottom: var(--s2); }
+.it { display: grid; grid-template-columns: 1fr auto; gap: var(--s3); padding: var(--s3) 0; border-bottom: var(--hair) solid var(--rule); cursor: pointer; min-height: 84px; align-items: center; }
+.it h3 { margin: 0; font: 600 19px/1.25 var(--f-sans); }
+.it .meta { font: 400 14px var(--f-mono); color: var(--ink-2); margin-top: 2px; }
+.it .rd { text-align: right; font: 500 15px/1.35 var(--f-mono); color: var(--ink-2); }
+.it .rd b { color: var(--ink); font: 600 22px var(--f-mono); }
+.pill { display: inline-flex; gap: 6px; align-items: center; margin-top: var(--s2); padding: 3px 10px; border-radius: 99px;
+  font: 500 14px var(--f-mono); border: var(--hair) dashed var(--unsure); color: var(--unsure-ink); background: #FFF7EA; }
+.pill.wait { border-color: var(--ink-2); color: var(--ink-2); background: none; }
+
+/* Anleitung */
+.sop { margin: 0 0 var(--s5); padding: 0; list-style: none; border-top: var(--hair) solid var(--ink); }
+.sop li { display: grid; grid-template-columns: 44px 1fr 96px; gap: var(--s3); padding: var(--s3) 0; border-bottom: var(--hair) solid var(--rule); align-items: start; }
+.sop .n { font: 500 15px var(--f-mono); color: var(--ink-2); padding-top: 3px; }
+.sop b { display: block; font: 600 19px/1.3 var(--f-sans); margin-bottom: 2px; }
+.sop p { margin: 0; font-size: 16px; color: var(--ink-2); }
+.sop svg { width: 96px; height: 72px; }
+.fine { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.fine .k { fill: #E7C2AC; stroke: var(--ink); stroke-width: 1.2; }
+.fine .a { stroke: var(--mark); }
+.finder { position: relative; aspect-ratio: 3 / 4; border-radius: var(--r); background: #23282B; margin-bottom: var(--s3); overflow: hidden; display: grid; place-items: center; }
+.finder .a4 { width: 62%; aspect-ratio: 210 / 297; position: relative; }
+.finder .a4 i { position: absolute; width: 28px; height: 28px; border: 3px solid #fff; }
+.finder .a4 i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.finder .a4 i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.finder .a4 i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.finder .a4 i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.finder .lbl { position: absolute; bottom: var(--s3); left: 0; right: 0; text-align: center; color: #fff; font: 500 14px var(--f-mono); letter-spacing: .06em; }
+.finder .a4 b { position: absolute; inset: 0; border: 1.5px dashed rgba(255,255,255,.45); animation: find 2.8s var(--e-io) infinite; }
+@keyframes find { 50% { inset: -6px; opacity: .3; } }
+.rm .finder .a4 b { animation: none; }
+
+/* Messanzeige */
+.readout { display: grid; grid-template-columns: 1fr auto; align-items: end; margin-bottom: var(--s3); }
+.readout .num { font: 600 68px/1 var(--f-mono); letter-spacing: -.04em; }
+.readout .num small { font: 500 20px var(--f-sans); letter-spacing: 0; margin-left: 6px; color: var(--ink-2); }
+.readout .side { text-align: right; font: 400 14px/1.4 var(--f-mono); color: var(--ink-2); }
+.prog { grid-column: 1 / -1; height: 3px; background: var(--grid); margin-top: var(--s3); position: relative; overflow: hidden; border-radius: 2px; }
+.prog i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--ink); transition: width 120ms linear; }
+
+/* Foto im Messrahmen */
+.frame { position: relative; padding: 18px 0 0 18px; }
+.ruler { position: absolute; color: var(--ink-2); font: 500 10px var(--f-mono); }
+.ruler.top { top: 0; left: 18px; right: 0; height: 18px;
+  background: repeating-linear-gradient(90deg, var(--ink-2) 0 1px, transparent 1px 100%) 0 100% / calc(100% / 21) 10px no-repeat,
+              repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 100%) 0 100% / calc(100% / 42) 5px repeat-x; }
+.ruler.left { top: 18px; left: 0; bottom: 0; width: 18px;
+  background: repeating-linear-gradient(180deg, var(--rule) 0 1px, transparent 1px 100%) 100% 0 / 5px calc(100% / 34) repeat-y; }
+.ruler.top span { position: absolute; top: 0; transform: translateX(-50%); }
+.photo { position: relative; border-radius: var(--r-s); overflow: hidden; background: #2A2F33; }
+.photo svg { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 1432; touch-action: manipulation; }
+#pr[data-mode="check"] .photo svg { aspect-ratio: 1 / 1; }
+.ph-veil rect { fill: #fff; opacity: 0; }
+.grid-ov { pointer-events: none; }
+.grid-ov rect { fill: none; stroke: #fff; stroke-opacity: .55; stroke-width: calc(var(--k) * 1px); stroke-dasharray: calc(var(--k) * 2px) calc(var(--k) * 4px); }
+.grid-ov rect.done { stroke-opacity: 0; transition: stroke-opacity 600ms var(--e-out); }
+.mk { opacity: 0; }
+.mk.in { opacity: 1; transition: opacity 240ms var(--e-out); transition-delay: inherit; }
+.mk-halo { fill: none; stroke: var(--mark-ring); stroke-width: .9; }
+.mk-dot { fill: var(--mark); }
+.mk .mk-halo { stroke-dasharray: 40; stroke-dashoffset: 40; }
+.mk.in .mk-halo { stroke-dashoffset: 0; transition: stroke-dashoffset 380ms var(--e-out); transition-delay: inherit; }
+.rm .mk.in, .rm .mk.in .mk-halo { transition: none; }
+.mk.added .mk-halo { stroke: var(--mark); stroke-width: 2; stroke-dasharray: none; stroke-dashoffset: 0; }
+.mk.added .mk-dot { fill: #fff; stroke: var(--mark); stroke-width: 2; }
+.mk.removed .mk-dot { fill: none; stroke: #fff; stroke-width: 1.2; } .mk.removed .mk-halo { stroke: none; }
+.mk.removed .mk-x { stroke: #fff; stroke-width: 1.6; }
+.ck { opacity: 0; cursor: pointer; }
+.ck.in { opacity: 1; transition: opacity var(--t-3) var(--e-out); transition-delay: inherit; }
+.ck-box { fill: none; stroke: var(--unsure); stroke-width: calc(var(--k) * 2.5px); stroke-dasharray: calc(var(--k) * 7px) calc(var(--k) * 5px); rx: calc(var(--k) * 6px); }
+.ck.in:not(.done) .ck-box { animation: look 2.8s var(--e-io) infinite; }
+@keyframes look { 50% { stroke-opacity: .35; } }
+.rm .ck .ck-box { animation: none !important; stroke-width: calc(var(--k) * 4px); }
+.ck-tag circle { fill: var(--unsure); stroke: #fff; stroke-width: 2; }
+.ck-tag text { fill: #14181B; font: 600 13px var(--f-mono); }
+.ck.done .ck-box { stroke: var(--ok); stroke-dasharray: none; }
+.ck.done .ck-tag circle { fill: var(--ok); } .ck.done .ck-tag text { fill: #fff; }
+#pr[data-mode="check"] .ck:not(.active) { opacity: .2; }
+#pr[data-mode="check"] .ck.active .ck-box { animation: none; }
+
+/* Navigator (Lage der Prüfstelle im Gesamtbild) */
+.nav { position: absolute; right: 10px; bottom: 10px; width: 84px; border-radius: 6px; overflow: hidden; box-shadow: 0 0 0 1.5px #fff, 0 4px 14px rgba(0,0,0,.35); opacity: 0; transition: opacity var(--t-2); pointer-events: none; }
+#pr[data-mode="check"] .nav { opacity: 1; }
+.nav svg { display: block; width: 100%; height: auto; }
+.nav rect.v { fill: none; stroke: var(--unsure); stroke-width: 22; transition: all var(--t-3) var(--e-io); }
+
+.card { background: var(--surface); border-radius: var(--r); padding: var(--s4) var(--s3); margin-top: var(--s3); box-shadow: 0 0 0 var(--hair) var(--rule); }
+.q { font: 500 20px/1.4 var(--f-sans); margin: var(--s2) 0 var(--s3); }
+.kv { display: flex; justify-content: space-between; align-items: baseline; border-top: var(--hair) solid var(--rule); padding: var(--s2) 0 var(--s3); }
+.kv b { font: 500 30px var(--f-mono); }
+.legend { display: flex; gap: var(--s3); flex-wrap: wrap; font: 400 14px var(--f-mono); color: var(--ink-2); margin: var(--s3) 0; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.legend i { width: 12px; height: 12px; border-radius: 50%; background: var(--mark); box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--rule); }
+.legend i.u { border-radius: 2px; background: none; border: 2px dashed var(--unsure); box-shadow: none; }
+
+/* Ergebnis */
+.sec { border-top: var(--hair) solid var(--ink); padding: var(--s3) 0 var(--s4); }
+.sec + .sec { border-top-color: var(--rule); }
+.val { color: var(--ink); font: 600 54px/1.05 var(--f-mono); letter-spacing: -.03em; margin-top: var(--s1); display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.val small { font: 500 20px var(--f-sans); color: var(--ink-2); letter-spacing: 0; }
+.val .ca { font: 500 24px var(--f-sans); color: var(--ink-2); }
+.st { display: inline-flex; gap: 8px; align-items: center; font: 500 15px var(--f-mono); margin-top: var(--s2); }
+.st.ok { color: var(--ok); }
+.field { display: flex; align-items: baseline; gap: 10px; border-bottom: 2px solid var(--ink); padding: 4px 0; margin-top: var(--s2); min-height: var(--tap); }
+.field input { flex: 1; min-width: 0; width: 100%; border: 0; background: none; color: var(--ink); font: 600 40px var(--f-mono); padding: 0; outline: none; letter-spacing: -.02em; }
+.field span { font: 500 18px var(--f-sans); color: var(--ink-2); }
+.field:focus-within { border-bottom-color: var(--mark); box-shadow: 0 2px 0 var(--mark); }
+.step-b { width: 60px; height: 60px; border-radius: 50%; border: var(--hair) solid var(--ink); background: var(--surface); font: 500 26px var(--f-mono); cursor: pointer; flex: none; align-self: center; }
+.help { font-size: 15px; color: var(--ink-2); margin-top: 6px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); } .two > * { min-width: 0; }
+.hero { background: var(--surface); border-radius: var(--r); padding: var(--s4) var(--s3); box-shadow: 0 0 0 2px var(--ink); margin: var(--s2) 0 var(--s4); }
+.hero .val { font-size: 88px; }
+.scale { position: relative; height: 56px; margin-top: var(--s3); }
+.scale .axis { position: absolute; left: 0; right: 0; top: 26px; height: 1.5px; background: var(--rule); }
+.scale .tick { position: absolute; top: 20px; width: 1.5px; height: 13px; background: var(--rule); }
+.scale .tick span { position: absolute; top: 18px; transform: translateX(-50%); font: 400 12px var(--f-mono); color: var(--ink-2); white-space: nowrap; }
+.scale .band { position: absolute; top: 19px; height: 15px; background: var(--mark); opacity: .18; border-radius: 3px; transform-origin: center; }
+.scale .pt { position: absolute; top: 15px; width: 3px; height: 23px; background: var(--ink); transform: translateX(-50%); }
+.scale .br { position: absolute; top: 19px; height: 15px; border: 2px solid var(--mark); border-top: 0; border-bottom: 0; }
+.draw { animation: grow var(--t-4) var(--e-out) both; } @keyframes grow { from { transform: scaleX(0); } }
+.rm .draw { animation: none; }
+.formula { font: 400 14px/1.6 var(--f-mono); color: var(--ink-2); margin-top: var(--s3); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--grid); border-radius: 99px; padding: 4px; margin: var(--s2) 0 var(--s3); }
+.seg button { min-height: 52px; border: 0; border-radius: 99px; background: none; font: 500 17px var(--f-mono); cursor: pointer; transition: background var(--t-1); }
+.seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+@media (max-width: 420px) { .two { grid-template-columns: 1fr; gap: 0; } .hero .val { font-size: 76px; } .readout .num { font-size: 58px; } }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="head">
+    <button class="back" data-go="start" aria-label="Zurück" hidden>←</button>
+    <svg class="mark-logo" viewBox="0 0 28 28" aria-hidden="true"><ellipse cx="14" cy="14" rx="6" ry="11" fill="none" stroke="#14181B" stroke-width="1.6" transform="rotate(30 14 14)"/><circle cx="14" cy="14" r="3" fill="#005FB8"/></svg>
+    <div class="brand">Tausendkorn</div>
+    <div class="serial" id="serial">Beispielhof</div>
+  </header>
+
+  <section class="screen" data-screen="start">
+    <div class="eyebrow">Verlauf · Herbst 2026</div>
+    <h1>Proben</h1>
+    <button class="btn lg" data-go="foto"><span style="font-size:26px;font-weight:400">+</span> Neue Probe</button>
+    <ul class="list">
+      <li class="list-h eyebrow"><span>Probe</span><span>TKG · Aussaat</span></li>
+      <li class="it" data-go="pruefen">
+        <div><h3>Wintergerste · Hänger 3</h3><div class="meta">27.10. 18:42 · 411 K.</div><span class="pill">◌ 6 Stellen prüfen</span></div>
+        <div class="rd">—</div>
+      </li>
+      <li class="it" data-go="ergebnis">
+        <div><h3>Winterweizen · Hänger 2</h3><div class="meta">27.10. 16:10 · 982 K.</div></div>
+        <div class="rd"><b>46,3</b> g<br><b>156</b> kg/ha</div>
+      </li>
+      <li class="it">
+        <div><h3>Winterroggen · Hänger 1</h3><div class="meta">26.10. 19:05</div><span class="pill wait">↑ wartet auf Netz</span></div>
+        <div class="rd">—</div>
+      </li>
+      <li class="it">
+        <div><h3>Winterweizen · Feld Nord</h3><div class="meta">24.10. 11:30 · 1.004 K.</div></div>
+        <div class="rd"><b>44,8</b> g<br><b>150</b> kg/ha</div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="screen" data-screen="foto">
+    <div class="eyebrow">Schritt 2 / 4 · Wintergerste</div>
+    <h1>Körner fotografieren</h1>
+    <ol class="sop">
+      <li><span class="n">01</span><div><b>Probe ziehen</b><p>Aus mehreren Stellen von Sack oder Hänger je etwas nehmen, mischen. 500–1000 Körner.</p></div>
+        <svg viewBox="0 0 96 72" class="fine" aria-hidden="true"><path d="M10 64 L18 20 H46 L54 64 Z"/><path d="M60 30 q14 -4 20 10" class="a"/><path d="M76 34 l4 6 l-7 1" class="a"/><ellipse class="k" cx="72" cy="56" rx="6" ry="3" transform="rotate(-25 72 56)"/><ellipse class="k" cx="84" cy="62" rx="6" ry="3" transform="rotate(30 84 62)"/></svg></li>
+      <li><span class="n">02</span><div><b>Auslesen und ausbreiten</b><p>Bruch, Spreu, Steine heraus. Auf weißem A4 glattstreichen, keine Häufchen.</p></div>
+        <svg viewBox="0 0 96 72" class="fine" aria-hidden="true"><rect x="22" y="4" width="46" height="64" fill="#fff"/><ellipse class="k" cx="36" cy="22" rx="5" ry="2.5" transform="rotate(-20 36 22)"/><ellipse class="k" cx="52" cy="20" rx="5" ry="2.5" transform="rotate(40 52 20)"/><ellipse class="k" cx="44" cy="36" rx="5" ry="2.5" transform="rotate(80 44 36)"/><ellipse class="k" cx="56" cy="46" rx="5" ry="2.5" transform="rotate(-50 56 46)"/><ellipse class="k" cx="34" cy="52" rx="5" ry="2.5" transform="rotate(10 34 52)"/><path d="M74 20 v32 M70 24 l4 -4 l4 4 M70 48 l4 4 l4 -4" class="a"/></svg></li>
+      <li><span class="n">03</span><div><b>Senkrecht von oben</b><p>Alle vier Ecken im Bild, kein eigener Schatten.</p></div>
+        <svg viewBox="0 0 96 72" class="fine" aria-hidden="true"><rect x="32" y="4" width="32" height="22" rx="3"/><circle cx="48" cy="15" r="6"/><path d="M48 30 v14" class="a" stroke-dasharray="2 4"/><path d="M14 52 H82 L76 70 H20 Z" fill="#fff"/></svg></li>
+    </ol>
+    <div class="finder"><div class="a4"><i></i><i></i><i></i><i></i><b></b></div><div class="lbl">A4 in den Rahmen</div></div>
+    <button class="btn lg" data-go="pruefen">Aufnehmen</button>
+    <button class="txt" data-go="pruefen">Foto aus der Galerie</button>
+  </section>
+
+  <section class="screen" data-screen="pruefen" id="pr" data-mode="count">
+    <div class="readout" aria-live="polite">
+      <div><div class="eyebrow" id="prLabel">Zählung läuft</div><div class="num"><span id="n">0</span><small>Körner</small></div></div>
+      <div class="side" id="side">Ausschnitt<br>0 / 0</div>
+      <div class="prog"><i id="prog"></i></div>
+    </div>
+    <div class="frame">
+      <div class="ruler top" aria-hidden="true"><span style="left:0">0</span><span style="left:47.6%">100</span><span style="left:95.2%">200 mm</span></div>
+      <div class="ruler left" aria-hidden="true"></div>
+      <div class="photo"><svg id="ph" role="img" aria-label="Foto der Probe mit Markierungen"></svg>
+        <div class="nav" aria-hidden="true"><svg viewBox="0 0 1200 1432"><image href="../shared/probe.jpg" width="1200" height="1432"/><rect class="v" id="navv"/></svg></div>
+      </div>
+    </div>
+
+    <div id="ovr" hidden>
+      <div class="legend"><span><i></i> gezählt</span><span><i class="u"></i> unsicher, bitte ansehen</span></div>
+      <h1 style="margin:var(--s3) 0 var(--s2)">6 Stellen bitte ansehen</h1>
+      <p class="muted">Hier war sich die Zählung unsicher. Etwa eine Minute.</p>
+      <button class="btn lg" id="startCheck">Stellen ansehen</button>
+      <button class="txt" id="skip">Ohne Prüfen weiter (mit Spanne)</button>
+    </div>
+
+    <div id="chk" class="card" hidden>
+      <div class="eyebrow" id="chkN">Stelle 1 von 6</div>
+      <p class="q" id="chkQ"></p>
+      <div class="kv"><span class="muted">Körner in diesem Ausschnitt</span><b id="chkC">0</b></div>
+      <p class="help" style="margin:0 0 var(--s3)">Korn ohne Punkt antippen: hinzufügen. Falschen Punkt antippen: entfernen.</p>
+      <button class="btn lg" id="ok">Stimmt so</button>
+      <div class="row" style="margin-top:var(--s2)"><button class="btn line" id="undo">Rückgängig</button><button class="btn line" id="later">Später</button></div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="ergebnis">
+    <div class="eyebrow">Wintergerste mehrzeilig · Hänger 3</div>
+    <h1>Ergebnis</h1>
+    <div class="sec">
+      <div class="eyebrow">Körner auf dem Foto</div>
+      <div class="val"><span class="ca" id="rCa">ca.</span><span id="rN">411</span><small>Körner</small></div>
+      <div id="rStatus"></div>
+    </div>
+    <div class="sec">
+      <label class="eyebrow" for="gIn">Gewicht dieser Körner</label>
+      <div class="field"><input id="gIn" inputmode="decimal" value="19,6"><span>g</span></div>
+      <div class="help">Alle Körner vom Blatt in die tarierte Schale, Waage mit 0,1 g.</div>
+    </div>
+    <div class="sec">
+      <div class="eyebrow">Tausendkorngewicht</div>
+      <div class="val"><span id="rTkg">47,7</span><small>g TKG</small></div>
+      <div class="help">üblich für Wintergerste: 44,5–67,0 g</div>
+    </div>
+    <div class="sec two">
+      <div>
+        <label class="eyebrow" for="sIn">Saatstärke</label>
+        <div style="display:flex;gap:8px;align-items:center"><button class="step-b" id="sMinus" aria-label="minus 10">−</button><div class="field" style="flex:1"><input id="sIn" inputmode="numeric" value="300" style="text-align:center"></div><button class="step-b" id="sPlus" aria-label="plus 10">+</button></div>
+        <div class="help">keimf. Körner/m², üblich 270–320</div>
+      </div>
+      <div>
+        <label class="eyebrow" for="kIn">Keimfähigkeit</label>
+        <div class="field"><input id="kIn" inputmode="decimal" value="95"><span>%</span></div>
+        <div class="help">vom Sacketikett</div>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="eyebrow">Aussaatmenge</div>
+      <div class="val"><span id="rKg">151</span><small>kg/ha</small></div>
+      <div class="scale" id="scale" aria-hidden="true"></div>
+      <div id="rPm" style="font:500 15px/1.5 var(--f-mono);margin-top:var(--s2)"></div>
+      <div class="formula" id="rF"></div>
+    </div>
+    <div class="sec">
+      <div class="eyebrow">Abdrehprobe</div>
+      <div class="seg" role="group" aria-label="Abgedrehte Fläche"><button aria-pressed="true" data-f="40">1/40 ha</button><button aria-pressed="false" data-f="10">1/10 ha</button></div>
+      <div class="val" style="font-size:44px"><span id="rAb">3,77</span><small>kg sollen herauskommen</small></div>
+      <div class="help">Drillmaschine auf diese Menge abdrehen. Die App ersetzt die Abdrehprobe nicht.</div>
+    </div>
+    <button class="btn lg" data-go="start">Speichern</button>
+    <button class="btn line" data-go="foto">Nächste Probe, gleiche Sorte</button>
+  </section>
+</div>
+
+<script src="../shared/sample.js"></script>
+<script src="../shared/tk.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const S = TK.S, st = TK.state, NS = 'http://www.w3.org/2000/svg';
+TK.screens({ start: 'start' });
+
+const ph = new TK.Photo($('#ph'), { pad: 70, dotImg: 5.5 });
+const pr = $('#pr');
+// Raster der Ausschnitte als gestrichelte Linien; fertige Ausschnitte verschwinden.
+const CELL = 150, tiles = TK.tiles(CELL);
+const gridG = document.createElementNS(NS, 'g'); gridG.setAttribute('class', 'grid-ov');
+tiles.forEach((t) => { const r = document.createElementNS(NS, 'rect'); r.setAttribute('x', t.cx * CELL); r.setAttribute('y', t.cy * CELL); r.setAttribute('width', CELL); r.setAttribute('height', CELL); t.el = r; gridG.appendChild(r); });
+$('#ph').insertBefore(gridG, $('#ph .checks'));
+
+let counted = false, cur = 0;
+function mode(m) { pr.dataset.mode = m; $('#ovr').hidden = m !== 'overview'; $('#chk').hidden = m !== 'check'; }
+document.addEventListener('tk:screen', async (e) => {
+  const name = e.detail.name;
+  $('.back').hidden = name === 'start'; $('.mark-logo').style.display = name === 'start' ? '' : 'none';
+  $('#serial').textContent = name === 'start' ? 'Beispielhof' : 'Probe 0427-3';
+  if (name === 'pruefen' && !counted) {
+    counted = true; mode('count');
+    await TK.wait(300);
+    const map = new Map(tiles.map((t) => [t.cx + ':' + t.cy, t]));
+    await ph.reveal({ ms: 2800, cell: CELL, stagger: 0.8, onTile: (n, i, tot, t) => {
+      $('#n').textContent = TK.fmt(n); $('#side').innerHTML = `Ausschnitt<br>${i} / ${tot}`;
+      $('#prog').style.width = (i / tot * 100) + '%';
+      if (t) map.get(t.cx + ':' + t.cy).el.classList.add('done'); else tiles.forEach((x) => x.el.classList.add('done'));
+    } });
+    $('#prLabel').textContent = 'Gezählt';
+    $('#side').innerHTML = `${tiles.length} Ausschnitte<br>6 unsicher`;
+    mode('overview');
+    // Demo: ?check=2 springt direkt in Stelle 2 (für Screenshots).
+    const qc = new URLSearchParams(location.search).get('check'); if (qc) openCheck(+qc - 1);
+  }
+  if (name === 'ergebnis') render(true);
+});
+
+function nav() {
+  const [x, y, w, h] = ph.vb, r = $('#navv');
+  r.setAttribute('x', x); r.setAttribute('y', y); r.setAttribute('width', w); r.setAttribute('height', h);
+}
+ph.onCheckTap = (i) => openCheck(i);
+ph.on((n) => { st.count = n; $('#n').textContent = TK.fmt(n); $('#chkC').textContent = ph.countIn(S.checks[cur].region); });
+async function openCheck(i) {
+  cur = i; mode('check'); window.scrollTo(0, 0);
+  ph.setChecks((g, j) => g.classList.toggle('active', j === i));
+  $('#chkN').textContent = `Stelle ${i + 1} von ${S.checks.length}`;
+  $('#chkQ').textContent = S.checks[i].comment.replace(/\.$/, '') + '. Stimmt das?';
+  $('#chkC').textContent = ph.countIn(S.checks[i].region);
+  await ph.zoomTo(S.checks[i].region, 460); nav();
+  ph.enableTap(true);
+}
+async function close() { ph.enableTap(false); ph.setChecks((g) => g.classList.remove('active')); await ph.zoomTo(null, 400); nav(); mode('overview'); }
+$('#startCheck').onclick = () => { const n = S.checks.findIndex((_, j) => !st.checked.has(j)); openCheck(n < 0 ? 0 : n); };
+$('#ok').onclick = async () => {
+  st.checked.add(cur); ph.setChecks((g, j) => g.classList.toggle('done', st.checked.has(j)));
+  const n = S.checks.findIndex((_, j) => !st.checked.has(j));
+  if (n < 0) { await close(); TK.go('ergebnis'); } else openCheck(n);
+};
+$('#undo').onclick = () => ph.undo();
+$('#later').onclick = async () => { await close(); TK.go('ergebnis'); };
+$('#skip').onclick = () => TK.go('ergebnis');
+
+let frac = 40;
+document.querySelectorAll('.seg button').forEach((b) => b.onclick = () => { frac = +b.dataset.f; document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', x === b)); render(false); });
+$('#sMinus').onclick = () => { $('#sIn').value = TK.num($('#sIn').value) - 10; render(false); };
+$('#sPlus').onclick = () => { $('#sIn').value = TK.num($('#sIn').value) + 10; render(false); };
+['#gIn', '#sIn', '#kIn'].forEach((s) => $(s).addEventListener('input', () => render(false)));
+
+// Messbalken: Achse ±12 % um den Wert, Band = Spanne, Strich = Wert.
+function drawScale(r, animate) {
+  const c = r.kgha, lo = c * 0.88, hi = c * 1.12, X = (v) => ((v - lo) / (hi - lo) * 100) + '%';
+  const step = c > 120 ? 10 : 5, first = Math.ceil(lo / step) * step;
+  let h = '<div class="axis"></div>';
+  for (let v = first; v <= hi; v += step) h += `<div class="tick" style="left:${X(v)}"><span>${v}</span></div>`;
+  h += `<div class="band ${animate ? 'draw' : ''}" style="left:${X(r.lo)};width:calc(${X(r.hi)} - ${X(r.lo)})"></div>`;
+  h += `<div class="br ${animate ? 'draw' : ''}" style="left:${X(r.lo)};width:calc(${X(r.hi)} - ${X(r.lo)})"></div><div class="pt" style="left:${X(c)}"></div>`;
+  $('#scale').innerHTML = h;
+}
+function render(animate) {
+  const u = TK.unchecked();
+  const r = TK.calc({ count: st.count, gramm: TK.num($('#gIn').value), keimf: TK.num($('#kIn').value), saat: TK.num($('#sIn').value), unchecked: u });
+  $('#rCa').hidden = u === 0;
+  $('#rStatus').innerHTML = u === 0 ? '<span class="st ok">✓ Prüfstellen bestätigt</span>'
+    : `<span class="pill">◌ ${u} Stellen ungeprüft</span> <button class="txt" style="display:inline;width:auto;min-height:44px;font-size:16px" data-go="pruefen">ansehen</button>`;
+  if (!isFinite(r.kgha)) return;
+  const kg = Math.round(r.kgha);
+  $('#rTkg').textContent = TK.fmt(r.tkg, 1);
+  $('#rPm').innerHTML = `Spanne ${TK.fmt(r.lo)}–${TK.fmt(r.hi)} kg/ha <span class="muted">(± ${TK.fmt(r.rel * 100, 1)} %${u ? ', ' + u + ' Stellen ungeprüft' : ''})</span>`;
+  $('#rF').innerHTML = `${TK.fmt(TK.num($('#sIn').value))} keimf. K./m² ÷ ${TK.fmt(TK.num($('#kIn').value))} % × ${TK.fmt(r.tkg, 1)} g<br>= ${kg} kg/ha · ${TK.fmt(r.koernerM2)} Körner/m² ablegen`;
+  $('#rAb').textContent = TK.fmt(frac === 40 ? r.abdreh40 : r.abdreh10, 2);
+  if (animate) {
+    $('#scale').style.visibility = 'hidden'; $('#rPm').style.opacity = 0;
+    TK.countTo($('#rN'), st.count, { ms: 500 });
+    TK.countTo($('#rKg'), kg, { ms: 700 }).then(() => {
+      $('#scale').style.visibility = ''; drawScale(r, true);
+      $('#rPm').style.transition = 'opacity 400ms'; $('#rPm').style.opacity = 1;
+    });
+  } else { $('#rKg').textContent = kg; $('#rN').textContent = st.count; drawScale(r, false); }
+}
+</script>
+</body>
+</html>

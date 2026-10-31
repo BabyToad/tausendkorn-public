@@ -1,0 +1,215 @@
+/* Tausendkorn UI-System · Komponenten (Richtung B „Labor“)
+   Drop-in für app/static/style.css: stylt genau die Klassen, die app.js heute
+   erzeugt (.btn, .card, .chip, .result, .viewer, .spot, .item …), plus wenige neue
+   (.eyebrow, .seg, .scale, .mk/.ck im Foto). Braucht tokens.css davor und
+   IBM Plex Sans/Mono (siehe UI_SYSTEM.md §3). */
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: var(--fw-text) var(--fs-body)/1.5 var(--f-sans);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ---- Kopf ------------------------------------------------------------------ */
+.bar {
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s3);
+  min-height: 60px; background: var(--bg); color: var(--ink);
+  padding: calc(env(safe-area-inset-top, 0px) + var(--s2)) var(--gutter) var(--s2);
+  border-bottom: var(--hair) solid var(--rule);
+}
+.brand { color: var(--ink); text-decoration: none; font: var(--fw-strong) 20px/1 var(--f-sans); letter-spacing: -.01em;
+  display: inline-flex; align-items: center; gap: var(--s2); min-height: 44px; }
+.brand::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--mark);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--ink); }
+.demo { margin-left: auto; font: 500 var(--fs-label) var(--f-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--unsure-ink); border: var(--hair) dashed var(--unsure); background: var(--unsure-soft);
+  padding: 3px 10px; border-radius: var(--r-pill); }
+
+/* ---- Seite und Text -------------------------------------------------------- */
+main { max-width: var(--page-max); margin: 0 auto; padding: var(--s4) var(--gutter) var(--s6); }
+h1 { font: var(--fw-strong) var(--fs-h1)/1.1 var(--f-sans); letter-spacing: -.02em; margin: var(--s2) 0 var(--s4); text-wrap: balance; }
+h2 { font: var(--fw-strong) var(--fs-h2)/1.2 var(--f-sans); letter-spacing: -.01em; margin: var(--s5) 0 var(--s3); }
+p { margin: 0 0 var(--s3); }
+.muted { color: var(--ink-2); }
+/* Schrittzeile über dem Titel, Labels über Werten */
+.step, .eyebrow, .result .label {
+  font: 500 var(--fs-label)/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+}
+
+/* ---- Knöpfe ---------------------------------------------------------------- */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%;
+  min-height: var(--tap); padding: var(--s2) var(--s4); margin: var(--s3) 0 0;
+  border: 0; border-radius: var(--r); background: var(--ink); color: var(--surface);
+  font: var(--fw-strong) var(--fs-lead)/1.2 var(--f-sans); text-decoration: none; text-align: center;
+  cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  transition: transform var(--t-1) var(--e-out), background-color var(--t-1);
+}
+.btn:active { transform: scale(.985); background: #000; }
+.btn.big { min-height: var(--tap-l); font-size: 22px; }
+.btn.secondary { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 var(--hair) var(--ink); }
+.btn.secondary:active { background: var(--sunken); }
+.btn.danger { background: var(--surface); color: var(--bad); box-shadow: inset 0 0 0 var(--hair) var(--bad); }
+.btn.danger.solid { background: var(--bad); color: var(--surface); box-shadow: none; }
+.btn[disabled] { opacity: .4; pointer-events: none; }
+.btn + .btn { margin-top: var(--s2); }
+.row { display: flex; gap: var(--s2); }
+.row > *, .row > .btn + .btn { flex: 1; min-width: 0; margin-top: 0; }
+/* Werkzeugknöpfe im Prüfen (−, +, Rückgängig) */
+.tool { min-height: var(--tap); margin: 0; font-size: var(--fs-body); padding: var(--s2); }
+#zin, #zout { font: 500 30px var(--f-mono); }
+.tool.on { background: var(--mark); color: var(--surface); box-shadow: none; }
+/* Textlink als Nebenweg („Trotzdem zählen“, „Später prüfen“) */
+.link { display: block; width: 100%; min-height: 56px; border: 0; background: none; cursor: pointer;
+  font: 500 var(--fs-body) var(--f-sans); color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+/* ---- Auswahl --------------------------------------------------------------- */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); margin: var(--s2) 0 var(--s3); }
+.chip { min-height: 56px; padding: var(--s2) var(--s3); border-radius: var(--r-pill); border: 0;
+  box-shadow: inset 0 0 0 var(--hair) var(--rule); background: var(--surface); color: var(--ink);
+  font: 500 var(--fs-body) var(--f-sans); cursor: pointer; touch-action: manipulation;
+  transition: background-color var(--t-1), box-shadow var(--t-1); }
+.chip.on { background: var(--ink); color: var(--surface); box-shadow: none; }
+.chip.on::before { content: "✓ "; }
+/* Segment-Schalter (Abdreh-Fläche, Rechner-Modus) */
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--sunken); border-radius: var(--r-pill); padding: 4px; gap: 4px; }
+.seg button { min-height: 52px; border: 0; border-radius: var(--r-pill); background: none; cursor: pointer;
+  font: 500 17px var(--f-mono); transition: background-color var(--t-1); }
+.seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(20, 24, 27, .18); }
+
+/* ---- Eingaben: Zahl auf einer Linie, wie eine Waagenanzeige ---------------- */
+label.field { display: block; margin: var(--s4) 0 var(--s1);
+  font: 500 var(--fs-label)/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+label.field small { font: 400 var(--fs-small) var(--f-sans); letter-spacing: 0; text-transform: none; }
+input[type=text], input[type=number], input:not([type]), textarea, select {
+  width: 100%; min-height: var(--tap); padding: var(--s1) 0; border: 0; border-bottom: var(--line-strong) solid var(--ink);
+  border-radius: 0; background: transparent; color: var(--ink); font: var(--fw-text) var(--fs-lead) var(--f-sans);
+}
+input[inputmode=decimal], input[inputmode=numeric], input[type=number] { font: var(--fw-num) var(--fs-num) var(--f-mono); letter-spacing: -.02em; }
+textarea { min-height: 110px; border: var(--hair) solid var(--rule); border-radius: var(--r-s); padding: var(--s2); }
+input:focus, textarea:focus, select:focus { outline: none; border-bottom-color: var(--mark); box-shadow: 0 2px 0 var(--mark); }
+.unit { display: flex; align-items: baseline; gap: var(--s2); }
+.unit input { flex: 1; min-width: 0; }
+.unit span { font: 500 var(--fs-body) var(--f-sans); color: var(--ink-2); min-width: 2.5em; }
+.help { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+
+/* ---- Foto-Anleitung -------------------------------------------------------- */
+.guide { list-style: none; padding: 0; margin: 0 0 var(--s4); border-top: var(--hair) solid var(--ink); counter-reset: g; }
+.guide li { display: grid; grid-template-columns: 40px 1fr; gap: var(--s3); align-items: start; padding: var(--s3) 0;
+  border-bottom: var(--hair) solid var(--rule); font: var(--fw-text) var(--fs-body)/1.45 var(--f-sans); }
+.guide li::before { counter-increment: g; content: "0" counter(g); font: 500 15px var(--f-mono); color: var(--ink-2); padding-top: 3px; }
+.guide .ico { display: none; } /* Emoji-Symbole entfallen; Nummer + Satz reichen */
+.file-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* ---- Karten, Hinweise, Fortschritt ----------------------------------------- */
+.card { background: var(--surface); border-radius: var(--r); padding: var(--s3); margin: var(--s3) 0;
+  box-shadow: inset 0 0 0 var(--hair) var(--rule); }
+.card.warn { background: var(--unsure-soft); box-shadow: inset 0 0 0 var(--hair) var(--unsure); }
+.card.warn::before { content: "◌ "; color: var(--unsure-ink); font-weight: 600; }
+.card.bad { background: var(--bad-soft); box-shadow: inset 0 0 0 var(--hair) var(--bad); }
+.card.bad::before { content: "✕ "; color: var(--bad); font-weight: 600; }
+.progress { height: 3px; background: var(--grid); border-radius: 2px; overflow: hidden; margin: var(--s3) 0; }
+.progress > div { height: 100%; width: 0; background: var(--ink); transition: width var(--t-2) linear; }
+.progress.indet > div { width: 30%; animation: tk-indet 1.6s var(--e-io) infinite; }
+@keyframes tk-indet { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
+.thumb { width: 100%; max-height: 42vh; object-fit: contain; border-radius: var(--r-s); background: var(--photo-bg); display: block; margin: var(--s2) 0; }
+
+/* ---- Zahlen ---------------------------------------------------------------- */
+.big-num { font: var(--fw-num) var(--fs-num-l)/1 var(--f-mono); letter-spacing: -.03em; }
+.big-num small, .result .val small { font: 500 var(--fs-lead) var(--f-sans); letter-spacing: 0; color: var(--ink-2); margin-left: 6px; }
+.result { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s3); margin: var(--s4) 0; }
+.result .card { margin: 0; }
+.result .label { overflow-wrap: anywhere; }
+.result .val { font: var(--fw-num) var(--fs-num)/1.1 var(--f-mono); letter-spacing: -.03em; margin-top: var(--s1); }
+.result .card.main { grid-column: 1 / -1; box-shadow: inset 0 0 0 2px var(--ink); }
+.result .card.main .val { font-size: var(--fs-num-xl); line-height: 1; }
+@media (max-width: 420px) { .result .card.main .val { font-size: 72px; } }
+.formula { font: 400 var(--fs-small)/1.7 var(--f-mono); color: var(--ink-2); background: var(--sunken); border-radius: var(--r-s); padding: var(--s3); }
+.formula b { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+.ok { color: var(--mark); font: 500 var(--fs-small) var(--f-mono); }
+.ok::before { content: "✓ "; }
+
+/* Messbalken: Spanne als Band auf einer Skala (.scale > .axis/.tick/.band/.pt) */
+.scale { position: relative; height: 56px; margin-top: var(--s3); }
+.scale .axis { position: absolute; left: 0; right: 0; top: 26px; height: var(--hair); background: var(--rule); }
+.scale .tick { position: absolute; top: 20px; width: var(--hair); height: 13px; background: var(--rule); }
+.scale .tick span { position: absolute; top: 18px; transform: translateX(-50%); font: 400 12px var(--f-mono); color: var(--ink-2); white-space: nowrap; }
+.scale .band { position: absolute; top: 19px; height: 15px; background: var(--mark); opacity: .18; border-radius: 3px; }
+.scale .br { position: absolute; top: 19px; height: 15px; border: 2px solid var(--mark); border-top: 0; border-bottom: 0; }
+.scale .pt { position: absolute; top: 15px; width: 3px; height: 23px; background: var(--ink); transform: translateX(-50%); }
+.scale .band, .scale .br { transform-origin: center; animation: tk-draw var(--t-4) var(--e-out) both; }
+@keyframes tk-draw { from { transform: scaleX(0); } }
+
+/* ---- Prüfen: Foto, Marken, Prüfstellen ------------------------------------- */
+.count-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; }
+.viewer { position: relative; width: 100%; height: 58vh; min-height: 320px; background: var(--photo-bg);
+  border-radius: var(--r-s); overflow: hidden; margin: var(--s2) 0; }
+.viewer svg { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.viewer.edit svg { cursor: crosshair; }
+.viewer .hint { position: absolute; left: var(--s2); right: var(--s2); top: var(--s2); pointer-events: none;
+  background: rgba(20, 24, 27, .82); color: #fff; font: 500 var(--fs-small)/1.4 var(--f-sans); padding: var(--s2) var(--s3); border-radius: var(--r-s); }
+@media (min-width: 900px) { .viewer { height: 66vh; } }
+/* Marken im SVG. Größe: transform="translate(x y) scale(k)" je Marke, r in Bildschirm-px (§5). */
+.mk-halo { fill: var(--mark-ring); }
+.mk-dot { fill: var(--mark); }
+.mk.added .mk-halo { fill: var(--mark); } .mk.added .mk-dot { fill: var(--mark-ring); }
+.mk.removed .mk-dot { fill: none; stroke: var(--mark-ring); stroke-width: 1.2; } .mk.removed .mk-halo { fill: rgba(20, 24, 27, .6); }
+.mk.reveal { opacity: 0; }
+.mk.reveal.in { opacity: 1; transition: opacity 240ms var(--e-out); transition-delay: inherit; }
+/* Prüfstelle: Graphit-Unterlage + orange Striche darüber. --k = Bild-px je Bildschirm-px.
+   Kontrast (WCAG 1.4.11, 3:1) trägt die Unterlage: Graphit hat 6:1 auf rosa Korn und
+   14:1 auf dem Blatt; kein Orange erreicht auf dem Korn 3:1. Markup:
+   <g class="ck"><rect class="ck-back" …/><rect class="ck-box" …/><g class="ck-tag">…</g></g>
+   Atmen läuft nur in der Füllung, der Rahmen bleibt immer voll deckend. */
+.ck-back { fill: none; stroke: var(--ink); stroke-width: calc(var(--k, 1) * 4.5px); }
+.ck-box { fill: var(--unsure); fill-opacity: 0; stroke: var(--unsure); stroke-width: calc(var(--k, 1) * 2.5px);
+  stroke-dasharray: calc(var(--k, 1) * 7px) calc(var(--k, 1) * 5px); animation: tk-look var(--t-look) var(--e-io) infinite; }
+@keyframes tk-look { 50% { fill-opacity: .2; } }
+.ck.done .ck-box { stroke: var(--mark); stroke-dasharray: none; animation: none; fill-opacity: 0; }
+.ck.active .ck-box { animation: none; fill-opacity: 0; }
+.ck-tag circle { fill: var(--unsure); stroke: var(--mark-ring); stroke-width: 2; }
+.ck-tag text { fill: var(--ink); font: 600 13px var(--f-mono); }
+.ck.done .ck-tag circle { fill: var(--mark); } .ck.done .ck-tag text { fill: var(--surface); }
+/* Liste der Prüfstellen unter dem Foto */
+.spot { display: flex; gap: var(--s3); align-items: flex-start; width: 100%; min-height: var(--tap); margin: var(--s2) 0 0;
+  text-align: left; font: inherit; color: var(--ink); cursor: pointer; background: var(--surface);
+  border: 0; border-radius: var(--r); padding: var(--s3); box-shadow: inset 0 0 0 var(--hair) var(--rule); }
+.spot .n { flex: 0 0 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--unsure); color: var(--ink); font: 600 15px var(--f-mono); box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--unsure); }
+.spot.active { box-shadow: inset 0 0 0 2px var(--ink); }
+
+/* ---- Verlauf --------------------------------------------------------------- */
+.item { display: flex; gap: var(--s3); align-items: center; width: 100%; min-height: 84px; margin: 0;
+  padding: var(--s3) 0; text-align: left; text-decoration: none; font: inherit; color: var(--ink);
+  background: none; border: 0; border-bottom: var(--hair) solid var(--rule); cursor: pointer; }
+.item img { width: 56px; height: 56px; object-fit: cover; border-radius: var(--r-s); background: var(--photo-bg); flex: 0 0 56px; }
+.item .t { font: var(--fw-strong) 19px/1.25 var(--f-sans); }
+.item .s { font: 400 14px var(--f-mono); color: var(--ink-2); margin-top: 2px; }
+.item .k { margin-left: auto; text-align: right; white-space: nowrap; font: var(--fw-num) 22px/1.2 var(--f-mono); }
+.item .k small { display: block; font: 500 14px var(--f-mono); color: var(--ink-2); }
+.badge { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--s1); padding: 3px 10px; border-radius: var(--r-pill);
+  font: 500 14px var(--f-mono); color: var(--ink-2); box-shadow: inset 0 0 0 var(--hair) var(--rule); }
+.badge.warn { color: var(--unsure-ink); background: var(--unsure-soft); box-shadow: none; outline: var(--hair) dashed var(--unsure); outline-offset: -1.5px; }
+.badge.warn::before { content: "◌"; }
+.badge.bad { color: var(--bad); background: var(--bad-soft); box-shadow: inset 0 0 0 var(--hair) var(--bad); }
+.badge.bad::before { content: "✕"; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); z-index: 20;
+  max-width: calc(100% - 32px); padding: var(--s2) var(--s4); border-radius: var(--r-pill); text-align: center;
+  background: var(--ink); color: var(--surface); font: 500 var(--fs-body) var(--f-sans); animation: tk-up var(--t-2) var(--e-out); }
+@keyframes tk-up { from { opacity: 0; transform: translate(-50%, 8px); } }
+
+/* Bildschirmwechsel: main bekommt beim Rendern kurz .enter */
+main.enter { animation: tk-enter var(--t-2) var(--e-out); }
+@keyframes tk-enter { from { opacity: 0; transform: translateY(6px); } }
+
+/* ---- Reduzierte Bewegung --------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; transition-delay: 0ms !important; }
+  .ck-box { fill-opacity: .12; }  /* statt Atmen: ruhig leicht getönt */
+}

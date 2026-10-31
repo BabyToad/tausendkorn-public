@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tausendkorn · Pitch</title>
+<meta name="description" content="Tausendkorn – Körner zählen mit einem Foto. Team Goldpfanne, Hackathon Smart Farming Lab Leipzig.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="tokens.css?v=17">
+<link rel="stylesheet" href="deck.css?v=17">
+</head>
+<body>
+
+<header class="site">
+  <span class="brand">Tausendkorn <i>· Team Goldpfanne</i></span>
+  <span class="site-actions">
+    <button id="present" type="button">▶ Präsentieren</button>
+    <a href="/">Zur App</a>
+  </span>
+</header>
+
+<main id="deck">
+
+<!-- 1 ─────────────────────────────────────────────────────────────── -->
+<div class="frame"><section class="slide s1" data-scene="pour">
+  <div class="kicker">Tausendkorn · Team Goldpfanne</div>
+  <h1>Vor jeder Aussaat<br>zählt jemand Körner.</h1>
+  <p class="lead">Das Tausendkorngewicht stellt die Drillmaschine ein. Heute wird dafür von Hand gezählt – und
+    <b>1&nbsp;% verzählt heißt 1&nbsp;% falsch gesät</b>, auf dem ganzen Schlag.</p>
+
+  <div class="turn">Mit Tausendkorn: drei Handgriffe.</div>
+  <ol class="steps">
+    <li data-step="1"><span class="n">01</span><b>Handvoll schöpfen</b><small>aus mehreren Stellen im Sack, keine Auswahl</small></li>
+    <li data-step="2"><span class="n">02</span><b>Auf ein weißes Blatt</b><small>grob verteilen, kleine Häufchen sind in Ordnung</small></li>
+    <li data-step="3"><span class="n">03</span><b>Ein Foto</b><small>von oben, mit Handy oder iPad</small></li>
+  </ol>
+
+  <div class="stage s1-stage">
+    <img class="photo" src="img/roggen_clean.jpg" alt="Foto: Roggenkörner verteilt auf einem weißen Blatt">
+    <canvas width="1720" height="1290"></canvas>
+    <div class="finder"><i></i><i></i><i></i><i></i></div>
+    <div class="flash"></div>
+    <div class="snap">Foto ✓</div>
+  </div>
+
+  <footer><span class="asset-credit">Fotos: <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a> · Smart Farming Lab, Universität Leipzig · <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><br>modified: resized, cropped, marks/overlays added</span><span>1 / 5</span></footer>
+</section></div>
+
+<!-- 2 ─────────────────────────────────────────────────────────────── -->
+<div class="frame"><section class="slide s2" data-scene="count">
+  <div class="stage s2-stage">
+    <img class="photo" src="img/roggen_clean.jpg" alt="">
+    <canvas width="2000" height="1500"></canvas>
+    <div class="check">
+      <div class="zoom">
+        <img src="img/hafer_stelle_clean.jpg" alt="Ausschnitt: drei Haferkörner übereinander">
+        <canvas width="560" height="560"></canvas>
+        <span class="badge">1</span>
+      </div>
+      <p><b>Stelle 1 · die App meldet sich selbst</b>
+        „Drei Haferkörner übereinander – links eins übersehen, rechts zwei doppelt.“
+        <small>Ein Tipp, korrigiert.</small></p>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="kicker">So zählt die App</div>
+    <h2>In kleinen Ausschnitten, Korn für Korn.</h2>
+    <ol class="beats">
+      <li data-beat="1">Das Foto wird in kleine Ausschnitte geteilt.</li>
+      <li data-beat="2">Jeder Ausschnitt wird einzeln gezählt – bei wenigen Körnern verzählt sich auch eine KI kaum.</li>
+      <li data-beat="3">Jedes erkannte Korn bekommt einen Punkt. So ist jede Zählung nachprüfbar.</li>
+      <li data-beat="4">Wo sie unsicher ist, zeigt die App die Stelle.</li>
+    </ol>
+    <div class="counter">
+      <div class="num" id="cnt">0</div>
+      <div class="unit">Körner gezählt</div>
+      <div class="truth">nachgezählt: <b>1000</b> · Roggen aus den Testfotos, vorher nie gesehen</div>
+    </div>
+  </div>
+
+  <footer><span class="asset-credit">Fotos: <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a> · Smart Farming Lab, Universität Leipzig · <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><br>modified: resized, cropped, marks/overlays added</span><span>2 / 5</span></footer>
+</section></div>
+
+<!-- 3 ─────────────────────────────────────────────────────────────── -->
+<div class="frame"><section class="slide s3" data-scene="numbers">
+  <div class="kicker">Gemessen</div>
+  <h2>Gemessen, nicht versprochen.</h2>
+
+  <div class="cols">
+    <article class="card st">
+      <div class="label">30 zurückgelegte Fotos · einmal gemessen</div>
+      <div class="big"><span data-to="1.85" data-dec="2">0</span><small>&nbsp;%</small></div>
+      <p>im Mittel daneben – rund <b>6 Körner</b> bei gut 300.</p>
+      <p class="fine">Fotos aus denselben Aufnahmetagen wie das Training. Ein zweiter Zähler (YOLO, offline verglichen, nicht in der App) lag auf denselben Fotos bei 3,2 Körnern.</p>
+    </article>
+
+    <article class="card st">
+      <div class="label">Testfotos · 6 × 1000 Körner, eigener Aufnahmetag</div>
+      <div class="big"><span data-to="1.6" data-dec="1">0</span><small>&nbsp;%</small></div>
+      <p>im Mittel daneben – <b>15,8 Körner</b>. Anderes Licht, teils gebeiztes Saatgut, Roggen war neu.</p>
+      <svg class="strip" viewBox="0 0 440 150" aria-label="Sechs Testfotos auf einer Zahlengeraden um 1000">
+        <line class="axis" x1="10" y1="96" x2="430" y2="96"/>
+        <line class="target" x1="330" y1="22" x2="330" y2="104"/>
+        <text class="t-target" x="330" y="14">1000</text>
+        <g class="ticks"><text x="30" y="124">940</text><text x="130" y="124">960</text><text x="230" y="124">980</text><text x="430" y="124" text-anchor="end">1020</text></g>
+        <!-- x = 30 + (n-940)*5 -->
+        <g class="pts">
+          <g style="--i:0"><circle cx="315" cy="78" r="9"/></g>
+          <g style="--i:1"><circle cx="320" cy="96" r="9"/></g>
+          <g style="--i:2"><circle cx="380" cy="96" r="9"/></g>
+          <g style="--i:3"><circle cx="385" cy="78" r="9"/></g>
+          <g style="--i:4"><circle cx="385" cy="60" r="9"/></g>
+          <g style="--i:5" class="open"><circle cx="40" cy="96" r="11"/><text x="28" y="48">Hartweizen 942</text><text x="28" y="66">ungeklärt, in Klärung</text></g>
+        </g>
+      </svg>
+    </article>
+
+    <article class="method st">
+      <div class="label">So haben wir gemessen</div>
+      <ol>
+        <li>Prüffotos vorher festgelegt und zurückgelegt.</li>
+        <li>Finale Version einmal gemessen: 30 + 6 Fotos. Ein früherer Lauf (11 Fotos) wurde nach Fehlerkorrekturen verworfen.</li>
+        <li>Jedes erkannte Korn ein Punkt – jeder kann nachzählen.</li>
+      </ol>
+      <div class="goal"><b>Ziel 99,9&nbsp;%</b><span>Entwicklungsziel – noch nicht erreicht</span></div>
+      <p class="fine">Schwierig bleiben dichte Haufen und neues Licht. Daran arbeiten wir.</p>
+    </article>
+  </div>
+
+  <footer><span class="asset-credit">Fotos: <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a> · Smart Farming Lab, Universität Leipzig · <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><br>modified: resized, cropped, marks/overlays added</span><span>3 / 5</span></footer>
+</section></div>
+
+<!-- 4 ─────────────────────────────────────────────────────────────── -->
+<div class="frame"><section class="slide s4" data-scene="app">
+  <div class="kicker">Die App</div>
+  <h2>Vom Foto bis zur Drillmaschine.</h2>
+  <ol class="rail">
+    <li data-screen="1"><span class="n">1</span><b>Art wählen</b><small>Sorte antippen, fertig</small></li>
+    <li data-screen="2"><span class="n">2</span><b>Foto zählen lassen</b><small>1–2 Minuten, läuft im Hintergrund</small></li>
+    <li data-screen="3"><span class="n">3</span><b>Unsichere Stellen prüfen</b><small>nur wo nötig – oder überspringen</small></li>
+    <li data-screen="4"><span class="n">4</span><b>Wiegen, TKG und kg/ha ablesen</b><small>Gewicht eintippen, die App rechnet</small></li>
+  </ol>
+  <div class="facts"><span><b>1–2 Min.</b> pro Probe</span><span><b>0,12–0,79 US-$</b> KI-Kosten pro Foto, gemessen</span></div>
+  <div class="live"><b>Live aus der App, zwei Einzeltests:</b> am PC 488 statt 493 Körner in 47&nbsp;s · am iPad über Hotspot 54&nbsp;s</div>
+
+  <div class="ipad">
+    <div class="screen">
+      <div class="scr" data-screen="1">
+        <div class="appbar">Neue Probe</div>
+        <h3>Welche Art?</h3>
+        <div class="chips"><span>Winterweizen</span><span>Winterroggen</span><span>Wintergerste</span><span class="pick">Hafer</span><span>Sommergerste</span><span>Durum</span></div>
+        <div class="btn">Weiter zum Foto</div>
+      </div>
+      <div class="scr" data-screen="2">
+        <div class="appbar">Hafer · Probe 3</div>
+        <div class="ph"><img src="img/hafer_pruefstelle.jpg" alt=""><div class="scan"></div></div>
+        <div class="prog"><i></i></div>
+        <p class="mono small">Zählt … Ausschnitt für Ausschnitt</p>
+      </div>
+      <div class="scr" data-screen="3">
+        <div class="appbar">Prüfen · Stelle 1 von 1</div>
+        <div class="ph"><img src="img/hafer_zoom.jpg" alt=""></div>
+        <p class="warn">Hier war sich die Zählung unsicher.</p>
+        <div class="two"><span class="btn ghost">Korrigieren</span><span class="btn tap">Stimmt so</span></div>
+      </div>
+      <div class="scr" data-screen="4">
+        <div class="appbar">Ergebnis</div>
+        <div class="res"><span class="label">Körner</span><b>256</b></div>
+        <div class="field"><span class="label">Gewicht</span><b class="type" data-text="9,73">9,73</b><i>g</i></div>
+        <div class="res"><span class="label">TKG</span><b>38,0</b><i>g</i></div>
+        <div class="res main"><span class="label">Aussaatmenge</span><b>140</b><i>kg/ha</i></div>
+        <p class="mono small">350 keimf. Körner/m² ÷ 95 % × 38,0 g</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flight"><span>140 kg/ha</span></div>
+
+  <div class="drill">
+    <div class="label">An der Drillmaschine</div>
+    <div class="term">
+      <div class="row"><span>Saatmenge</span><b class="kg">— —</b></div>
+      <div class="row"><span>TKG</span><b class="ab">— —</b></div>
+    </div>
+    <ul>
+      <li class="ok">heute: eintippen oder als Excel-Liste</li>
+      <li class="next">entworfen: Schnittstelle zur Hofsoftware</li>
+      <li class="next">als Nächstes: Auftrag per USB-Stick ins Terminal</li>
+    </ul>
+  </div>
+
+  <footer><span class="asset-credit">Fotos: <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a> · Smart Farming Lab, Universität Leipzig · <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><br>modified: resized, cropped, marks/overlays added</span><span>4 / 5</span></footer>
+</section></div>
+
+<!-- 5 ─────────────────────────────────────────────────────────────── -->
+<div class="frame"><section class="slide s5" data-scene="journey">
+  <div class="kicker">Zusammengefasst</div>
+  <h2>Eine Handvoll. Ein Foto.<br>Eine Zahl, die man prüfen kann.</h2>
+
+  <div class="path">
+    <svg class="wire" viewBox="0 0 1440 40" preserveAspectRatio="none"><line x1="60" y1="20" x2="1380" y2="20"/></svg>
+    <div class="node" style="--i:0"><i class="pic ico"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#E9C98B"><ellipse cx="23" cy="30" rx="5.5" ry="2.6" transform="rotate(-25 23 30)"/><ellipse cx="32" cy="27" rx="5.5" ry="2.6" transform="rotate(15 32 27)"/><ellipse cx="41" cy="30" rx="5.5" ry="2.6" transform="rotate(-10 41 30)"/><ellipse cx="28" cy="21" rx="5.5" ry="2.6" transform="rotate(35 28 21)"/><ellipse cx="37" cy="20" rx="5.5" ry="2.6" transform="rotate(-30 37 20)"/><ellipse cx="32" cy="14" rx="5.5" ry="2.6" transform="rotate(5 32 14)"/></g><path d="M9 35h46c0 11-10 19-23 19S9 46 9 35z" fill="#fff"/><path d="M54 36c2-6 5-9 8-8" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg></i><b>Handvoll</b><small>aus dem Sack</small><em>Hand</em><p class="more">Aus mehreren Stellen, nichts aussortieren – gewogen wird die ganze Probe.</p></div>
+    <div class="node next" style="--i:1"><i class="pic"><img src="img/pfanne.jpg" alt=""></i><b>Verteilen</b><small>Blatt · bald die Goldpfanne</small><em>Pfanne</em><p class="more">Heute ein weißes Blatt. Als Nächstes die Goldpfanne: schwenken statt streichen.</p></div>
+    <div class="node" style="--i:2"><i class="pic"><img src="img/roggen_clean.jpg" alt=""></i><b>Foto</b><small>Handy oder iPad</small><em>Kamera</em><p class="more">Von oben, ein Bild. Mehr Technik braucht es auf dem Hof nicht.</p></div>
+    <div class="node" style="--i:3"><i class="pic zoomed"><img src="img/roggen_997.jpg" alt=""></i><b>Zählen</b><small>Ausschnitt für Ausschnitt</small><em>KI</em><p class="more">Rund 150 Ausschnitte, jedes erkannte Korn ein Punkt – nachprüfbar.</p></div>
+    <div class="node" style="--i:4"><i class="pic"><img src="img/hafer_zoom.jpg" alt=""></i><b>Prüfen</b><small>nur wo die App unsicher ist</small><em>Mensch</em><p class="more">Die App zeigt die Stelle, ein Tipp genügt. Oder überspringen.</p></div>
+    <div class="node" style="--i:5"><i class="pic ico"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#fff"><rect x="5" y="31" width="30" height="11" rx="2"/><path d="M17 31V18h13v13" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/><rect x="38" y="27" width="20" height="12" rx="2"/><rect x="34" y="37" width="6" height="3"/></g><circle cx="27" cy="45" r="9" fill="#005FB8" stroke="#fff" stroke-width="3.5"/><circle cx="10" cy="47" r="5.5" fill="#005FB8" stroke="#fff" stroke-width="3.5"/><g stroke="#E9C98B" stroke-width="3" stroke-linecap="round"><path d="M42 41v7M48 41v7M54 41v7"/></g></svg></i><b>Aussaatmenge</b><small>TKG · kg/ha</small><em>Rechner</em><p class="more">Gewicht eintippen: TKG und kg/ha für die Drillmaschine.</p></div>
+  </div>
+  <div class="legend"><span class="ok">läuft heute</span><span class="next">als Nächstes</span></div>
+
+  <div class="nextup">
+    <div><b>Goldpfanne</b><span>Schwenken wie beim Goldwaschen löst die Häufchen auf – in der Simulation, Versuch steht aus.</span></div>
+    <div><b>Zwei Zähler</b><span>prüfen sich gegenseitig; einer läuft ohne Cloud.</span></div>
+    <div><b>Offline auf dem Hof</b><span>Fotos sammeln, zählen sobald Netz da ist.</span></div>
+  </div>
+
+  <div class="thanks">
+    <b>Danke.</b>
+    <span>Team Goldpfanne · Leon Böhlau · Jonas Heinke</span>
+    <span class="stand">Am Stand: Ihre Handvoll gegen die Stoppuhr.</span>
+  </div>
+
+  <footer><span class="asset-credit">Fotos: <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a> · Smart Farming Lab, Universität Leipzig · <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a><br>modified: resized, cropped, marks/overlays added</span><span>5 / 5</span></footer>
+</section></div>
+
+</main>
+
+<nav class="ctrl" aria-label="Folien">
+  <button id="prev" type="button" aria-label="Zurück">‹</button>
+  <span id="page">1 / 5</span>
+  <button id="next" type="button" aria-label="Weiter">›</button>
+  <button id="full" type="button" aria-label="Vollbild">⛶</button>
+</nav>
+
+<script src="data.js?v=17"></script>
+<script src="deck.js?v=17"></script>
+</body>
+</html>

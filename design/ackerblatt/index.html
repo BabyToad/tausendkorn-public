@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tausendkorn · C Ackerblatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,500;1,7..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* C · Ackerblatt — Feldbuch und Saatgutkatalog. Warm, erzählend, mit Bleistift. */
+:root {
+  --paper: #F3ECDD;      /* Haferpapier */
+  --card: #FBF7EE;
+  --ink: #241B12;        /* Tintenbraun, 14:1 */
+  --ink-2: #4F4032;      /* 8:1 */
+  --kraft: #C9A877;      /* Linien, Kraftpapier */
+  --field: #233D2B;      /* Hauptknopf, Ackergrün */
+  --mark: #1D4E89;       /* gezählt: Preußischblau */
+  --mark-ring: #FBF7EE;
+  --pencil: #B86E00;     /* unsicher: Bleistiftkreis ocker */
+  --pencil-ink: #7A4A00; /* Text dazu, 7:1 */
+  --ok: #1D4E89;
+
+  --s1: 6px; --s2: 12px; --s3: 18px; --s4: 24px; --s5: 36px; --s6: 54px;
+  --r: 6px;
+  --tap: 60px;
+
+  --t-1: 180ms; --t-2: 300ms; --t-3: 500ms; --t-4: 900ms;
+  --e-ink: cubic-bezier(.25, .8, .25, 1);   /* wie Tinte, die sich setzt */
+  --e-hand: cubic-bezier(.45, .05, .35, 1); /* Handbewegung: an- und abschwellen */
+
+  --f-serif: "Literata", Georgia, serif;
+  --f-sans: "Public Sans", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); -webkit-text-size-adjust: 100%; }
+body { margin: 0; color: var(--ink); background: var(--paper); font: 400 18px/1.5 var(--f-sans);
+  font-variant-numeric: lining-nums tabular-nums;
+  background-image: radial-gradient(rgba(120, 90, 50, .06) 1px, transparent 1px); background-size: 5px 5px; }
+button, input { font: inherit; color: inherit; }
+.app { max-width: 600px; margin: 0 auto; min-height: 100vh; }
+[hidden] { display: none !important; }
+
+.head { display: flex; align-items: center; gap: var(--s2); padding: calc(env(safe-area-inset-top) + var(--s2)) var(--s3) var(--s2); }
+.back { min-width: 56px; min-height: 52px; border: 2px solid var(--ink); border-radius: 99px; background: var(--card); cursor: pointer; font: 600 20px var(--f-sans); }
+.brand { font: italic 600 24px/1 var(--f-serif); }
+.head .farm { margin-left: auto; font: 500 15px var(--f-sans); color: var(--ink-2); }
+.masthead { padding: var(--s3) var(--s3) 0; text-align: center; }
+.masthead .t { font: italic 600 52px/1 var(--f-serif); letter-spacing: -.01em; margin: 0; }
+.masthead .sub { font: 600 13px var(--f-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); margin: var(--s2) 0; }
+.rule2 { border: 0; border-top: 3px double var(--ink); margin: 0; }
+
+.screen { display: none; padding: var(--s4) var(--s3) calc(var(--s6) + env(safe-area-inset-bottom)); }
+.screen.is-active { display: block; animation: ink var(--t-2) var(--e-ink); }
+@keyframes ink { from { opacity: 0; } }
+.rm .screen.is-active { animation: none; }
+.kicker { font: 600 13px/1.2 var(--f-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+h1 { font: 600 36px/1.1 var(--f-serif); letter-spacing: -.01em; margin: var(--s1) 0 var(--s3); }
+h1 em { font-weight: 500; }
+p { margin: 0 0 var(--s2); }
+.lead { font: 400 19px/1.5 var(--f-serif); color: var(--ink-2); }
+
+.btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap);
+  border: 0; border-radius: var(--r); background: var(--field); color: #F7F1E3; font: 600 21px var(--f-sans); cursor: pointer;
+  touch-action: manipulation; box-shadow: 0 2px 0 #0F1F14; transition: transform var(--t-1) var(--e-ink); }
+.btn:active { transform: translateY(2px); box-shadow: none; }
+.btn.lg { min-height: 76px; font-size: 23px; }
+.btn.quiet { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn + .btn { margin-top: var(--s2); }
+.txt { display: block; width: 100%; min-height: 56px; border: 0; background: none; font: 500 18px var(--f-sans); text-decoration: underline; text-decoration-color: var(--kraft); text-decoration-thickness: 2px; text-underline-offset: 5px; cursor: pointer; }
+.row { display: flex; gap: var(--s2); } .row > * { flex: 1; margin: 0 !important; }
+
+/* Feldbuch */
+.book { list-style: none; margin: var(--s4) 0 0; padding: 0; }
+.entry { display: grid; grid-template-columns: 54px 1fr; gap: var(--s2); padding: var(--s3) 0; border-bottom: 1px solid var(--kraft); cursor: pointer; }
+.date { font: 600 13px/1.3 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); text-align: center; padding-top: 4px; }
+.date b { display: block; font: 600 26px/1 var(--f-serif); letter-spacing: 0; color: var(--ink); }
+.entry h3 { margin: 0 0 4px; font: 600 21px/1.2 var(--f-serif); }
+.leader { display: flex; align-items: baseline; gap: 6px; font-size: 16px; color: var(--ink-2); }
+.leader::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--kraft); transform: translateY(-4px); }
+.leader b { order: 2; font: 600 22px var(--f-serif); color: var(--ink); }
+.leader b small { font: 500 15px var(--f-sans); color: var(--ink-2); }
+.note { display: inline-flex; gap: 6px; align-items: center; font: italic 500 17px var(--f-serif); color: var(--pencil-ink); position: relative; padding: 2px 4px; margin-top: 2px; }
+.note svg { position: absolute; inset: -6px -10px; width: calc(100% + 20px); height: calc(100% + 12px); overflow: visible; }
+.note path { fill: none; stroke: var(--pencil); stroke-width: 2; stroke-linecap: round; }
+.note.wait { color: var(--ink-2); }
+
+/* Anleitung */
+.how { display: grid; gap: var(--s4); margin: var(--s4) 0 var(--s5); counter-reset: h; }
+.how figure { margin: 0; display: grid; grid-template-columns: 116px 1fr; gap: var(--s3); align-items: center; }
+.how svg { width: 116px; height: 100px; background: var(--card); border: 1px solid var(--kraft); border-radius: var(--r); }
+.how figcaption { font: 400 17px/1.45 var(--f-sans); }
+.how figcaption b { display: block; font: 600 22px/1.2 var(--f-serif); margin-bottom: 2px; }
+.how figcaption b::before { counter-increment: h; content: counter(h) ". "; color: var(--pencil-ink); }
+.sk { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sk .k { fill: #D9A486; stroke-width: 1.4; }
+.sk .p { stroke: var(--pencil); }
+
+/* Abbildung (Foto) */
+.plate { background: var(--card); padding: 10px 10px 0; border-radius: var(--r); box-shadow: 0 1px 0 var(--kraft), 0 10px 30px -18px rgba(60, 40, 10, .5); }
+.plate svg { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 1432; touch-action: manipulation; border-radius: 3px; background: #ddd; }
+#pr[data-mode="check"] .plate svg { aspect-ratio: 1 / 1; }
+.plate figcaption { font: italic 500 15px/1.4 var(--f-serif); color: var(--ink-2); padding: var(--s1) 2px var(--s2); display: flex; justify-content: space-between; gap: var(--s2); }
+.ph-veil rect { fill: #F3ECDD; opacity: 0; }
+.mk { opacity: 0; }
+.mk .mk-dot, .mk .mk-halo { transform-box: fill-box; transform-origin: center; }
+.mk.in { opacity: 1; }
+.mk.in .mk-dot { animation: drop 260ms var(--e-ink) both; animation-delay: inherit; }
+.mk.in .mk-halo { animation: drop 360ms var(--e-ink) both; animation-delay: inherit; }
+@keyframes drop { from { transform: scale(0); } }
+.rm .mk.in .mk-dot, .rm .mk.in .mk-halo { animation: none; }
+.mk-halo { fill: var(--mark-ring); } .mk-dot { fill: var(--mark); }
+.mk.added .mk-halo { fill: var(--mark); } .mk.added .mk-dot { fill: var(--mark-ring); }
+.mk.removed .mk-dot { fill: none; } .mk.removed .mk-halo { fill: rgba(36, 27, 18, .55); }
+.mk.removed .mk-x { stroke: var(--mark-ring); stroke-width: 1.8; stroke-linecap: round; }
+/* Unsicher: Bleistiftkreis statt Kasten */
+.ck { cursor: pointer; }
+.ck .ck-box { fill: transparent; stroke: none; }
+.ck .pen-u { fill: none; stroke: var(--mark-ring); stroke-opacity: .6; stroke-width: calc(var(--k) * 6.5px); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.ck.in .pen-u { stroke-dashoffset: 0; transition: stroke-dashoffset 700ms var(--e-hand); transition-delay: inherit; }
+.rm .ck .pen-u { transition: none; stroke-dashoffset: 0; }
+#pr[data-mode="check"] .ck .pen-u { stroke-opacity: .5; }
+.ck .pen { fill: none; stroke: var(--pencil); stroke-width: calc(var(--k) * 4px); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.ck.in .pen { stroke-dashoffset: 0; transition: stroke-dashoffset 700ms var(--e-hand); transition-delay: inherit; }
+.ck.in:not(.done) .pen { animation: graphite 3s var(--e-hand) infinite 900ms; }
+@keyframes graphite { 50% { stroke-opacity: .4; } }
+.rm .ck .pen { transition: none; animation: none !important; stroke-dashoffset: 0; stroke-width: calc(var(--k) * 4.5px); }
+.ck-tag { opacity: 0; } .ck.in .ck-tag { opacity: 1; transition: opacity var(--t-2) 500ms; }
+.ck-tag circle { fill: var(--pencil); stroke: var(--card); stroke-width: 2; }
+.ck-tag text { fill: #241B12; font: italic 700 15px var(--f-serif); }
+.ck.done .pen { stroke: var(--ok); animation: none; }
+.ck.done .ck-tag circle { fill: var(--ok); } .ck.done .ck-tag text { fill: #fff; }
+#pr[data-mode="check"] .ck:not(.active) { opacity: .2; }
+#pr[data-mode="check"] .ck.active .pen { animation: none; }
+
+.tally { display: flex; align-items: baseline; gap: var(--s2); margin-bottom: var(--s2); }
+.tally .n { font: 600 64px/1 var(--f-serif); letter-spacing: -.02em; }
+.tally .u { font: italic 500 22px var(--f-serif); }
+.tally .of { margin-left: auto; text-align: right; font: 500 15px/1.35 var(--f-sans); color: var(--ink-2); }
+.underline { display: block; width: 100%; height: 10px; overflow: visible; }
+.underline:not(.go) { opacity: 0; }
+.underline path { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.underline.go path { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--e-hand); }
+.rm .underline path { stroke-dashoffset: 0; transition: none; }
+
+.margin-note { background: var(--card); border-left: 4px solid var(--pencil); border-radius: var(--r); padding: var(--s3); margin-top: var(--s3); }
+.margin-note .q { font: italic 500 21px/1.4 var(--f-serif); margin: var(--s1) 0 var(--s2); }
+.count-line { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--kraft); padding-top: var(--s1); margin-bottom: var(--s2); }
+.count-line b { font: 600 32px var(--f-serif); }
+.small { font-size: 15px; color: var(--ink-2); }
+
+/* Ergebnisblatt */
+.sheet { background: var(--card); border-radius: var(--r); padding: var(--s4) var(--s3); box-shadow: 0 1px 0 var(--kraft); margin-bottom: var(--s3); }
+.big { font: 600 60px/1 var(--f-serif); letter-spacing: -.02em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: var(--s1); }
+.big small { font: italic 500 22px var(--f-serif); color: var(--ink-2); letter-spacing: 0; }
+.big .ca { font: italic 500 26px var(--f-serif); color: var(--ink-2); }
+.state { margin-top: var(--s2); font: 500 16px var(--f-sans); display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; }
+.state.ok { color: var(--ok); }
+.ruled { display: flex; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--ink); min-height: var(--tap); margin-top: var(--s1); }
+.ruled input { flex: 1; min-width: 0; width: 100%; border: 0; background: none; font: 600 40px var(--f-serif); outline: none; padding: 0; color: var(--ink); }
+.ruled span { font: italic 500 20px var(--f-serif); color: var(--ink-2); }
+.ruled:focus-within { border-bottom-color: var(--mark); }
+.pm-b { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); font: 600 26px var(--f-sans); cursor: pointer; flex: none; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); } .pair > * { min-width: 0; }
+.hero { background: var(--field); color: #F7F1E3; border-radius: var(--r); padding: var(--s4) var(--s3); margin-bottom: var(--s3); }
+.hero .kicker { color: #CFC6AE; }
+.hero .big { font-size: 92px; color: #fff; }
+.hero .big small { color: #E6DCC4; }
+.hero .range { font: italic 500 21px/1.4 var(--f-serif); color: #F7F1E3; margin-top: var(--s1); }
+.hero .underline path { stroke: #E9B44C; }
+.worked { margin-top: var(--s3); padding-top: var(--s2); border-top: 1px solid rgba(247, 241, 227, .35); font: 400 16px/1.7 var(--f-sans); color: #EAE2CC; }
+.worked b { color: #fff; border-bottom: 3px double #E9B44C; }
+.coupon { border: 2px dashed var(--ink); border-radius: var(--r); padding: var(--s3); position: relative; background: var(--card); margin-bottom: var(--s4); }
+.coupon::before { content: "✂"; position: absolute; top: -15px; left: 18px; background: var(--paper); padding: 0 6px; font-size: 18px; }
+.coupon .big { font-size: 48px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s1); margin: var(--s2) 0; }
+.seg button { min-height: 54px; border: 2px solid var(--ink); border-radius: 99px; background: none; font: 600 18px var(--f-sans); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+@media (max-width: 420px) { .pair { grid-template-columns: 1fr; gap: var(--s2); } .hero .big { font-size: 80px; } .masthead .t { font-size: 46px; } }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="head" id="head" hidden>
+    <button class="back" data-go="start" aria-label="Zurück">← Feldbuch</button>
+    <span class="farm">Wintergerste · Hänger 3</span>
+  </header>
+
+  <section class="screen" data-screen="start" style="padding-top:0">
+    <div class="masthead">
+      <p class="t">Tausendkorn</p>
+      <p class="sub">Feldbuch · Herbst 2026</p>
+      <hr class="rule2">
+    </div>
+    <div style="margin-top:var(--s4)">
+      <button class="btn lg" data-go="foto">+ Neue Probe zählen</button>
+    </div>
+    <ul class="book">
+      <li class="entry" data-go="pruefen">
+        <div class="date"><b>27</b>Okt</div>
+        <div><h3>Wintergerste, Hänger 3</h3>
+          <span class="note"><svg viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M6 16 C 4 4, 92 0, 96 13 C 99 26, 10 30, 4 18 C 2 12, 20 6, 30 5"/></svg>6 Stellen bitte ansehen</span></div>
+      </li>
+      <li class="entry" data-go="ergebnis">
+        <div class="date"><b>27</b>Okt</div>
+        <div><h3>Winterweizen, Hänger 2</h3>
+          <div class="leader">TKG <b>46,3 <small>g</small></b></div>
+          <div class="leader">Aussaat <b>156 <small>kg/ha</small></b></div></div>
+      </li>
+      <li class="entry">
+        <div class="date"><b>26</b>Okt</div>
+        <div><h3>Winterroggen, Hänger 1</h3><span class="note wait">↑ wartet auf Netz, Foto ist gespeichert</span></div>
+      </li>
+      <li class="entry">
+        <div class="date"><b>24</b>Okt</div>
+        <div><h3>Winterweizen, Feld Nord</h3>
+          <div class="leader">TKG <b>44,8 <small>g</small></b></div>
+          <div class="leader">Aussaat <b>150 <small>kg/ha</small></b></div></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="screen" data-screen="foto">
+    <div class="kicker">Schritt 2 von 4</div>
+    <h1>Körner <em>fotografieren</em></h1>
+    <p class="lead">Drei Handgriffe, dann zählt Tausendkorn jedes Korn einzeln.</p>
+    <div class="how">
+      <figure>
+        <svg viewBox="0 0 116 100" class="sk" aria-hidden="true"><path d="M20 82 C 18 50, 26 36, 34 30 L 62 30 C 70 36, 78 50, 76 82 Z"/><path d="M30 30 C 40 20, 56 20, 66 30"/><path d="M40 56 h16 M38 64 h20" class="p"/><ellipse class="k" cx="92" cy="70" rx="7" ry="3.5" transform="rotate(-30 92 70)"/><ellipse class="k" cx="100" cy="82" rx="7" ry="3.5" transform="rotate(25 100 82)"/><path d="M78 46 C 88 44, 94 50, 94 58" class="p"/></svg>
+        <figcaption><b>Mischen</b>Aus mehreren Stellen im Sack oder Hänger je etwas nehmen. Eine Handvoll, 500 bis 1000 Körner.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 116 100" class="sk" aria-hidden="true"><rect x="28" y="10" width="60" height="82" fill="#fff"/><ellipse class="k" cx="44" cy="32" rx="6" ry="3" transform="rotate(-20 44 32)"/><ellipse class="k" cx="62" cy="28" rx="6" ry="3" transform="rotate(40 62 28)"/><ellipse class="k" cx="72" cy="46" rx="6" ry="3" transform="rotate(-60 72 46)"/><ellipse class="k" cx="50" cy="52" rx="6" ry="3" transform="rotate(10 50 52)"/><ellipse class="k" cx="64" cy="66" rx="6" ry="3" transform="rotate(70 64 66)"/><ellipse class="k" cx="42" cy="74" rx="6" ry="3" transform="rotate(-50 42 74)"/><path d="M92 30 C 104 40, 104 60, 92 70" class="p"/></svg>
+        <figcaption><b>Ausbreiten</b>Bruch, Spreu und Steine herauslesen. Auf weißem A4 mit der flachen Hand glattstreichen.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 116 100" class="sk" aria-hidden="true"><rect x="38" y="8" width="40" height="28" rx="4"/><circle cx="58" cy="22" r="7"/><path d="M58 42 v18" class="p" stroke-dasharray="3 5"/><path d="M16 70 H100 L92 94 H24 Z" fill="#fff"/></svg>
+        <figcaption><b>Von oben</b>Das ganze Blatt im Bild, kein eigener Schatten, Gerät ruhig halten.</figcaption>
+      </figure>
+    </div>
+    <button class="btn lg" data-go="pruefen">Foto machen</button>
+    <button class="txt" data-go="pruefen">Foto aus der Galerie nehmen</button>
+  </section>
+
+  <section class="screen" data-screen="pruefen" id="pr" data-mode="count">
+    <div class="tally" aria-live="polite">
+      <span class="n" id="n">0</span><span class="u">Körner</span>
+      <span class="of" id="of">Ausschnitt 0<br>von 0</span>
+    </div>
+    <svg class="underline" id="ul" viewBox="0 0 300 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 6 C 60 2, 140 9, 200 5 S 280 4, 298 6"/></svg>
+    <figure class="plate" style="margin:var(--s2) 0 0">
+      <svg id="ph" role="img" aria-label="Foto der Probe mit Markierungen"></svg>
+      <figcaption><span id="cap">Abb. 1 · Hänger 3</span><span id="cap2">wird gezählt …</span></figcaption>
+    </figure>
+
+    <div id="ovr" hidden>
+      <h1 style="margin-top:var(--s4)">Sechs Stellen, <em>bitte kurz ansehen</em></h1>
+      <p class="lead">Wo der Bleistiftkreis ist, war sich die Zählung unsicher. Das dauert etwa eine Minute.</p>
+      <button class="btn lg" id="startCheck">Erste Stelle ansehen</button>
+      <button class="txt" id="skip">Jetzt nicht, Ergebnis mit Spanne zeigen</button>
+    </div>
+
+    <div id="chk" class="margin-note" hidden>
+      <div class="kicker" id="chkN">Stelle 1 von 6</div>
+      <p class="q" id="chkQ"></p>
+      <div class="count-line"><span class="small">Körner in diesem Kreis</span><b id="chkC">0</b></div>
+      <p class="small">Fehlt ein Punkt? Aufs Korn tippen. Ein Punkt zu viel? Auf den Punkt tippen.</p>
+      <button class="btn lg" id="ok">Stimmt so</button>
+      <div class="row" style="margin-top:var(--s2)"><button class="btn quiet" id="undo">Rückgängig</button><button class="btn quiet" id="later">Später</button></div>
+    </div>
+  </section>
+
+  <section class="screen" data-screen="ergebnis">
+    <div class="kicker">Ergebnis · 27. Oktober</div>
+    <h1>Wintergerste, <em>Hänger 3</em></h1>
+    <div class="sheet">
+      <div class="kicker">Gezählt</div>
+      <div class="big"><span class="ca" id="rCa">ca.</span><span id="rN">411</span><small>Körner</small></div>
+      <div id="rStatus"></div>
+    </div>
+    <div class="sheet">
+      <label class="kicker" for="gIn">Gewogen</label>
+      <div class="ruled"><input id="gIn" inputmode="decimal" value="19,6"><span>Gramm</span></div>
+      <p class="small" style="margin-top:var(--s1)">Alle Körner vom Blatt in die tarierte Schale, Waage auf 0,1 g.</p>
+      <div class="kicker" style="margin-top:var(--s3)">Daraus das Tausendkorngewicht</div>
+      <div class="big"><span id="rTkg">47,7</span><small>g TKG</small></div>
+    </div>
+    <div class="sheet pair">
+      <div>
+        <label class="kicker" for="sIn">Saatstärke</label>
+        <div style="display:flex;gap:8px;align-items:center"><button class="pm-b" id="sMinus" aria-label="minus 10">−</button><div class="ruled" style="flex:1"><input id="sIn" inputmode="numeric" value="300" style="text-align:center"></div><button class="pm-b" id="sPlus" aria-label="plus 10">+</button></div>
+        <p class="small" style="margin-top:var(--s1)">keimfähige Körner je m², üblich 270–320</p>
+      </div>
+      <div>
+        <label class="kicker" for="kIn">Keimfähigkeit</label>
+        <div class="ruled"><input id="kIn" inputmode="decimal" value="95"><span>%</span></div>
+        <p class="small" style="margin-top:var(--s1)">steht auf dem Sacketikett</p>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="kicker">Aussaatmenge</div>
+      <div class="big"><span id="rKg">151</span><small>kg/ha</small></div>
+      <svg class="underline" id="ul2" viewBox="0 0 300 10" preserveAspectRatio="none" aria-hidden="true" style="width:60%"><path pathLength="1" d="M2 5 C 70 9, 150 2, 220 6 S 285 5, 298 4"/></svg>
+      <div class="range" id="rPm"></div>
+      <div class="worked" id="rF"></div>
+    </div>
+    <div class="coupon">
+      <div class="kicker">Zettel für die Drillmaschine · Abdrehprobe</div>
+      <div class="seg" role="group" aria-label="Abgedrehte Fläche"><button aria-pressed="true" data-f="40">1/40 ha</button><button aria-pressed="false" data-f="10">1/10 ha</button></div>
+      <div class="big"><span id="rAb">3,77</span><small>kg auffangen</small></div>
+      <p class="small" style="margin:var(--s1) 0 0">So viel soll beim Abdrehen herauskommen. Die Abdrehprobe selbst ersetzt die App nicht.</p>
+    </div>
+    <button class="btn lg" data-go="start">Ins Feldbuch eintragen</button>
+    <button class="btn quiet" data-go="foto">Nächste Probe, gleiche Sorte</button>
+  </section>
+</div>
+
+<script src="../shared/sample.js"></script>
+<script src="../shared/tk.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const S = TK.S, st = TK.state, NS = 'http://www.w3.org/2000/svg';
+TK.screens({ start: 'start' });
+const ph = new TK.Photo($('#ph'), { pad: 80, dotImg: 6 });
+const pr = $('#pr');
+
+// Bleistiftkreis um jede Prüfstelle: leicht unrund, Anfang und Ende überlappen.
+ph.setChecks((g, i) => {
+  const [x0, y0, x1, y1] = S.checks[i].region, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  const rx = (x1 - x0) / 2 + 14, ry = (y1 - y0) / 2 + 14, w = [1.04, .97, 1.02, .95, 1.06];
+  let d = '';
+  for (let a = 0; a <= 1.12; a += 0.04) {
+    const t = a * Math.PI * 2 - 0.6, j = w[Math.floor(a * 5) % 5];
+    d += (a ? 'L' : 'M') + (cx + Math.cos(t) * rx * j).toFixed(1) + ' ' + (cy + Math.sin(t) * ry * (2 - j)).toFixed(1);
+  }
+  const p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'pen'); p.setAttribute('d', d); p.setAttribute('pathLength', 1);
+  const u = p.cloneNode(); u.setAttribute('class', 'pen-u');
+  g.insertBefore(u, g.querySelector('.ck-tag')); g.insertBefore(p, g.querySelector('.ck-tag'));
+});
+
+let counted = false, cur = 0;
+function mode(m) { pr.dataset.mode = m; $('#ovr').hidden = m !== 'overview'; $('#chk').hidden = m !== 'check'; }
+document.addEventListener('tk:screen', async (e) => {
+  const name = e.detail.name;
+  $('#head').hidden = name === 'start';
+  if (name === 'pruefen' && !counted) {
+    counted = true; mode('count');
+    await TK.wait(300);
+    await ph.reveal({ ms: 3000, cell: 150, stagger: 0.9, onTile: (n, i, tot) => {
+      $('#n').textContent = TK.fmt(n); $('#of').innerHTML = `Ausschnitt ${i}<br>von ${tot}`;
+    } });
+    $('#ul').classList.add('go');
+    $('#cap2').textContent = '6 Stellen unsicher';
+    $('#of').innerHTML = 'fertig gezählt';
+    mode('overview');
+    // Demo: ?check=2 springt direkt in Stelle 2 (für Screenshots).
+    const qc = new URLSearchParams(location.search).get('check'); if (qc) openCheck(+qc - 1);
+  }
+  if (name === 'ergebnis') render(true);
+});
+
+ph.onCheckTap = (i) => openCheck(i);
+ph.on((n) => { st.count = n; $('#n').textContent = TK.fmt(n); $('#chkC').textContent = ph.countIn(S.checks[cur].region); });
+async function openCheck(i) {
+  cur = i; mode('check'); window.scrollTo(0, 0);
+  ph.setChecks((g, j) => g.classList.toggle('active', j === i));
+  $('#chkN').textContent = `Stelle ${i + 1} von ${S.checks.length}`;
+  $('#chkQ').textContent = '„' + S.checks[i].comment.replace(/\.$/, '') + '.“ Stimmt das?';
+  $('#chkC').textContent = ph.countIn(S.checks[i].region);
+  $('#cap').textContent = `Ausschnitt, Stelle ${i + 1}`;
+  await ph.zoomTo(S.checks[i].region, 480);
+  ph.enableTap(true);
+}
+async function close() { ph.enableTap(false); ph.setChecks((g) => g.classList.remove('active')); $('#cap').textContent = 'Abb. 1 · Hänger 3'; await ph.zoomTo(null, 420); mode('overview'); }
+$('#startCheck').onclick = () => { const n = S.checks.findIndex((_, j) => !st.checked.has(j)); openCheck(n < 0 ? 0 : n); };
+$('#ok').onclick = async () => {
+  st.checked.add(cur); ph.setChecks((g, j) => g.classList.toggle('done', st.checked.has(j)));
+  const n = S.checks.findIndex((_, j) => !st.checked.has(j));
+  if (n < 0) { await close(); TK.go('ergebnis'); } else openCheck(n);
+};
+$('#undo').onclick = () => ph.undo();
+$('#later').onclick = async () => { await close(); TK.go('ergebnis'); };
+$('#skip').onclick = () => TK.go('ergebnis');
+
+let frac = 40;
+document.querySelectorAll('.seg button').forEach((b) => b.onclick = () => { frac = +b.dataset.f; document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', x === b)); render(false); });
+$('#sMinus').onclick = () => { $('#sIn').value = TK.num($('#sIn').value) - 10; render(false); };
+$('#sPlus').onclick = () => { $('#sIn').value = TK.num($('#sIn').value) + 10; render(false); };
+['#gIn', '#sIn', '#kIn'].forEach((s) => $(s).addEventListener('input', () => render(false)));
+function render(animate) {
+  const u = TK.unchecked();
+  const r = TK.calc({ count: st.count, gramm: TK.num($('#gIn').value), keimf: TK.num($('#kIn').value), saat: TK.num($('#sIn').value), unchecked: u });
+  $('#rCa').hidden = u === 0;
+  $('#rStatus').innerHTML = u === 0 ? '<div class="state ok">✓ Alle Prüfstellen bestätigt</div>'
+    : `<div class="state"><span class="note"><svg viewBox="0 0 100 30" preserveAspectRatio="none"><path d="M6 16 C 4 4, 92 0, 96 13 C 99 26, 10 30, 4 18 C 2 12, 20 6, 30 5"/></svg>${u} Stellen noch nicht angesehen</span><button class="txt" style="display:inline;width:auto;min-height:44px;font-size:16px" data-go="pruefen">ansehen</button></div>`;
+  if (!isFinite(r.kgha)) return;
+  const kg = Math.round(r.kgha);
+  $('#rTkg').textContent = TK.fmt(r.tkg, 1);
+  $('#rPm').textContent = u ? `ungefähr ${TK.fmt(r.lo)} bis ${TK.fmt(r.hi)} kg/ha, weil ${u} Stellen ungeprüft sind` : `genau genug: ${TK.fmt(r.lo)} bis ${TK.fmt(r.hi)} kg/ha`;
+  $('#rF').innerHTML = `${TK.fmt(TK.num($('#sIn').value))} keimfähige Körner/m² ÷ ${TK.fmt(TK.num($('#kIn').value))} % × ${TK.fmt(r.tkg, 1)} g = <b>${kg} kg/ha</b><br>Das sind ${TK.fmt(r.koernerM2)} Körner je m² in den Boden.`;
+  $('#rAb').textContent = TK.fmt(frac === 40 ? r.abdreh40 : r.abdreh10, 2);
+  if (animate) {
+    $('#ul2').classList.remove('go'); $('#rPm').style.opacity = 0;
+    TK.countTo($('#rN'), st.count, { ms: 600 });
+    TK.countTo($('#rKg'), kg, { ms: 900 }).then(() => {
+      void $('#ul2').getBBox(); $('#ul2').classList.add('go');
+      $('#rPm').style.transition = 'opacity 500ms 300ms'; $('#rPm').style.opacity = 1;
+    });
+  } else { $('#rKg').textContent = kg; $('#rN').textContent = st.count; $('#ul2').classList.add('go'); }
+}
+</script>
+</body>
+</html>

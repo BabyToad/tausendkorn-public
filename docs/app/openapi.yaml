@@ -1,0 +1,950 @@
+openapi: 3.1.0
+info:
+  title: Tausendkorn API
+  version: 1.0.0-entwurf
+  summary: Körner auf A4 zählen, TKG und Aussaatmenge je Partie.
+  description: |
+    Entwurf (27.10.2026), noch nicht implementiert. Erklärung, Begründungen und
+    Prioritäten: docs/app/API.md. Fachliche Formeln: docs/app/SAATGUTRECHNER.md.
+
+    Konventionen:
+    - Feldnamen deutsch wie in der Datenbank, **Einheit im Feldnamen** (`_g`, `_pct`,
+      `_kg_ha`, `_koerner_m2`) und zusätzlich als `x-unit`.
+    - Prozent als Zahl 0–100 (95 = 95 %), nie als Anteil.
+    - Zahlen ungerundet; Rundung ist Sache der Anzeige.
+    - IDs sind stabile Strings mit Präfix (`prb_`, `par_`, `job_`, `whk_`, `evt_`).
+    - Zeitangaben RFC 3339 mit Offset.
+    - Fehler als `application/problem+json` (RFC 9457) mit maschinenlesbarem `code`.
+    - Jede Zählung kostet Geld (Cloud-Modell). Nur Endpunkte mit `x-kostet-geld: true`
+      lösen Kosten aus. Ein Token mit Scope `zaehlen` kann eine Zählung nur
+      **beantragen**; sie läuft erst nach Freigabe durch einen Menschen
+      (`POST /auftraege/{id}/freigabe` aus einer App-Sitzung oder mit Admin-PIN), außer
+      das Token hat ein Autonomie-Budget.
+    - Benötigte Scopes stehen je Operation in `x-scopes`.
+    - Alle Änderungen verlangen `If-Match` mit der Proben-Revision (ETag); kein
+      automatischer Neuversuch bei 412.
+  license:
+    name: noch offen
+servers:
+  - url: http://{host}:8000/api/v1
+    description: Laptop im Hof-WLAN (Kopplung wie PR #13)
+    variables:
+      host:
+        default: localhost
+security:
+  - betriebsToken: []
+  - kopplungsCookie: []
+tags:
+  - name: Proben
+  - name: Zählung
+  - name: Korrekturen
+  - name: Partien
+  - name: Rechner
+  - name: Stammdaten
+  - name: Webhooks
+  - name: Konto
+
+paths:
+  /proben:
+    get:
+      tags: [Proben]
+      operationId: probenAuflisten
+      x-scopes: [lesen]
+      summary: Proben suchen, neueste zuerst
+      parameters:
+        - {name: partie_id, in: query, schema: {type: string}}
+        - {name: kultur, in: query, schema: {$ref: '#/components/schemas/KulturKey'}}
+        - {name: sorte, in: query, schema: {type: string}}
+        - {name: haenger, in: query, description: 'Freitext, exakte Übereinstimmung', schema: {type: string}}
+        - {name: status, in: query, schema: {$ref: '#/components/schemas/ProbenStatus'}}
+        - {name: seit, in: query, schema: {type: string, format: date-time}}
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200':
+          description: Seite mit Proben (ohne Punkte)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [daten]
+                properties:
+                  daten: {type: array, items: {$ref: '#/components/schemas/Probe'}}
+                  naechster_cursor: {type: [string, 'null']}
+        '401': {$ref: '#/components/responses/Problem'}
+    post:
+      tags: [Proben]
+      operationId: probeAnlegen
+      x-scopes: [eingaben]
+      summary: Probe mit Foto anlegen (zählt noch nicht, kostet nichts)
+      description: |
+        Legt die Probe an und speichert das Foto. Gezählt wird erst mit
+        `POST /proben/{id}/zaehlungen`. Die Web-App ruft beides direkt nacheinander auf.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [kultur]
+              description: Genau eins von foto oder anhang_id.
+              properties:
+                foto: {type: string, format: binary, description: 'JPEG/PNG/HEIC, ≤ 30 MB, 800 px bis 60 MP'}
+                anhang_id: {type: string, description: aus POST /anhaenge}
+                kultur: {$ref: '#/components/schemas/KulturKey'}
+                sorte: {type: string, maxLength: 80}
+                haenger: {type: string, maxLength: 80}
+                partie_id: {type: string}
+                notiz: {type: string, maxLength: 2000}
+      responses:
+        '201':
+          description: Probe angelegt
+          headers:
+            Location: {schema: {type: string}}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Probe'}
+        '200':
+          description: Gleicher Idempotency-Key schon gesehen; die vorhandene Probe
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Probe'}
+        '400': {$ref: '#/components/responses/Problem'}
+        '401': {$ref: '#/components/responses/Problem'}
+        '403': {$ref: '#/components/responses/Problem'}
+        '413': {$ref: '#/components/responses/Problem'}
+        '422': {$ref: '#/components/responses/Problem'}
+
+  /anhaenge:
+    post:
+      tags: [Proben]
+      operationId: anhangHochladen
+      summary: Foto hochladen, um es danach per anhang_id als Probe anzulegen (für Agenten/MCP)
+      x-scopes: [eingaben]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [foto]
+              properties:
+                foto: {type: string, format: binary}
+      responses:
+        '201':
+          description: Anhang gespeichert, 24 h gültig
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [anhang_id, gueltig_bis]
+                properties:
+                  anhang_id: {type: string, examples: [anh_01JB8Z...]}
+                  gueltig_bis: {type: string, format: date-time}
+                  foto_sha256: {type: string}
+        '413': {$ref: '#/components/responses/Problem'}
+
+  /proben/{probe_id}:
+    parameters: [{$ref: '#/components/parameters/ProbeId'}]
+    get:
+      tags: [Proben]
+      operationId: probeLesen
+      x-scopes: [lesen]
+      parameters:
+        - name: punkte
+          in: query
+          description: Punkte mitliefern (bis ~1000 Einträge)
+          schema: {type: boolean, default: false}
+      responses:
+        '200':
+          description: Probe
+          headers:
+            ETag: {description: 'Revision der Probe (rev)', schema: {type: string}}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Probe'}
+        '404': {$ref: '#/components/responses/Problem'}
+    patch:
+      tags: [Proben]
+      operationId: eingabenSetzen
+      x-scopes: [eingaben]
+      summary: Stammdaten und Rechner-Eingaben ändern (rechnet neu, kostet nichts)
+      description: |
+        Fehlendes Feld = unverändert, `null` = löschen. TKG, Körner/m² und Aussaatmenge
+        werden in derselben Transaktion neu berechnet. `If-Match` mit dem ETag ist
+        Pflicht; bei veralteter Revision 412.
+      parameters:
+        - {name: If-Match, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema: {$ref: '#/components/schemas/ProbeEingaben'}
+      responses:
+        '200':
+          description: Aktualisierte Probe
+          headers:
+            ETag: {description: neue Revision, schema: {type: string}}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Probe'}
+        '412': {$ref: '#/components/responses/Problem'}
+        '422': {$ref: '#/components/responses/Problem'}
+    delete:
+      tags: [Proben]
+      operationId: probeLoeschen
+      x-scopes: [admin]
+      summary: In den Papierkorb (wiederherstellbar 30 Tage)
+      parameters:
+        - {name: If-Match, in: header, required: true, schema: {type: string}}
+      responses:
+        '204': {description: gelöscht}
+        '403': {$ref: '#/components/responses/Problem'}
+        '412': {$ref: '#/components/responses/Problem'}
+
+  /proben/{probe_id}/foto:
+    parameters: [{$ref: '#/components/parameters/ProbeId'}]
+    get:
+      tags: [Proben]
+      operationId: fotoLaden
+      x-scopes: [lesen]
+      parameters:
+        - {name: groesse, in: query, schema: {type: string, enum: [klein, original], default: klein}}
+      responses:
+        '200':
+          description: Foto, EXIF-gedreht (Bezugssystem der Punkte bei `original`)
+          content:
+            image/jpeg: {}
+
+  /proben/{probe_id}/zaehlungen:
+    parameters: [{$ref: '#/components/parameters/ProbeId'}]
+    post:
+      tags: [Zählung]
+      operationId: zaehlungStarten
+      x-scopes: [zaehlen]
+      summary: Zählung beantragen (KOSTET GELD nach Freigabe)
+      x-kostet-geld: true
+      description: |
+        Legt einen Auftrag an. Mit Token ohne Autonomie-Budget: Status `freigabe_noetig`,
+        nichts wird ausgegeben, bis ein Mensch freigibt (15 min gültig, einmal
+        verwendbar, gebunden an Token, Probe, Foto-Hash, Revision, Obergrenze).
+        Aus einer App-Sitzung: direkt `wartet`. Kosten ca. 0,30–0,55 USD, Obergrenze
+        Server-Vorgabe 1,00 USD; reserviert wird die Obergrenze. Eine aktive Zählung
+        pro Probe (sonst 409 mit dem laufenden Auftrag). Neu zählen nur bei Status
+        `fehler`; der alte Versuch bleibt in `versuche`.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - {name: If-Match, in: header, required: true, schema: {type: string}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                max_kosten_usd:
+                  type: number
+                  exclusiveMinimum: 0
+                  maximum: 1
+                  description: Niedrigere Obergrenze als die Server-Vorgabe
+                  x-unit: USD
+      responses:
+        '202':
+          description: Auftrag angenommen
+          headers:
+            Location: {schema: {type: string}, description: '/auftraege/{job_id}'}
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Auftrag'}
+        '402': {$ref: '#/components/responses/Problem'}
+        '403': {$ref: '#/components/responses/Problem'}
+        '409': {$ref: '#/components/responses/Problem'}
+        '412': {$ref: '#/components/responses/Problem'}
+        '429': {$ref: '#/components/responses/Problem'}
+
+  /auftraege/{job_id}:
+    get:
+      tags: [Zählung]
+      operationId: auftragLesen
+      x-scopes: [lesen]
+      parameters:
+        - {name: job_id, in: path, required: true, schema: {type: string, pattern: '^job_'}}
+      responses:
+        '200':
+          description: Stand des Auftrags
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Auftrag'}
+
+  /auftraege/{job_id}/freigabe:
+    post:
+      tags: [Zählung]
+      operationId: auftragFreigeben
+      summary: Mensch gibt eine beantragte Zählung frei oder lehnt ab
+      x-scopes: [app-sitzung-oder-admin]
+      description: |
+        Nur aus einer gekoppelten App-Sitzung oder mit Admin-PIN, **nie** mit einem
+        Betriebs-Token. Freigabe startet die Zählung und bucht die Reservierung.
+      security:
+        - kopplungsCookie: []
+        - adminPin: []
+      parameters:
+        - {name: job_id, in: path, required: true, schema: {type: string, pattern: '^job_'}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [entscheidung]
+              additionalProperties: false
+              properties:
+                entscheidung: {type: string, enum: [freigeben, ablehnen]}
+      responses:
+        '200':
+          description: Auftrag nach der Entscheidung
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Auftrag'}
+        '403': {$ref: '#/components/responses/Problem'}
+        '410': {$ref: '#/components/responses/Problem'}
+
+  /proben/{probe_id}/korrekturen:
+    parameters: [{$ref: '#/components/parameters/ProbeId'}]
+    get:
+      tags: [Korrekturen]
+      operationId: korrekturenLesen
+      x-scopes: [lesen]
+      responses:
+        '200':
+          description: Ereignisprotokoll, wächst nur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ereignisse: {type: array, items: {$ref: '#/components/schemas/Korrektur'}}
+    post:
+      tags: [Korrekturen]
+      operationId: korrekturAnhaengen
+      x-scopes: [korrigieren]
+      summary: Ein Ereignis anhängen (add, remove, undo, spot_ok)
+      description: |
+        `If-Match` = Proben-Revision (wie PATCH), sonst 412. Das Ereignis gilt für den
+        aktuellen Zählversuch (`versuch_id`); passt er nicht mehr, 409.
+      parameters:
+        - {name: If-Match, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/KorrekturNeu'}
+      responses:
+        '201':
+          description: Angehängt; Probe mit neuer Zahl
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Probe'}
+        '409': {$ref: '#/components/responses/Problem'}
+        '412': {$ref: '#/components/responses/Problem'}
+
+  /partien:
+    get:
+      tags: [Partien]
+      operationId: partienAuflisten
+      x-scopes: [lesen]
+      parameters:
+        - {name: kultur, in: query, schema: {$ref: '#/components/schemas/KulturKey'}}
+        - {name: sorte, in: query, schema: {type: string}}
+        - {name: suche, in: query, description: 'Freitext, z. B. "Hänger 3"', schema: {type: string}}
+      responses:
+        '200':
+          description: Partien mit zusammengefasstem Ergebnis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  daten: {type: array, items: {$ref: '#/components/schemas/Partie'}}
+    post:
+      tags: [Partien]
+      operationId: partieAnlegen
+      x-scopes: [eingaben]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/PartieNeu'}
+      responses:
+        '201':
+          description: angelegt
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Partie'}
+
+  /partien/{partie_id}:
+    get:
+      tags: [Partien]
+      operationId: partieLesen
+      x-scopes: [lesen]
+      parameters:
+        - {name: partie_id, in: path, required: true, schema: {type: string, pattern: '^par_'}}
+      responses:
+        '200':
+          description: Partie mit allen Proben und gepooltem TKG
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Partie'}
+
+  /partien/{partie_id}/isoxml:
+    get:
+      tags: [Partien]
+      operationId: partieIsoxml
+      x-scopes: [lesen]
+      summary: ISO-XML TaskData (ZIP), TSK → TZN → PDV mit DDI 6 in mg/m² (später, siehe API.md 2)
+      parameters:
+        - {name: partie_id, in: path, required: true, schema: {type: string}}
+      responses:
+        '200':
+          description: TASKDATA.XML im ZIP für USB-Stick
+          content:
+            application/zip: {}
+        '501': {$ref: '#/components/responses/Problem'}
+
+  /rechner/aussaatmenge:
+    post:
+      tags: [Rechner]
+      operationId: aussaatmengeBerechnen
+      x-scopes: [lesen]
+      summary: Aussaatmenge rechnen, ohne etwas zu speichern (kostet nichts)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RechnerEingabe'}
+            examples:
+              standard:
+                value: {tkg_g: 46.33, keimfaehigkeit_pct: 95, modus: keimfaehig, saatstaerke_koerner_m2: 320}
+      responses:
+        '200':
+          description: Ergebnis mit Rechenweg
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RechnerErgebnis'}
+        '422': {$ref: '#/components/responses/Problem'}
+
+  /kulturen:
+    get:
+      tags: [Stammdaten]
+      operationId: kulturenAuflisten
+      summary: Kulturen mit Vorgaben, Spannen und Quellen (SAATGUTRECHNER.md 3)
+      security: []
+      responses:
+        '200':
+          description: Liste
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Kultur'}
+
+  /sorten:
+    get:
+      tags: [Stammdaten]
+      operationId: sortenAuflisten
+      x-scopes: [lesen]
+      summary: Bisher verwendete Sorten (Freitext aus dem Verlauf)
+      parameters:
+        - {name: kultur, in: query, schema: {$ref: '#/components/schemas/KulturKey'}}
+      responses:
+        '200':
+          description: Liste
+          content:
+            application/json:
+              schema: {type: array, items: {type: string}}
+
+  /export/proben.csv:
+    get:
+      tags: [Proben]
+      operationId: probenExportCsv
+      x-scopes: [lesen]
+      summary: CSV (Semikolon, Dezimalkomma, UTF-8 mit BOM)
+      responses:
+        '200':
+          description: CSV
+          content:
+            text/csv: {}
+
+  /webhooks:
+    get:
+      tags: [Webhooks]
+      operationId: webhooksAuflisten
+      x-scopes: [admin]
+      responses:
+        '200':
+          description: Liste
+          content:
+            application/json:
+              schema: {type: array, items: {$ref: '#/components/schemas/Webhook'}}
+    post:
+      tags: [Webhooks]
+      operationId: webhookAnlegen
+      x-scopes: [admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url, ereignisse]
+              properties:
+                url: {type: string, format: uri}
+                ereignisse:
+                  type: array
+                  items: {$ref: '#/components/schemas/EreignisTyp'}
+      responses:
+        '201':
+          description: angelegt; `geheimnis` wird nur jetzt einmal gezeigt
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Webhook'}
+
+  /webhooks/{webhook_id}:
+    delete:
+      tags: [Webhooks]
+      operationId: webhookLoeschen
+      x-scopes: [admin]
+      parameters:
+        - {name: webhook_id, in: path, required: true, schema: {type: string}}
+      responses:
+        '204': {description: gelöscht}
+
+  /konto:
+    get:
+      tags: [Konto]
+      operationId: kontoLesen
+      x-scopes: [lesen]
+      summary: Wer bin ich, welche Scopes, Budget heute
+      responses:
+        '200':
+          description: Konto
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Konto'}
+
+webhooks:
+  probe.gezaehlt:
+    post:
+      summary: Zählung fertig (auch bei status pruefen)
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/Signatur'
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Ereignis'}
+      responses:
+        '2XX': {description: angenommen}
+  probe.korrigiert:
+    post:
+      summary: Korrektur oder Eingabe geändert, Zahl/TKG/kg/ha neu
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/Signatur'
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Ereignis'}
+      responses:
+        '2XX': {description: angenommen}
+  probe.fehlgeschlagen:
+    post:
+      summary: Zählung fehlgeschlagen oder unvollständig
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/Signatur'
+      requestBody:
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Ereignis'}
+      responses:
+        '2XX': {description: angenommen}
+
+components:
+  securitySchemes:
+    betriebsToken:
+      type: http
+      scheme: bearer
+      description: |
+        Betriebs-Token, mit Admin-PIN erzeugt (nicht an localhost gebunden), mit Scopes
+        `lesen`, `eingaben`, `korrigieren`, `zaehlen` (nur beantragen), `admin`;
+        optional Autonomie-Budget in USD/Tag (Vorgabe 0). Widerrufbar.
+    kopplungsCookie:
+      type: apiKey
+      in: cookie
+      name: tk
+      description: Browser-Kopplung per Code oder QR (PR #13). Darf Zählungen freigeben.
+    adminPin:
+      type: apiKey
+      in: header
+      name: Tk-Admin-Pin
+      description: Betriebsleitung; Token, Budget, Webhook-Ziele, Freigaben.
+
+  parameters:
+    ProbeId:
+      name: probe_id
+      in: path
+      required: true
+      schema: {type: string, pattern: '^prb_[0-9A-HJKMNP-TV-Z]{26}$'}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: |
+        UUID vom Client, einmal pro Absicht erzeugt (MCP: `vorgang_id`). Gilt je
+        Betrieb + Token + Operation + Probe, bis der Auftrag abgeschlossen ist, mind. 24 h.
+        Gleicher Key + anderer Inhalt → 422.
+      schema: {type: string, format: uuid}
+    Limit:
+      name: limit
+      in: query
+      schema: {type: integer, minimum: 1, maximum: 200, default: 50}
+    Cursor:
+      name: cursor
+      in: query
+      schema: {type: string}
+    Signatur:
+      name: Tk-Signatur
+      in: header
+      required: true
+      description: 't=<unix>,v1=<hex HMAC-SHA256 über "t." + gesendete Bytes>; neuer Zeitstempel je Zustellversuch'
+      schema: {type: string}
+
+  responses:
+    Problem:
+      description: Fehler nach RFC 9457
+      content:
+        application/problem+json:
+          schema: {$ref: '#/components/schemas/Problem'}
+
+  schemas:
+    KulturKey:
+      type: string
+      enum: [winterweizen, sommerweizen, winterdurum, sommerdurum, wintergerste_mz,
+             wintergerste_zz, wintergerste_hyb, sommergerste, winterroggen_pop,
+             winterroggen_hyb, hafer]
+    ProbenStatus:
+      type: string
+      description: |
+        wartet = Foto da, noch nicht gezählt · zaehlt · pruefen = Prüfstellen offen ·
+        fertig = Zahl steht · fehler = fehlgeschlagen oder unvollständig (keine Teilzahl)
+      enum: [wartet, zaehlt, pruefen, fertig, fehler]
+
+    Groesse:
+      type: object
+      description: Zahl mit Einheit und ehrlicher Unsicherheit
+      required: [wert, einheit, basis]
+      properties:
+        wert: {type: [number, 'null']}
+        einheit: {type: string, examples: [Körner, g, kg/ha, Körner/m²]}
+        unten: {type: [number, 'null'], description: untere Grenze der Spanne}
+        oben: {type: [number, 'null']}
+        basis:
+          type: string
+          description: |
+            Woher die Spanne kommt. `als_fest` = eingegeben, als fest behandelt (nicht
+            fehlerfrei). `annahme` = Faustregel-Szenario (heute ±1 %, mind. 3 Körner),
+            kein Konfidenzintervall. `gemessen` = kalibriert, mit `methode` und
+            `abdeckung`. `keine` = nicht angebbar (Foto mit Häufchen: fehlende Körner
+            sind nicht begrenzbar). Kornzahl [L, U] → TKG [1000·m/U, 1000·m/L].
+          enum: [als_fest, annahme, gemessen, keine]
+        methode: {type: [string, 'null'], examples: ['holdout-v1, pipeline-v1']}
+        abdeckung: {type: [number, 'null'], description: 'Anteil der Fälle im Intervall auf der Kalibrierdaten (0–1)'}
+
+    Zaehlung:
+      type: object
+      properties:
+        anzahl: {$ref: '#/components/schemas/Groesse'}
+        anzahl_modell: {type: integer, description: Zahl der Zählung ohne Korrekturen, unveränderlich}
+        quelle: {type: string, enum: [automatisch, pruefstellen_bestaetigt, korrigiert]}
+        pruefstellen_offen: {type: integer}
+        foto_warnungen:
+          type: array
+          items: {type: string, enum: [haeufchen, blatt_abgeschnitten, schatten, unscharf, wenige_koerner]}
+        aussaatmenge_gesperrt:
+          type: boolean
+          description: true bei starken Häufchen/abgeschnittenem Blatt (UX.md 3)
+        modell: {type: string, examples: [gemini-4-argon/pipeline-v1]}
+        kosten_usd: {type: number, x-unit: USD}
+        dauer_s: {type: number, x-unit: s}
+        versuch_id: {type: string, description: aktueller Zählversuch; Korrekturen gehören zu ihm}
+        punkte:
+          type: array
+          description: Nur mit ?punkte=true. Pixel des EXIF-gedrehten Originals (foto_sha256).
+          items:
+            type: object
+            required: [id, x, y]
+            properties:
+              id: {type: string, description: 'm<i> Modellpunkt, c<n> ergänzt'}
+              x: {type: number}
+              y: {type: number}
+        pruefstellen:
+          type: array
+          items: {$ref: '#/components/schemas/Pruefstelle'}
+
+    Pruefstelle:
+      type: object
+      properties:
+        index: {type: integer}
+        bereich: {type: array, items: {type: number}, description: '[x0, y0, x1, y1] Pixel'}
+        konfidenz: {type: [number, 'null'], description: Selbsteinschätzung des Modells 0–1, nicht kalibriert}
+        kommentar: {type: [string, 'null'], description: Hinweis des Modells, als Frage formuliert}
+        erledigt: {type: boolean}
+
+    ProbeEingaben:
+      type: object
+      properties:
+        kultur: {$ref: '#/components/schemas/KulturKey'}
+        sorte: {type: [string, 'null'], maxLength: 80}
+        haenger: {type: [string, 'null'], maxLength: 80}
+        partie_id: {type: [string, 'null']}
+        gewicht_g: {type: [number, 'null'], exclusiveMinimum: 0, x-unit: g}
+        keimfaehigkeit_pct: {type: [number, 'null'], exclusiveMinimum: 0, maximum: 100, x-unit: '%'}
+        modus: {type: string, enum: [keimfaehig, pflanzen]}
+        saatstaerke_koerner_m2: {type: [number, 'null'], exclusiveMinimum: 0, maximum: 5000, x-unit: keimfähige Körner/m²}
+        pflanzen_m2: {type: [number, 'null'], exclusiveMinimum: 0, maximum: 5000, x-unit: Pflanzen/m²}
+        feldaufgang_pct: {type: [number, 'null'], exclusiveMinimum: 0, maximum: 100, x-unit: '%'}
+        abdreh_flaeche_m2: {type: [number, 'null'], exclusiveMinimum: 0, x-unit: m²}
+        notiz: {type: [string, 'null'], maxLength: 2000}
+
+    Ergebnis:
+      type: object
+      description: Abgeleitet, wird bei jeder Änderung neu berechnet
+      properties:
+        tkg: {$ref: '#/components/schemas/Groesse'}
+        koerner_m2: {$ref: '#/components/schemas/Groesse'}
+        aussaatmenge: {$ref: '#/components/schemas/Groesse'}
+        abdreh_sollmenge: {$ref: '#/components/schemas/Groesse'}
+        rechenweg: {type: string, examples: ['320 keimf. Körner/m² × 46,33 g ÷ 95 % = 156,1 kg/ha']}
+        formel_version: {type: integer}
+        fehlt:
+          type: array
+          description: Was für das nächste Ergebnis fehlt
+          items: {type: string, enum: [zaehlung, gewicht_g, keimfaehigkeit_pct, saatstaerke_koerner_m2, pflanzen_m2]}
+
+    Probe:
+      type: object
+      required: [id, status, kultur, erstellt, rev]
+      properties:
+        id: {type: string, examples: [prb_01JB8Z3K6Q2V9T4N5M7R8S0W1X]}
+        client_id: {type: string, format: uuid}
+        rev: {type: integer}
+        status: {$ref: '#/components/schemas/ProbenStatus'}
+        fehler: {type: [string, 'null']}
+        erstellt: {type: string, format: date-time}
+        geaendert: {type: string, format: date-time}
+        kultur: {$ref: '#/components/schemas/KulturKey'}
+        sorte: {type: [string, 'null']}
+        haenger: {type: [string, 'null']}
+        partie_id: {type: [string, 'null']}
+        eingaben: {$ref: '#/components/schemas/ProbeEingaben'}
+        zaehlung: {$ref: '#/components/schemas/Zaehlung'}
+        ergebnis: {$ref: '#/components/schemas/Ergebnis'}
+        links:
+          type: object
+          properties:
+            self: {type: string}
+            foto: {type: string}
+            app: {type: string, description: Seite der Probe in der Web-App}
+
+    Auftrag:
+      type: object
+      properties:
+        id: {type: string}
+        probe_id: {type: string}
+        status: {type: string, enum: [freigabe_noetig, abgelehnt, wartet, laeuft, fertig, fehler, abgebrochen]}
+        freigabe_bis: {type: [string, 'null'], format: date-time}
+        freigabe_url: {type: [string, 'null'], description: Seite in der Tausendkorn-App, auf der ein Mensch freigibt}
+        obergrenze_usd: {type: number, x-unit: USD}
+        position: {type: integer, description: Fotos vor diesem in der Warteschlange}
+        geschaetzte_kosten_usd: {type: number, x-unit: USD}
+        kosten_usd: {type: [number, 'null'], x-unit: USD}
+        fortschritt: {type: object, properties: {ausschnitte_fertig: {type: integer}, ausschnitte_gesamt: {type: integer}}}
+
+    Korrektur:
+      type: object
+      properties:
+        e: {type: integer, description: laufende Nummer}
+        t: {type: string, format: date-time}
+        op: {type: string, enum: [add, remove, undo, spot_ok]}
+        id: {type: string, description: 'Punkt-ID: m<i> Modellpunkt, c<n> ergänzt'}
+        x: {type: number}
+        y: {type: number}
+        of: {type: integer, description: bei undo die rückgängig gemachte Nummer}
+        spot: {type: [integer, 'null']}
+        quelle: {type: string, description: Token-Name oder „app“}
+
+    KorrekturNeu:
+      oneOf:
+        - type: object
+          required: [op, x, y]
+          additionalProperties: false
+          properties:
+            op: {const: add}
+            x: {type: number, minimum: 0}
+            y: {type: number, minimum: 0}
+            spot: {type: integer, minimum: 0}
+        - type: object
+          required: [op, id]
+          additionalProperties: false
+          properties:
+            op: {const: remove}
+            id: {type: string, pattern: '^[mc][0-9]+$'}
+            spot: {type: integer, minimum: 0}
+        - type: object
+          required: [op, of]
+          additionalProperties: false
+          properties:
+            op: {const: undo}
+            of: {type: integer, minimum: 1}
+        - type: object
+          required: [op, spot]
+          additionalProperties: false
+          properties:
+            op: {const: spot_ok}
+            spot: {type: integer, minimum: 0}
+      discriminator: {propertyName: op}
+
+    Partie:
+      type: object
+      properties:
+        id: {type: string, examples: [par_01JB8Z...]}
+        bezeichnung: {type: string, examples: [Hänger 3]}
+        kultur: {$ref: '#/components/schemas/KulturKey'}
+        sorte: {type: [string, 'null']}
+        saison: {type: string, examples: ['2026/27']}
+        proben: {type: array, items: {type: string}}
+        tkg_gepoolt:
+          $ref: '#/components/schemas/Groesse'
+          description: |
+            1000 × Σ Gewicht / Σ Körner über alle fertigen Proben mit Gewicht, ohne
+            gesperrte Proben (aussaatmenge_gesperrt). Keimfähigkeit und Saatstärke der
+            Partie kommen aus der jüngsten Probe mit diesen Eingaben (in `eingaben_quelle`).
+        eingaben_quelle: {type: [string, 'null'], description: probe_id, aus der KF und Saatstärke stammen}
+        tkg_einzeln: {type: array, items: {type: number}}
+        aussaatmenge: {$ref: '#/components/schemas/Groesse'}
+
+    PartieNeu:
+      type: object
+      required: [bezeichnung, kultur]
+      properties:
+        bezeichnung: {type: string}
+        kultur: {$ref: '#/components/schemas/KulturKey'}
+        sorte: {type: string}
+        saison: {type: string}
+
+    RechnerEingabe:
+      oneOf:
+        - type: object
+          title: Standard (keimfähige Körner/m²)
+          required: [modus, tkg_g, keimfaehigkeit_pct, saatstaerke_koerner_m2]
+          additionalProperties: false
+          properties:
+            modus: {const: keimfaehig}
+            tkg_g: {type: number, exclusiveMinimum: 0, x-unit: g}
+            tkg_spanne_g: {type: array, items: {type: number, exclusiveMinimum: 0}, minItems: 2, maxItems: 2}
+            keimfaehigkeit_pct: {type: number, exclusiveMinimum: 0, maximum: 100, x-unit: '%'}
+            saatstaerke_koerner_m2: {type: number, exclusiveMinimum: 0, maximum: 5000, x-unit: keimfähige Körner/m²}
+            kultur: {$ref: '#/components/schemas/KulturKey'}
+        - type: object
+          title: Pflanzen-Modus
+          required: [modus, tkg_g, keimfaehigkeit_pct, pflanzen_m2, feldaufgang_pct]
+          additionalProperties: false
+          properties:
+            modus: {const: pflanzen}
+            tkg_g: {type: number, exclusiveMinimum: 0, x-unit: g}
+            tkg_spanne_g: {type: array, items: {type: number, exclusiveMinimum: 0}, minItems: 2, maxItems: 2}
+            keimfaehigkeit_pct: {type: number, exclusiveMinimum: 0, maximum: 100, x-unit: '%'}
+            pflanzen_m2: {type: number, exclusiveMinimum: 0, maximum: 5000, x-unit: Pflanzen/m²}
+            feldaufgang_pct: {type: number, exclusiveMinimum: 0, maximum: 100, x-unit: '%', description: Anteil der keimfähigen Körner, die auflaufen}
+            kultur: {$ref: '#/components/schemas/KulturKey'}
+      discriminator: {propertyName: modus}
+
+    RechnerErgebnis:
+      type: object
+      properties:
+        aussaatmenge: {$ref: '#/components/schemas/Groesse'}
+        koerner_m2: {$ref: '#/components/schemas/Groesse'}
+        rechenweg: {type: string}
+        formel_version: {type: integer}
+        hinweise: {type: array, items: {type: string}, examples: [['Saatstärke 450 liegt über der üblichen Spanne 250–400 für Winterweizen.']]}
+
+    Kultur:
+      type: object
+      properties:
+        key: {$ref: '#/components/schemas/KulturKey'}
+        name: {type: string}
+        saatstaerke_vorgabe_koerner_m2: {type: number}
+        saatstaerke_spanne_koerner_m2: {type: array, items: {type: number}}
+        tkg_plausibel_g: {type: [array, 'null'], items: {type: number}}
+        mindestkeimfaehigkeit_pct: {type: object, additionalProperties: {type: number}}
+        quellen: {type: array, items: {type: string, format: uri}}
+
+    EreignisTyp:
+      type: string
+      enum: [probe.gezaehlt, probe.korrigiert, probe.fehlgeschlagen]
+
+    Ereignis:
+      type: object
+      required: [id, typ, zeit, probe_id, rev]
+      properties:
+        id: {type: string, description: 'evt_…, zum Entdoppeln beim Empfänger'}
+        typ: {$ref: '#/components/schemas/EreignisTyp'}
+        zeit: {type: string, format: date-time}
+        probe_id: {type: string}
+        rev: {type: integer, description: Revision der Probe; ältere Ereignisse ignorieren}
+        probe: {$ref: '#/components/schemas/Probe'}
+
+    Webhook:
+      type: object
+      properties:
+        id: {type: string}
+        url: {type: string, format: uri}
+        ereignisse: {type: array, items: {$ref: '#/components/schemas/EreignisTyp'}}
+        geheimnis: {type: string, description: nur beim Anlegen}
+        letzte_zustellung: {type: [string, 'null'], format: date-time}
+        fehlversuche: {type: integer}
+
+    Konto:
+      type: object
+      properties:
+        betrieb: {type: string}
+        token_name: {type: string}
+        scopes: {type: array, items: {type: string, enum: [lesen, eingaben, korrigieren, zaehlen, admin]}}
+        autonomie_budget_usd_tag: {type: number}
+        reserviert_usd: {type: number}
+        budget_usd_tag: {type: number}
+        verbraucht_usd_heute: {type: number}
+        zaehlungen_heute: {type: integer}
+        max_zaehlungen_tag: {type: integer}
+
+    Problem:
+      type: object
+      required: [type, title, status, code]
+      properties:
+        type: {type: string, format: uri, examples: ['https://tausendkorn.local/fehler/budget-erschoepft']}
+        title: {type: string, examples: [Tagesbudget erschöpft]}
+        status: {type: integer}
+        code:
+          type: string
+          description: stabil, für Programme und Agenten
+          enum: [nicht_gekoppelt, scope_fehlt, nicht_gefunden, validierung, revision_veraltet,
+                 idempotenz_konflikt, budget_erschoepft, zu_viele_anfragen, foto_ungeeignet,
+                 schon_gezaehlt, zaehlung_unvollstaendig, freigabe_abgelaufen,
+                 versuch_veraltet, nicht_implementiert]
+        detail: {type: string, description: Deutsch, für Menschen, sagt was zu tun ist}
+        feld: {type: [string, 'null'], description: betroffenes Eingabefeld}
+        erlaubt: {description: 'zulässiger Bereich, z. B. [0, 100]'}
+        retry_after_s: {type: [integer, 'null']}

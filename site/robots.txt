@@ -1,0 +1,6 @@
+# Tausendkorn · Team Goldpfanne. Alles darf gelesen werden.
+# Kurzfassung für Sprachmodelle: https://goldpfanne-tausendkorn.pages.dev/llms.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://goldpfanne-tausendkorn.pages.dev/sitemap.xml

@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+# Datensatz und Modelle nicht committen
+data/
+runs/
+*.pt
+*.onnx
+.env
+.env.*
+
+# Abgabe-Pakete
+dist/
+*.blend1
+.claude/
+.pytest_cache/
+
+# Deliberately retained, non-runtime audit statistics
+!runs/
+runs/*
+!runs/audit/
+runs/audit/*
+!runs/audit/astra_evidence/
+runs/audit/astra_evidence/*
+!runs/audit/astra_evidence/summary.json
+!runs/audit/astra_evidence/box_stats.json
+!runs/audit/astra_evidence/coverage.json

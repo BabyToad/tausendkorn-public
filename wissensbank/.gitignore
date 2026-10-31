@@ -1,0 +1,4 @@
+# Lokale Daten und Ergebnisse
+data/
+outputs/
+.venv/

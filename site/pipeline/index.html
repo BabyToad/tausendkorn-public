@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F5F3">
+<title>Zählpipeline · Tausendkorn</title>
+<meta name="description" content="Wie Tausendkorn Körner zählt, Schritt für Schritt mit Zwischenbildern: Bild laden, Maske, adaptive Kacheln, Kachel mit Halo, Bildmodell, Naht-Abgleich, Prüfdurchgang, Ergebnis. Mit bekannten Schwächen.">
+<link rel="canonical" href="https://goldpfanne-tausendkorn.pages.dev/pipeline/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Zählpipeline · Tausendkorn">
+<meta property="og:description" content="Vom Handyfoto zum Punkt auf jedem Korn: alle Schritte der Pipeline v1.0.2 mit Zwischenbildern.">
+<meta property="og:url" content="https://goldpfanne-tausendkorn.pages.dev/pipeline/">
+<meta property="og:image" content="https://goldpfanne-tausendkorn.pages.dev/img/stack/03_quadtree.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/site.css">
+<style>
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
+  .toc a { display: inline-block; font-family: var(--f-mono); font-size: var(--fs-label); padding: 6px 10px; border: 1px solid var(--rule); border-radius: 999px; text-decoration: none; color: var(--ink); background: var(--surface); }
+  .stage { padding-top: 56px; }
+  .stage h2 { display: flex; align-items: baseline; gap: 12px; }
+  .stage h2 .n { flex: none; }
+  .fig { margin: 24px 0 8px; }
+  .fig img { width: 100%; height: auto; border-radius: 6px; background: var(--photo-bg); display: block; }
+  .fig figcaption { margin-top: 10px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+  .facts div { background: var(--surface); border: 1px solid var(--grid); border-radius: 6px; padding: 12px 14px; }
+  .facts b { display: block; font-family: var(--f-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); font-weight: 500; margin-bottom: 4px; }
+  .why-box { border-left: 3px solid var(--mark); padding: 4px 0 4px 16px; margin: 20px 0; }
+  .weak { border-left: 3px solid var(--unsure); background: var(--unsure-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .weak b { color: var(--unsure-ink); }
+  pre.code { font-family: var(--f-mono); font-size: 14px; background: var(--sunken); padding: 14px 16px; border-radius: 6px; overflow-x: auto; line-height: 1.5; }
+  .seam svg { width: 100%; height: auto; max-width: 760px; display: block; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: var(--fs-small); color: var(--ink-2); margin-top: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  table.plain { border-collapse: collapse; width: 100%; font-size: var(--fs-small); margin: 16px 0; }
+  table.plain th, table.plain td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  table.plain th { font-family: var(--f-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); font-weight: 500; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">Tausendkorn <span class="muted">· Team Goldpfanne</span></a>
+  <nav>
+    <a href="/#demo">Demo</a>
+    <a href="/#rechner">Rechner</a>
+    <a href="/#ergebnisse">Ergebnisse</a>
+    <a href="/pipeline/" aria-current="page">Pipeline</a>
+    <a class="pill" href="/pitch/">Pitch</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="wrap">
+  <p class="label">Technik · Pipeline v1.0.2 · Fingerprint 422967946cbd</p>
+  <h1>Wie wir Körner zählen</h1>
+  <p class="lead">Ein Bildmodell verzählt sich, wenn es tausend Körner auf einmal sieht. Auf einem kleinen Ausschnitt mit einer Handvoll Körnern setzt es dagegen sehr genaue Punkte. Unsere Pipeline zerlegt das Foto deshalb so, dass das Modell immer nur wenige Körner auf einmal zählt, und setzt die Teile danach ohne Doppelzählung wieder zusammen.</p>
+  <p>Alle Bilder auf dieser Seite stammen aus einem echten Lauf: Holdout-Foto <code>S02-008</code>, Hafer, Galaxy S23, aufgenommen bei der finalen Messung. Nichts ist nachgestellt.</p>
+  <ol class="toc">
+    <li><a href="#laden">1 Laden</a></li>
+    <li><a href="#maske">2 Maske</a></li>
+    <li><a href="#kacheln">3 Kacheln</a></li>
+    <li><a href="#halo">4 Halo</a></li>
+    <li><a href="#modell">5 Modell</a></li>
+    <li><a href="#naht">6 Naht</a></li>
+    <li><a href="#pruefen">7 Prüfen</a></li>
+    <li><a href="#ergebnis">8 Ergebnis</a></li>
+    <li><a href="#grenzen">Grenzen</a></li>
+  </ol>
+  <div class="facts">
+    <div><b>Kacheln</b>55, davon 17 leer</div>
+    <div><b>Kornlänge</b>≈ 76 px aus dem A4-Maßstab</div>
+    <div><b>Gezählt</b>256 Körner, Label 253</div>
+    <div><b>Kosten · Zeit</b>0,12–0,79 $ · 1–2 min pro Foto</div>
+  </div>
+</section>
+
+<section class="wrap stage" id="laden">
+  <h2><b class="n">1</b> Bild laden: aufrecht drehen, RGB</h2>
+  <p>Handys speichern die meisten Fotos quer und schreiben nur einen Vermerk dazu, wie herum das Bild gezeigt werden soll (EXIF-Orientierung). Ein Programm, das den Vermerk ignoriert, rechnet auf einem liegenden Bild, während die App das stehende zeigt. Jeder Punkt säße dann an der falschen Stelle.</p>
+  <figure class="fig">
+    <img src="/img/stack/01_exif.jpg" width="1304" height="480" alt="Links das Foto, wie es in der Datei liegt, rechts nach dem Drehen" loading="lazy">
+    <figcaption class="small muted">Links: so liegen die Pixel in der Datei. Rechts: nach <code>exif_transpose</code>. Ab hier arbeiten Rechnung, Labels und Anzeige im selben Koordinatensystem. Die Umwandlung nach RGB vereinheitlicht Farbkanäle (z. B. PNG mit Transparenz).</figcaption>
+  </figure>
+</section>
+
+<section class="wrap stage" id="maske">
+  <h2><b class="n">2</b> Maske: wo ungefähr liegen Körner?</h2>
+  <p>Klassische Bildverarbeitung, nur als Schneidehilfe, nicht als Zähler. Das Bild wird auf 1200 px verkleinert. Die größte helle Fläche ist das Blatt. Ein <b>Black-Hat-Filter</b> findet alles, was dunkler ist als seine Umgebung, unabhängig von Schatten und Helligkeitsverlauf. Ein automatischer Schwellwert (Otsu) macht daraus eine Ja/Nein-Maske.</p>
+  <figure class="fig">
+    <img src="/img/stack/02_maske.jpg" width="1544" height="570" alt="Links das Foto, rechts weiß die erkannten Kornflächen auf dem grauen Blatt" loading="lazy">
+    <figcaption class="small muted">Rechts: weiß = Kornfläche, grau = Blatt. Berührende Körner verschmelzen zu Flecken. Deshalb zählen wir damit nicht. Nur 4–7,5 % der Körner liegen in unseren Daten einzeln.</figcaption>
+  </figure>
+  <div class="why-box"><p><b>Warum nicht aufs Blatt beschnitten?</b> Der Blattumriss ist unzuverlässig. Ein verlorenes Korn am Rand wiegt schwerer als eine zusätzliche Kachel mit leerem Hintergrund.</p></div>
+</section>
+
+<section class="wrap stage" id="kacheln">
+  <h2><b class="n">3</b> Adaptive Kacheln: höchstens ~15 Körner pro Stück</h2>
+  <p>Aus der Blattfläche und der Annahme „ein Korn bedeckt etwa 20 mm²“ ergibt sich die Kornfläche in Pixeln. Damit schätzen wir für jedes Rechteck, wie viele Körner darin liegen. Ein <b>Quadtree</b> teilt jedes Rechteck mit mehr als 15 geschätzten Körnern in vier Teile, bis jedes klein genug ist. Kleiner als 1,2 Kornlängen wird nicht geteilt.</p>
+  <figure class="fig">
+    <img src="/img/stack/03_quadtree.jpg" width="1400" height="1050" alt="Foto mit roten Rechtecken, klein wo die Körner dicht liegen, groß und abgedunkelt wo das Blatt leer ist; in jedem Rechteck die gezählte Zahl" loading="lazy">
+    <figcaption class="small muted">Die echten 55 Kernfelder dieses Laufs. Die Zahl ist das, was das Modell in diesem Feld gezählt hat. Abgedunkelt: leer. Leere Felder werden trotzdem geschickt, so ist jedes Pixel genau einem Feld zugeordnet.</figcaption>
+  </figure>
+  <table class="plain">
+    <tr><th>Körner pro Kachel</th><th>Folge</th></tr>
+    <tr><td>~3</td><td>Viele Aufrufe, teuer und langsam, viele Nähte</td></tr>
+    <tr><td>~15</td><td>Modell zählt sicher, Kosten pro Foto unter 1 $</td></tr>
+    <tr><td>~50</td><td>Modell verzählt sich, wie auf dem ganzen Bild</td></tr>
+  </table>
+</section>
+
+<section class="wrap stage" id="halo">
+  <h2><b class="n">4</b> Kernfeld und Halo</h2>
+  <p>Jede Kachel hat zwei Rechtecke. Das <b style="color:#d00">rote Kernfeld</b> legt fest, wem ein Korn gehört. Die Kernfelder aller Kacheln teilen das Foto lückenlos und ohne Überlappung. Darum herum schneiden wir einen <b>Halo</b> von etwa einer Kornlänge mit aus. So sieht das Modell Körner, die über den Rand ragen, ganz und kann ihren Mittelpunkt bestimmen. Das Rechteck wird in voller Auflösung des Fotos geschickt und rot ins Bild gemalt.</p>
+  <figure class="fig">
+    <img src="/img/stack/04_kachel.jpg" width="1264" height="523" alt="Links der Ausschnitt mit rotem Rahmen wie ihn das Modell sieht, rechts mit Punkten: blau gefüllt im Rahmen, weiße Ringe außerhalb" loading="lazy">
+    <figcaption class="small muted">Links: genau dieses Bild bekommt das Modell. Rechts: das Endergebnis darauf. Blau = Körner, die diesem Kernfeld gehören (14). Weiße Ringe = Körner, die zu Nachbarkacheln gehören. Unten am Rand sitzen zwei Punkte fast aufeinander, das ist ein Fall für Schritt 6.</figcaption>
+  </figure>
+</section>
+
+<section class="wrap stage" id="modell">
+  <h2><b class="n">5</b> Bildmodell: ein Punkt pro Korn</h2>
+  <p>Gemini 4 Argon bekommt die Kachel und einen kurzen Auftrag: für jedes ganze Korn, dessen Mittelpunkt im roten Rahmen liegt, einen Punkt; dazu Körner knapp außerhalb bis etwa eine halbe Kornlänge; Bruch und Spreu nicht (ISO 520). Dazu eine Zahl zwischen 0 und 1, wie sicher es ist. Keine Prosa, denn Ausgabe-Tokens kosten mehr als das Bild.</p>
+<pre class="code">[[412, 233], [455, 610], [702, 118], …]     ← Punkte, 0–1000 relativ zur Kachel
+CONFIDENCE: 0.95</pre>
+  <p>Jede Antwort wird streng geprüft: gültige Zahlen im Bereich, vollständig beendet (kein abgeschnittener Text), Konfidenz zwischen 0 und 1. Sonst bis zu drei Versuche. 16 Kacheln laufen parallel.</p>
+</section>
+
+<section class="wrap stage seam" id="naht">
+  <h2><b class="n">6</b> Naht-Abgleich: kein Korn doppelt</h2>
+  <p>Liegt ein Korn genau auf der Grenze zweier Kernfelder, sehen es beide Kacheln. Fragt man nur das Modell, „drin oder draußen?“, sagen manchmal beide „bei mir“ (doppelt gezählt) oder beide „beim anderen“ (übersehen). Deshalb entscheidet die Geometrie, nicht das Modell:</p>
+  <ol>
+    <li>Jeder Punkt wird ins Foto zurückgerechnet. Liegt er im eigenen Kernfeld, ist er ein <b>eigener Punkt</b>. Liegt er bis 0,35 Kornlängen außerhalb, ist er ein <b>Randpunkt</b>, nur ein Kandidat.</li>
+    <li>Ein Randpunkt und ein Punkt einer anderen Kachel, näher als 0,45 Kornlängen: <b>dasselbe Korn</b>, einmal gezählt.</li>
+    <li>Ein Randpunkt ohne Partner fällt weg. Die Kachel, der das Korn gehört, ist zuständig.</li>
+    <li>Zwei <b>eigene</b> Punkte aus verschiedenen Kacheln werden <b>nie</b> verschmolzen. Zwei schmale Haferkörner können Seite an Seite über einer Naht liegen.</li>
+    <li>Zum Schluss fallen Punkte weg, die praktisch deckungsgleich sind (unter 0,05 Kornlängen). Das Modell wiederholt manchmal eine Koordinate.</li>
+  </ol>
+  <figure class="fig">
+    <svg viewBox="0 0 760 260" role="img" aria-label="Zwei Kacheln A und B mit Naht; ein Korn auf der Naht wird von A als Randpunkt und von B als eigener Punkt gemeldet und zu einem Korn zusammengeführt">
+      <rect x="20" y="20" width="350" height="220" fill="#FFFFFF" stroke="#B9C0C4"/>
+      <rect x="370" y="20" width="370" height="220" fill="#FFFFFF" stroke="#B9C0C4"/>
+      <rect x="370" y="20" width="27" height="220" fill="#FFF5E6"/>
+      <rect x="343" y="20" width="27" height="220" fill="#E3EEF8"/>
+      <line x1="370" y1="12" x2="370" y2="248" stroke="#FF0000" stroke-width="3"/>
+      <text x="40" y="48" font-family="IBM Plex Mono, monospace" font-size="15" fill="#434A50">KACHEL A</text>
+      <text x="720" y="48" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="15" fill="#434A50">KACHEL B</text>
+      <text x="370" y="258" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#A3261B">Naht</text>
+      <ellipse cx="372" cy="95" rx="46" ry="15" fill="#D9C08A" stroke="#A88B4E" transform="rotate(-12 372 95)"/>
+      <circle cx="381" cy="92" r="7" fill="#FFFFFF" stroke="#E08A00" stroke-width="3"/>
+      <circle cx="365" cy="98" r="7" fill="#005FB8" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="420" y="82" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#14181B">A: Randpunkt (liegt in B)</text>
+      <text x="420" y="112" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#14181B">B: eigener Punkt → 1 Korn</text>
+      <ellipse cx="350" cy="185" rx="12" ry="40" fill="#D9C08A" stroke="#A88B4E"/>
+      <ellipse cx="390" cy="185" rx="12" ry="40" fill="#D9C08A" stroke="#A88B4E"/>
+      <circle cx="350" cy="185" r="7" fill="#005FB8" stroke="#FFFFFF" stroke-width="2"/>
+      <circle cx="390" cy="185" r="7" fill="#005FB8" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="420" y="180" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#14181B">Zwei Haferkörner, je eigener Punkt</text>
+      <text x="420" y="200" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#14181B">→ bleiben 2 Körner</text>
+    </svg>
+    <div class="legend"><span><i class="sw" style="background:#005FB8"></i>eigener Punkt</span><span><i class="sw" style="background:#fff;border:3px solid #E08A00"></i>Randpunkt</span><span><i class="sw" style="background:#E3EEF8;border-radius:2px"></i>Randstreifen von A</span></div>
+  </figure>
+  <div class="weak"><p><b>Bekannte Schwäche.</b> Setzen beide Kacheln den Mittelpunkt knapp auf ihre eigene Seite, entstehen zwei eigene Punkte, die nach Regel 4 nie verschmelzen: eine Doppelmarke. Im Live-Test mit dem iPad (233 Marken) waren zwei solche Paare zu sehen. Eine feste Schwelle kann Duplikate nicht sicher von echt übereinanderliegenden Körnern trennen. Geplant ist deshalb, nahe Punktpaare in der App als Prüfstelle hervorzuheben, statt sie automatisch zu verschmelzen.</p></div>
+</section>
+
+<section class="wrap stage" id="pruefen">
+  <h2><b class="n">7</b> Prüfdurchgang: das Modell sieht seine eigenen Marken</h2>
+  <p>Meldet eine Kachel eine Konfidenz unter 0,9, bekommt das Modell sie noch einmal, diesmal mit seinen nummerierten Punkten darauf. Es darf Punkte ergänzen, Nummern entfernen und einen kurzen Kommentar schreiben. Die Kommentare werden in der App zu <b>Prüfstellen</b>, die der Mensch antippen kann.</p>
+  <figure class="fig">
+    <img src="/img/stack/05_pruefstelle.jpg" width="700" height="633" alt="Vergrößerter Ausschnitt mit eng überlappenden Haferkörnern, orangefarbener Rahmen um die Prüfstelle, blaue Punkte" loading="lazy" style="max-width:700px">
+    <figcaption class="small muted">Prüfstelle aus diesem Lauf (orange). Kommentar des Modells, übersetzt: „Drei eng überlappende Haferkörner; links eins übersehen, rechts zwei doppelt markiert.“ In einer Nachbarkachel entfernte es eine Doppelmarke direkt an der Naht, genau den Fall aus Schritt 6. Unten im Bild sitzen noch zwei Punkte sehr nah beieinander.</figcaption>
+  </figure>
+  <div class="weak"><p><b>Grenze.</b> Der Prüfdurchgang findet Flüchtigkeitsfehler: ein Korn ohne Nummer, eine Nummer auf leerem Papier. Ein Korn, das das Modell beim ersten Mal nicht erkennen konnte, etwa halb verdeckt, übersieht es meist auch beim zweiten Mal. Gleiches Modell, gleicher blinder Fleck. „Prüfstellen bestätigt“ heißt deshalb nicht „Zahl richtig“. Ob die Selbsteinschätzung bei 0,9 die richtigen Kacheln auswählt, haben wir noch nicht kalibriert.</p></div>
+</section>
+
+<section class="wrap stage" id="ergebnis">
+  <h2><b class="n">8</b> Ergebnis: Zahl, Punkte, Prüfstellen, Kosten</h2>
+  <p>Am Ende stehen die Zahl, jeder Punkt, die Prüfstellen mit Kommentar, Kosten und Dauer, dazu Version und Fingerprint. Scheitert eine Kachel auch nach drei Versuchen, gibt es <b>keine Zahl</b>, sondern eine Fehlermeldung.</p>
+  <figure class="fig">
+    <img src="/img/stack/06_ergebnis.jpg" width="1400" height="1050" alt="Ganzes Foto: blaue Punkte richtig, rote Kreuze zu viel, orange Ringe übersehen" loading="lazy">
+    <figcaption class="small muted">Abgleich mit den Label-Punkten: <span style="color:#005FB8">● richtig</span> 243, <span style="color:#A3261B">✕ zu viel</span> 13, <span style="color:#8A4B00">○ übersehen</span> 3. Achtung: Das Label nennt 253 Körner, enthält aber nur 246 Punkte. Einige rote Kreuze sind darum vermutlich echte Körner ohne Labelpunkt. Gewertet wird gegen die Zahl 253: Fehler +3.</figcaption>
+  </figure>
+  <div class="why-box"><p><b>Warum lieber keine Zahl als eine Teilzahl?</b> Fehlen 3 von 100 Kacheln, fehlen rund 3 % der Körner. Die Zahl sieht plausibel aus. Gewicht ÷ zu wenige Körner ergibt ein zu hohes TKG. Der Rechner empfiehlt dann 3 % mehr kg/ha, und auf dem Feld landen zu viele Körner. Der Zählfehler geht 1:1 in die Saatmenge.</p></div>
+</section>
+
+<section class="band" id="grenzen">
+  <div class="wrap">
+    <p class="label">Ehrlich</p>
+    <h2>Was die Pipeline nicht kann, und was als Nächstes kommt</h2>
+    <table class="plain">
+      <tr><th>Schwäche</th><th>Folge</th><th>Plan</th></tr>
+      <tr><td>Doppelmarken an Nähten und in Klumpen</td><td>Leicht zu hohe Zahl</td><td>Nahe Punktpaare als Prüfstelle zeigen; Schwelle aus Label-Abständen kalibrieren, Hafer als kritischer Fall</td></tr>
+      <tr><td>Selbsteinschätzung unkalibriert</td><td>Sichere, aber falsche Kacheln werden nie geprüft</td><td>Konfidenz gegen den echten Fehler pro Kachel auftragen</td></tr>
+      <tr><td>Nur eine Zahl als Rückmeldung</td><td>Wenig Information, warum etwas schwierig ist</td><td>Feste Kürzel wie <code>CLUSTER</code>, <code>SEAM</code>, <code>BLUR</code>, die je eine Folge auslösen</td></tr>
+      <tr><td>Verdeckte Körner</td><td>Beide Verfahren können dasselbe übersehen</td><td>Zweites Verfahren mit anderen blinden Flecken; Körner locker streuen</td></tr>
+      <tr><td>Schwierige Stellen bekommen nur einen zweiten Blick</td><td>Kein Zoom, kein Blick über die Naht</td><td>Agent mit Werkzeugen nur für markierte Kacheln (zoomen, Nachbarkachel ansehen, Abstand messen)</td></tr>
+    </table>
+    <p>Kacheln, Halo und Naht-Abgleich sind Krücken für heutige Modelle. Sie werden mit besseren Modellen kleiner werden. Was bleibt, ist das Messprotokoll: feste Splits, eingefrorene Fingerprints, einmalige Messung. Damit lässt sich jedes neue Modell am ersten Tag ehrlich vergleichen. Messwerte und Regeln: <a href="/#ergebnisse">Ergebnisse</a>.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap foot">
+  <p><b>Fotos:</b> Datensatz <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a>, Smart Farming Lab, Universität Leipzig, <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.de">CC BY-NC 4.0</a>. Ausschnitte verkleinert, Kacheln und Marken von uns ergänzt.</p>
+  <p>Statische Seite ohne Tracking und ohne Cookies. Für Sprachmodelle: <a href="/llms.txt">llms.txt</a>, <a href="/llms-full.txt">llms-full.txt</a>.</p>
+</footer>
+</body>
+</html>

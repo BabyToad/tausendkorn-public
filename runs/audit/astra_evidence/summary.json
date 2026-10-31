@@ -1,0 +1,2039 @@
+{
+  "yolo11s-last-c0.4": {
+    "overall": {
+      "n": 24,
+      "sum": 19,
+      "mae": 3.0416666666666665,
+      "bias": 0.7916666666666666,
+      "min": -14,
+      "max": 7,
+      "exact": 2,
+      "within1": 9,
+      "within5": 21
+    },
+    "camera": {
+      "Galaxy S23": {
+        "n": 6,
+        "sum": 2,
+        "mae": 1.0,
+        "bias": 0.3333333333333333,
+        "min": -1,
+        "max": 2,
+        "exact": 1,
+        "within1": 5,
+        "within5": 6
+      },
+      "iPhone 8": {
+        "n": 8,
+        "sum": 26,
+        "mae": 3.5,
+        "bias": 3.25,
+        "min": -1,
+        "max": 7,
+        "exact": 0,
+        "within1": 2,
+        "within5": 7
+      },
+      "Galaxy Tab S6 Lite": {
+        "n": 7,
+        "sum": 6,
+        "mae": 2.5714285714285716,
+        "bias": 0.8571428571428571,
+        "min": -4,
+        "max": 6,
+        "exact": 1,
+        "within1": 2,
+        "within5": 6
+      },
+      "Pixel 9": {
+        "n": 3,
+        "sum": -15,
+        "mae": 7.0,
+        "bias": -5.0,
+        "min": -14,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 2
+      }
+    },
+    "species+camera": {
+      "oats-s / Galaxy S23": {
+        "n": 3,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 0.3333333333333333,
+        "min": -1,
+        "max": 1,
+        "exact": 0,
+        "within1": 3,
+        "within5": 3
+      },
+      "oats-s / iPhone 8": {
+        "n": 3,
+        "sum": 8,
+        "mae": 3.3333333333333335,
+        "bias": 2.6666666666666665,
+        "min": -1,
+        "max": 5,
+        "exact": 0,
+        "within1": 1,
+        "within5": 3
+      },
+      "barley-w / Galaxy Tab S6 Lite": {
+        "n": 4,
+        "sum": 8,
+        "mae": 3.0,
+        "bias": 2.0,
+        "min": -2,
+        "max": 6,
+        "exact": 0,
+        "within1": 1,
+        "within5": 3
+      },
+      "barley-w / iPhone 8": {
+        "n": 1,
+        "sum": 4,
+        "mae": 4.0,
+        "bias": 4.0,
+        "min": 4,
+        "max": 4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "barley-w / Galaxy S23": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "wheat-w / Galaxy Tab S6 Lite": {
+        "n": 3,
+        "sum": -2,
+        "mae": 2.0,
+        "bias": -0.6666666666666666,
+        "min": -4,
+        "max": 2,
+        "exact": 1,
+        "within1": 1,
+        "within5": 3
+      },
+      "wheat-w / Pixel 9": {
+        "n": 3,
+        "sum": -15,
+        "mae": 7.0,
+        "bias": -5.0,
+        "min": -14,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 2
+      },
+      "durum-w / iPhone 8": {
+        "n": 4,
+        "sum": 14,
+        "mae": 3.5,
+        "bias": 3.5,
+        "min": 1,
+        "max": 7,
+        "exact": 0,
+        "within1": 1,
+        "within5": 3
+      },
+      "durum-w / Galaxy S23": {
+        "n": 2,
+        "sum": 2,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 0,
+        "max": 2,
+        "exact": 1,
+        "within1": 1,
+        "within5": 2
+      }
+    },
+    "arrangement_id": {
+      "S02-014": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-015": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-016": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-017": {
+        "n": 1,
+        "sum": 5,
+        "mae": 5.0,
+        "bias": 5.0,
+        "min": 5,
+        "max": 5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S02-018": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-019": {
+        "n": 1,
+        "sum": 4,
+        "mae": 4.0,
+        "bias": 4.0,
+        "min": 4,
+        "max": 4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-014": {
+        "n": 1,
+        "sum": -2,
+        "mae": 2.0,
+        "bias": -2.0,
+        "min": -2,
+        "max": -2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-015": {
+        "n": 1,
+        "sum": 4,
+        "mae": 4.0,
+        "bias": 4.0,
+        "min": 4,
+        "max": 4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-016": {
+        "n": 1,
+        "sum": 3,
+        "mae": 3.0,
+        "bias": 3.0,
+        "min": 3,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-017": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S03-018": {
+        "n": 1,
+        "sum": 6,
+        "mae": 6.0,
+        "bias": 6.0,
+        "min": 6,
+        "max": 6,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-019": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S04-014": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-015": {
+        "n": 1,
+        "sum": 3,
+        "mae": 3.0,
+        "bias": 3.0,
+        "min": 3,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-016": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S04-017": {
+        "n": 1,
+        "sum": -14,
+        "mae": 14.0,
+        "bias": -14.0,
+        "min": -14,
+        "max": -14,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-018": {
+        "n": 1,
+        "sum": -4,
+        "mae": 4.0,
+        "bias": -4.0,
+        "min": -4,
+        "max": -4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-019": {
+        "n": 1,
+        "sum": -4,
+        "mae": 4.0,
+        "bias": -4.0,
+        "min": -4,
+        "max": -4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S05-014": {
+        "n": 1,
+        "sum": 7,
+        "mae": 7.0,
+        "bias": 7.0,
+        "min": 7,
+        "max": 7,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-015": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-016": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S05-017": {
+        "n": 1,
+        "sum": 4,
+        "mae": 4.0,
+        "bias": 4.0,
+        "min": 4,
+        "max": 4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S05-018": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-019": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      }
+    },
+    "point_totals": {
+      "pred": 12924,
+      "count": 12905,
+      "tp": 12777,
+      "fp": 147,
+      "fn": 62
+    },
+    "worst": [
+      {
+        "file_name": "S04/S04-017_pixel-9_PXL_20261015_121711067.jpg",
+        "error": -14,
+        "camera": "Pixel 9",
+        "species": "wheat-w"
+      },
+      {
+        "file_name": "S05/S05-014_iphone-8_IMG_6604.jpg",
+        "error": 7,
+        "camera": "iPhone 8",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "S03/S03-018_galaxy-tab-s6-lite_20260918_141129.jpg",
+        "error": 6,
+        "camera": "Galaxy Tab S6 Lite",
+        "species": "barley-w"
+      },
+      {
+        "file_name": "S02/S02-017_iphone-8_IMG_1309.jpg",
+        "error": 5,
+        "camera": "iPhone 8",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "S02/S02-019_iphone-8_IMG_1315.jpg",
+        "error": 4,
+        "camera": "iPhone 8",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "S03/S03-015_iphone-8_IMG_6270.jpg",
+        "error": 4,
+        "camera": "iPhone 8",
+        "species": "barley-w"
+      }
+    ]
+  },
+  "final-yolo11s-holdout": {
+    "overall": {
+      "n": 40,
+      "sum": 80,
+      "mae": 4.2,
+      "bias": 2.0,
+      "min": -18,
+      "max": 21,
+      "exact": 5,
+      "within1": 18,
+      "within5": 32
+    },
+    "camera": {
+      "Galaxy S23": {
+        "n": 10,
+        "sum": -24,
+        "mae": 4.2,
+        "bias": -2.4,
+        "min": -18,
+        "max": 5,
+        "exact": 1,
+        "within1": 5,
+        "within5": 8
+      },
+      "iPhone 8": {
+        "n": 15,
+        "sum": 76,
+        "mae": 5.733333333333333,
+        "bias": 5.066666666666666,
+        "min": -1,
+        "max": 21,
+        "exact": 2,
+        "within1": 8,
+        "within5": 10
+      },
+      "Galaxy Tab S6 Lite": {
+        "n": 10,
+        "sum": 22,
+        "mae": 2.4,
+        "bias": 2.2,
+        "min": -1,
+        "max": 7,
+        "exact": 2,
+        "within1": 4,
+        "within5": 9
+      },
+      "Pixel 9": {
+        "n": 5,
+        "sum": 6,
+        "mae": 3.2,
+        "bias": 1.2,
+        "min": -5,
+        "max": 5,
+        "exact": 0,
+        "within1": 1,
+        "within5": 5
+      }
+    },
+    "species+camera": {
+      "oats-s / Galaxy S23": {
+        "n": 5,
+        "sum": 3,
+        "mae": 1.0,
+        "bias": 0.6,
+        "min": -1,
+        "max": 2,
+        "exact": 1,
+        "within1": 4,
+        "within5": 5
+      },
+      "oats-s / iPhone 8": {
+        "n": 5,
+        "sum": -4,
+        "mae": 0.8,
+        "bias": -0.8,
+        "min": -1,
+        "max": 0,
+        "exact": 1,
+        "within1": 5,
+        "within5": 5
+      },
+      "barley-w / Galaxy Tab S6 Lite": {
+        "n": 5,
+        "sum": 13,
+        "mae": 3.0,
+        "bias": 2.6,
+        "min": -1,
+        "max": 7,
+        "exact": 1,
+        "within1": 2,
+        "within5": 4
+      },
+      "barley-w / iPhone 8": {
+        "n": 5,
+        "sum": 48,
+        "mae": 9.6,
+        "bias": 9.6,
+        "min": 3,
+        "max": 21,
+        "exact": 0,
+        "within1": 0,
+        "within5": 2
+      },
+      "wheat-w / Galaxy Tab S6 Lite": {
+        "n": 5,
+        "sum": 9,
+        "mae": 1.8,
+        "bias": 1.8,
+        "min": 0,
+        "max": 4,
+        "exact": 1,
+        "within1": 2,
+        "within5": 5
+      },
+      "wheat-w / Pixel 9": {
+        "n": 5,
+        "sum": 6,
+        "mae": 3.2,
+        "bias": 1.2,
+        "min": -5,
+        "max": 5,
+        "exact": 0,
+        "within1": 1,
+        "within5": 5
+      },
+      "durum-w / Galaxy S23": {
+        "n": 5,
+        "sum": -27,
+        "mae": 7.4,
+        "bias": -5.4,
+        "min": -18,
+        "max": 5,
+        "exact": 0,
+        "within1": 1,
+        "within5": 3
+      },
+      "durum-w / iPhone 8": {
+        "n": 5,
+        "sum": 32,
+        "mae": 6.8,
+        "bias": 6.4,
+        "min": -1,
+        "max": 18,
+        "exact": 1,
+        "within1": 3,
+        "within5": 3
+      }
+    },
+    "arrangement_id": {
+      "S02-000": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-001": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-002": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-003": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-004": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-005": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-006": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S02-007": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-008": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S02-009": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S03-000": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S03-001": {
+        "n": 1,
+        "sum": 6,
+        "mae": 6.0,
+        "bias": 6.0,
+        "min": 6,
+        "max": 6,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-002": {
+        "n": 1,
+        "sum": 5,
+        "mae": 5.0,
+        "bias": 5.0,
+        "min": 5,
+        "max": 5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-003": {
+        "n": 1,
+        "sum": 5,
+        "mae": 5.0,
+        "bias": 5.0,
+        "min": 5,
+        "max": 5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-004": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-005": {
+        "n": 1,
+        "sum": 7,
+        "mae": 7.0,
+        "bias": 7.0,
+        "min": 7,
+        "max": 7,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-006": {
+        "n": 1,
+        "sum": 3,
+        "mae": 3.0,
+        "bias": 3.0,
+        "min": 3,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S03-007": {
+        "n": 1,
+        "sum": 13,
+        "mae": 13.0,
+        "bias": 13.0,
+        "min": 13,
+        "max": 13,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-008": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S03-009": {
+        "n": 1,
+        "sum": 21,
+        "mae": 21.0,
+        "bias": 21.0,
+        "min": 21,
+        "max": 21,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-000": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-001": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S04-002": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S04-003": {
+        "n": 1,
+        "sum": -5,
+        "mae": 5.0,
+        "bias": -5.0,
+        "min": -5,
+        "max": -5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-004": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-005": {
+        "n": 1,
+        "sum": 5,
+        "mae": 5.0,
+        "bias": 5.0,
+        "min": 5,
+        "max": 5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-006": {
+        "n": 1,
+        "sum": 2,
+        "mae": 2.0,
+        "bias": 2.0,
+        "min": 2,
+        "max": 2,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-007": {
+        "n": 1,
+        "sum": 3,
+        "mae": 3.0,
+        "bias": 3.0,
+        "min": 3,
+        "max": 3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-008": {
+        "n": 1,
+        "sum": 4,
+        "mae": 4.0,
+        "bias": 4.0,
+        "min": 4,
+        "max": 4,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S04-009": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-000": {
+        "n": 1,
+        "sum": -10,
+        "mae": 10.0,
+        "bias": -10.0,
+        "min": -10,
+        "max": -10,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-001": {
+        "n": 1,
+        "sum": 18,
+        "mae": 18.0,
+        "bias": 18.0,
+        "min": 18,
+        "max": 18,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-002": {
+        "n": 1,
+        "sum": 0,
+        "mae": 0.0,
+        "bias": 0.0,
+        "min": 0,
+        "max": 0,
+        "exact": 1,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-003": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-004": {
+        "n": 1,
+        "sum": 5,
+        "mae": 5.0,
+        "bias": 5.0,
+        "min": 5,
+        "max": 5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "S05-005": {
+        "n": 1,
+        "sum": 14,
+        "mae": 14.0,
+        "bias": 14.0,
+        "min": 14,
+        "max": 14,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-006": {
+        "n": 1,
+        "sum": -18,
+        "mae": 18.0,
+        "bias": -18.0,
+        "min": -18,
+        "max": -18,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-007": {
+        "n": 1,
+        "sum": 1,
+        "mae": 1.0,
+        "bias": 1.0,
+        "min": 1,
+        "max": 1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-008": {
+        "n": 1,
+        "sum": -1,
+        "mae": 1.0,
+        "bias": -1.0,
+        "min": -1,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "S05-009": {
+        "n": 1,
+        "sum": -3,
+        "mae": 3.0,
+        "bias": -3.0,
+        "min": -3,
+        "max": -3,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      }
+    },
+    "point_totals": {
+      "pred": 12952,
+      "count": 12872,
+      "tp": 12639,
+      "fp": 313,
+      "fn": 168
+    },
+    "worst": [
+      {
+        "file_name": "S03/S03-009_iphone-8_IMG_6241.jpg",
+        "error": 21,
+        "camera": "iPhone 8",
+        "species": "barley-w"
+      },
+      {
+        "file_name": "S05/S05-001_iphone-8_IMG_6538.jpg",
+        "error": 18,
+        "camera": "iPhone 8",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "S05/S05-006_galaxy-s23_IMG_20261015_124933.jpg",
+        "error": -18,
+        "camera": "Galaxy S23",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "S05/S05-005_iphone-8_IMG_6557.jpg",
+        "error": 14,
+        "camera": "iPhone 8",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "S03/S03-007_iphone-8_IMG_6233.jpg",
+        "error": 13,
+        "camera": "iPhone 8",
+        "species": "barley-w"
+      },
+      {
+        "file_name": "S05/S05-000_galaxy-s23_IMG_20261015_112548.jpg",
+        "error": -10,
+        "camera": "Galaxy S23",
+        "species": "durum-w"
+      }
+    ]
+  },
+  "final-yolo11s-count1000": {
+    "overall": {
+      "n": 85,
+      "sum": -1710,
+      "mae": 25.388235294117646,
+      "bias": -20.11764705882353,
+      "min": -108,
+      "max": 29,
+      "exact": 5,
+      "within1": 15,
+      "within5": 29
+    },
+    "camera": {
+      "Galaxy S23": {
+        "n": 46,
+        "sum": -1474,
+        "mae": 36.47826086956522,
+        "bias": -32.04347826086956,
+        "min": -108,
+        "max": 29,
+        "exact": 1,
+        "within1": 5,
+        "within5": 9
+      },
+      "iPhone 8": {
+        "n": 39,
+        "sum": -236,
+        "mae": 12.307692307692308,
+        "bias": -6.051282051282051,
+        "min": -60,
+        "max": 26,
+        "exact": 4,
+        "within1": 10,
+        "within5": 20
+      }
+    },
+    "species+camera": {
+      "barley-w / Galaxy S23": {
+        "n": 9,
+        "sum": -174,
+        "mae": 20.666666666666668,
+        "bias": -19.333333333333332,
+        "min": -108,
+        "max": 5,
+        "exact": 0,
+        "within1": 2,
+        "within5": 4
+      },
+      "barley-w / iPhone 8": {
+        "n": 11,
+        "sum": 27,
+        "mae": 3.5454545454545454,
+        "bias": 2.4545454545454546,
+        "min": -2,
+        "max": 8,
+        "exact": 0,
+        "within1": 3,
+        "within5": 8
+      },
+      "durum-w / Galaxy S23": {
+        "n": 10,
+        "sum": -638,
+        "mae": 63.8,
+        "bias": -63.8,
+        "min": -89,
+        "max": -52,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "durum-w / iPhone 8": {
+        "n": 7,
+        "sum": -263,
+        "mae": 37.57142857142857,
+        "bias": -37.57142857142857,
+        "min": -52,
+        "max": -24,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "rye-w / Galaxy S23": {
+        "n": 9,
+        "sum": -348,
+        "mae": 38.666666666666664,
+        "bias": -38.666666666666664,
+        "min": -78,
+        "max": -1,
+        "exact": 0,
+        "within1": 1,
+        "within5": 1
+      },
+      "rye-w / iPhone 8": {
+        "n": 12,
+        "sum": -86,
+        "mae": 7.666666666666667,
+        "bias": -7.166666666666667,
+        "min": -60,
+        "max": 3,
+        "exact": 4,
+        "within1": 7,
+        "within5": 9
+      },
+      "wheat-w / Galaxy S23": {
+        "n": 9,
+        "sum": 75,
+        "mae": 13.0,
+        "bias": 8.333333333333334,
+        "min": -16,
+        "max": 29,
+        "exact": 1,
+        "within1": 2,
+        "within5": 3
+      },
+      "wheat-w / iPhone 8": {
+        "n": 5,
+        "sum": 56,
+        "mae": 11.2,
+        "bias": 11.2,
+        "min": 4,
+        "max": 26,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "oats-s / Galaxy S23": {
+        "n": 9,
+        "sum": -389,
+        "mae": 43.22222222222222,
+        "bias": -43.22222222222222,
+        "min": -97,
+        "max": -5,
+        "exact": 0,
+        "within1": 0,
+        "within5": 1
+      },
+      "oats-s / iPhone 8": {
+        "n": 4,
+        "sum": 30,
+        "mae": 7.5,
+        "bias": 7.5,
+        "min": 3,
+        "max": 11,
+        "exact": 0,
+        "within1": 0,
+        "within5": 2
+      }
+    },
+    "arrangement_id": {
+      "count_1000-000": {
+        "n": 20,
+        "sum": -147,
+        "mae": 11.25,
+        "bias": -7.35,
+        "min": -108,
+        "max": 8,
+        "exact": 0,
+        "within1": 5,
+        "within5": 12
+      },
+      "count_1000-001": {
+        "n": 17,
+        "sum": -901,
+        "mae": 53.0,
+        "bias": -53.0,
+        "min": -89,
+        "max": -24,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "count_1000-002": {
+        "n": 21,
+        "sum": -434,
+        "mae": 20.952380952380953,
+        "bias": -20.666666666666668,
+        "min": -78,
+        "max": 3,
+        "exact": 4,
+        "within1": 8,
+        "within5": 10
+      },
+      "count_1000-003": {
+        "n": 14,
+        "sum": 131,
+        "mae": 12.357142857142858,
+        "bias": 9.357142857142858,
+        "min": -16,
+        "max": 29,
+        "exact": 1,
+        "within1": 2,
+        "within5": 4
+      },
+      "count_1000-004": {
+        "n": 13,
+        "sum": -359,
+        "mae": 32.23076923076923,
+        "bias": -27.615384615384617,
+        "min": -97,
+        "max": 11,
+        "exact": 0,
+        "within1": 0,
+        "within5": 3
+      }
+    },
+    "worst": [
+      {
+        "file_name": "count_1000/count_1000-000_galaxy-s23_IMG_20261026_122805.jpg",
+        "error": -108,
+        "camera": "Galaxy S23",
+        "species": "barley-w"
+      },
+      {
+        "file_name": "count_1000/count_1000-004_galaxy-s23_IMG_20261026_190520.jpg",
+        "error": -97,
+        "camera": "Galaxy S23",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "count_1000/count_1000-004_galaxy-s23_IMG_20261026_190454.jpg",
+        "error": -96,
+        "camera": "Galaxy S23",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "count_1000/count_1000-001_galaxy-s23_IMG_20261026_185159.jpg",
+        "error": -89,
+        "camera": "Galaxy S23",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "count_1000/count_1000-001_galaxy-s23_IMG_20261026_185124.jpg",
+        "error": -79,
+        "camera": "Galaxy S23",
+        "species": "durum-w"
+      },
+      {
+        "file_name": "count_1000/count_1000-002_galaxy-s23_IMG_20261026_184911.jpg",
+        "error": -78,
+        "camera": "Galaxy S23",
+        "species": "rye-w"
+      }
+    ]
+  },
+  "geco2": {
+    "overall": {
+      "n": 24,
+      "sum": -4495,
+      "mae": 187.29166666666666,
+      "bias": -187.29166666666666,
+      "min": -421,
+      "max": -47,
+      "exact": 0,
+      "within1": 0,
+      "within5": 0
+    },
+    "camera": {
+      "Galaxy S23": {
+        "n": 6,
+        "sum": -1401,
+        "mae": 233.5,
+        "bias": -233.5,
+        "min": -421,
+        "max": -156,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "iPhone 8": {
+        "n": 8,
+        "sum": -1463,
+        "mae": 182.875,
+        "bias": -182.875,
+        "min": -417,
+        "max": -56,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "Galaxy Tab S6 Lite": {
+        "n": 7,
+        "sum": -1003,
+        "mae": 143.28571428571428,
+        "bias": -143.28571428571428,
+        "min": -262,
+        "max": -47,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "Pixel 9": {
+        "n": 3,
+        "sum": -628,
+        "mae": 209.33333333333334,
+        "bias": -209.33333333333334,
+        "min": -303,
+        "max": -51,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      }
+    },
+    "species+camera": {
+      "oats-s / Galaxy S23": {
+        "n": 3,
+        "sum": -616,
+        "mae": 205.33333333333334,
+        "bias": -205.33333333333334,
+        "min": -254,
+        "max": -156,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "oats-s / iPhone 8": {
+        "n": 3,
+        "sum": -877,
+        "mae": 292.3333333333333,
+        "bias": -292.3333333333333,
+        "min": -417,
+        "max": -157,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "barley-w / Galaxy Tab S6 Lite": {
+        "n": 4,
+        "sum": -731,
+        "mae": 182.75,
+        "bias": -182.75,
+        "min": -262,
+        "max": -76,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "barley-w / iPhone 8": {
+        "n": 1,
+        "sum": -197,
+        "mae": 197.0,
+        "bias": -197.0,
+        "min": -197,
+        "max": -197,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "barley-w / Galaxy S23": {
+        "n": 1,
+        "sum": -421,
+        "mae": 421.0,
+        "bias": -421.0,
+        "min": -421,
+        "max": -421,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "wheat-w / Galaxy Tab S6 Lite": {
+        "n": 3,
+        "sum": -272,
+        "mae": 90.66666666666667,
+        "bias": -90.66666666666667,
+        "min": -136,
+        "max": -47,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "wheat-w / Pixel 9": {
+        "n": 3,
+        "sum": -628,
+        "mae": 209.33333333333334,
+        "bias": -209.33333333333334,
+        "min": -303,
+        "max": -51,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "durum-w / iPhone 8": {
+        "n": 4,
+        "sum": -389,
+        "mae": 97.25,
+        "bias": -97.25,
+        "min": -202,
+        "max": -56,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "durum-w / Galaxy S23": {
+        "n": 2,
+        "sum": -364,
+        "mae": 182.0,
+        "bias": -182.0,
+        "min": -187,
+        "max": -177,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      }
+    },
+    "arrangement_id": {
+      "S02-014": {
+        "n": 1,
+        "sum": -156,
+        "mae": 156.0,
+        "bias": -156.0,
+        "min": -156,
+        "max": -156,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S02-015": {
+        "n": 1,
+        "sum": -157,
+        "mae": 157.0,
+        "bias": -157.0,
+        "min": -157,
+        "max": -157,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S02-016": {
+        "n": 1,
+        "sum": -254,
+        "mae": 254.0,
+        "bias": -254.0,
+        "min": -254,
+        "max": -254,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S02-017": {
+        "n": 1,
+        "sum": -303,
+        "mae": 303.0,
+        "bias": -303.0,
+        "min": -303,
+        "max": -303,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S02-018": {
+        "n": 1,
+        "sum": -206,
+        "mae": 206.0,
+        "bias": -206.0,
+        "min": -206,
+        "max": -206,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S02-019": {
+        "n": 1,
+        "sum": -417,
+        "mae": 417.0,
+        "bias": -417.0,
+        "min": -417,
+        "max": -417,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-014": {
+        "n": 1,
+        "sum": -76,
+        "mae": 76.0,
+        "bias": -76.0,
+        "min": -76,
+        "max": -76,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-015": {
+        "n": 1,
+        "sum": -197,
+        "mae": 197.0,
+        "bias": -197.0,
+        "min": -197,
+        "max": -197,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-016": {
+        "n": 1,
+        "sum": -132,
+        "mae": 132.0,
+        "bias": -132.0,
+        "min": -132,
+        "max": -132,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-017": {
+        "n": 1,
+        "sum": -262,
+        "mae": 262.0,
+        "bias": -262.0,
+        "min": -262,
+        "max": -262,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-018": {
+        "n": 1,
+        "sum": -261,
+        "mae": 261.0,
+        "bias": -261.0,
+        "min": -261,
+        "max": -261,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S03-019": {
+        "n": 1,
+        "sum": -421,
+        "mae": 421.0,
+        "bias": -421.0,
+        "min": -421,
+        "max": -421,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-014": {
+        "n": 1,
+        "sum": -47,
+        "mae": 47.0,
+        "bias": -47.0,
+        "min": -47,
+        "max": -47,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-015": {
+        "n": 1,
+        "sum": -51,
+        "mae": 51.0,
+        "bias": -51.0,
+        "min": -51,
+        "max": -51,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-016": {
+        "n": 1,
+        "sum": -89,
+        "mae": 89.0,
+        "bias": -89.0,
+        "min": -89,
+        "max": -89,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-017": {
+        "n": 1,
+        "sum": -274,
+        "mae": 274.0,
+        "bias": -274.0,
+        "min": -274,
+        "max": -274,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-018": {
+        "n": 1,
+        "sum": -136,
+        "mae": 136.0,
+        "bias": -136.0,
+        "min": -136,
+        "max": -136,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S04-019": {
+        "n": 1,
+        "sum": -303,
+        "mae": 303.0,
+        "bias": -303.0,
+        "min": -303,
+        "max": -303,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-014": {
+        "n": 1,
+        "sum": -56,
+        "mae": 56.0,
+        "bias": -56.0,
+        "min": -56,
+        "max": -56,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-015": {
+        "n": 1,
+        "sum": -177,
+        "mae": 177.0,
+        "bias": -177.0,
+        "min": -177,
+        "max": -177,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-016": {
+        "n": 1,
+        "sum": -187,
+        "mae": 187.0,
+        "bias": -187.0,
+        "min": -187,
+        "max": -187,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-017": {
+        "n": 1,
+        "sum": -60,
+        "mae": 60.0,
+        "bias": -60.0,
+        "min": -60,
+        "max": -60,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-018": {
+        "n": 1,
+        "sum": -202,
+        "mae": 202.0,
+        "bias": -202.0,
+        "min": -202,
+        "max": -202,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      },
+      "S05-019": {
+        "n": 1,
+        "sum": -71,
+        "mae": 71.0,
+        "bias": -71.0,
+        "min": -71,
+        "max": -71,
+        "exact": 0,
+        "within1": 0,
+        "within5": 0
+      }
+    },
+    "point_totals": {
+      "pred": 8410,
+      "count": 12905,
+      "tp": 8229,
+      "fp": 181,
+      "fn": 4610
+    },
+    "worst": [
+      {
+        "file_name": "S03/S03-019_galaxy-s23_IMG_20260921_133006.jpg",
+        "error": -421,
+        "camera": "Galaxy S23",
+        "species": "barley-w"
+      },
+      {
+        "file_name": "S02/S02-019_iphone-8_IMG_1315.jpg",
+        "error": -417,
+        "camera": "iPhone 8",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "S02/S02-017_iphone-8_IMG_1309.jpg",
+        "error": -303,
+        "camera": "iPhone 8",
+        "species": "oats-s"
+      },
+      {
+        "file_name": "S04/S04-019_pixel-9_PXL_20261015_122202387.jpg",
+        "error": -303,
+        "camera": "Pixel 9",
+        "species": "wheat-w"
+      },
+      {
+        "file_name": "S04/S04-017_pixel-9_PXL_20261015_121711067.jpg",
+        "error": -274,
+        "camera": "Pixel 9",
+        "species": "wheat-w"
+      },
+      {
+        "file_name": "S03/S03-017_galaxy-tab-s6-lite_20260918_135129.jpg",
+        "error": -262,
+        "camera": "Galaxy Tab S6 Lite",
+        "species": "barley-w"
+      }
+    ]
+  },
+  "annotations": {
+    "train": {
+      "n": 49,
+      "arrangements": 38,
+      "point_count_delta": {
+        "-1": 3,
+        "1": 1,
+        "-4": 4,
+        "0": 3,
+        "-8": 5,
+        "-2": 4,
+        "-9": 4,
+        "-6": 7,
+        "-7": 2,
+        "-3": 1,
+        "-18": 1,
+        "-14": 2,
+        "-12": 3,
+        "-5": 2,
+        "-11": 4,
+        "-10": 2,
+        "-24": 1
+      },
+      "sum_delta": -341,
+      "mean_delta": -6.959183673469388,
+      "species_session": [
+        [
+          "barley-w",
+          "S03"
+        ],
+        [
+          "durum-w",
+          "S05"
+        ],
+        [
+          "oats-s",
+          "S02"
+        ],
+        [
+          "wheat-w",
+          "S04"
+        ]
+      ],
+      "class_points": {
+        "kernel_points": 35000,
+        "broken_points": 33,
+        "invalid_points": 180
+      }
+    },
+    "dev": {
+      "n": 24,
+      "arrangements": 24,
+      "point_count_delta": {
+        "-2": 4,
+        "-1": 3,
+        "-3": 3,
+        "-4": 2,
+        "1": 1,
+        "0": 6,
+        "-6": 2,
+        "-9": 1,
+        "-10": 1,
+        "-8": 1
+      },
+      "sum_delta": -66,
+      "mean_delta": -2.75,
+      "species_session": [
+        [
+          "barley-w",
+          "S03"
+        ],
+        [
+          "durum-w",
+          "S05"
+        ],
+        [
+          "oats-s",
+          "S02"
+        ],
+        [
+          "wheat-w",
+          "S04"
+        ]
+      ],
+      "class_points": {
+        "kernel_points": 12839,
+        "broken_points": 14,
+        "invalid_points": 61
+      }
+    },
+    "holdout": {
+      "n": 40,
+      "arrangements": 40,
+      "point_count_delta": {
+        "-1": 6,
+        "1": 5,
+        "0": 12,
+        "-2": 5,
+        "-7": 1,
+        "-5": 3,
+        "-3": 1,
+        "-4": 4,
+        "-10": 1,
+        "3": 1,
+        "-6": 1
+      },
+      "sum_delta": -65,
+      "mean_delta": -1.625,
+      "species_session": [
+        [
+          "barley-w",
+          "S03"
+        ],
+        [
+          "durum-w",
+          "S05"
+        ],
+        [
+          "oats-s",
+          "S02"
+        ],
+        [
+          "wheat-w",
+          "S04"
+        ]
+      ],
+      "class_points": {
+        "kernel_points": 12807,
+        "broken_points": 24,
+        "invalid_points": 76
+      }
+    }
+  },
+  "contact_manifest": [
+    {
+      "file_name": "count_1000/count_1000-000_galaxy-s23_IMG_20261026_122805.jpg",
+      "size": [
+        3060,
+        4080
+      ],
+      "error": -108
+    },
+    {
+      "file_name": "count_1000/count_1000-000_iphone-8_IMG_6701.jpg",
+      "size": [
+        3024,
+        4032
+      ],
+      "error": 8
+    },
+    {
+      "file_name": "count_1000/count_1000-001_galaxy-s23_IMG_20261026_185159.jpg",
+      "size": [
+        3060,
+        4080
+      ],
+      "error": -89
+    },
+    {
+      "file_name": "count_1000/count_1000-001_iphone-8_IMG_6719.jpg",
+      "size": [
+        3024,
+        4032
+      ],
+      "error": -52
+    },
+    {
+      "file_name": "count_1000/count_1000-004_galaxy-s23_IMG_20261026_190520.jpg",
+      "size": [
+        4080,
+        3060
+      ],
+      "error": -97
+    },
+    {
+      "file_name": "count_1000/count_1000-004_iphone-8_IMG_6730.jpg",
+      "size": [
+        3024,
+        4032
+      ],
+      "error": 11
+    },
+    {
+      "file_name": "count_1000/count_1000-002_galaxy-s23_IMG_20261026_184911.jpg",
+      "size": [
+        3060,
+        4080
+      ],
+      "error": -78
+    },
+    {
+      "file_name": "count_1000/count_1000-002_iphone-8_IMG_6712.jpg",
+      "size": [
+        3024,
+        4032
+      ],
+      "error": -60
+    },
+    {
+      "file_name": "count_1000/count_1000-003_galaxy-s23_IMG_20261026_190057.jpg",
+      "size": [
+        4080,
+        3060
+      ],
+      "error": 29
+    },
+    {
+      "file_name": "count_1000/count_1000-003_iphone-8_IMG_6727.jpg",
+      "size": [
+        3024,
+        4032
+      ],
+      "error": 26
+    }
+  ]
+}

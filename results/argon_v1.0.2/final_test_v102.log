@@ -1,0 +1,17 @@
+[1/10] count_1000/count_1000-000_galaxy-s23_IMG_20261026_122659.jpg: 1011 vs 1000 (+11)  $0.790  run $0.79
+[2/10] count_1000/count_1000-001_galaxy-s23_IMG_20261026_165756.jpg: 942 vs 1000 (-58)  $0.661  run $1.45
+[3/10] count_1000/count_1000-004_galaxy-s23_IMG_20261026_190437.jpg: 1010 vs 1000 (+10)  $0.630  run $2.08
+[4/10] count_1000/count_1000-002_galaxy-s23_IMG_20261026_184810.jpg: 997 vs 1000 (-3)  $0.627  run $2.71
+[5/10] count_1000/count_1000-003_galaxy-s23_IMG_20261026_190004.jpg: 998 vs 1000 (-2)  $0.623  run $3.33
+[6/10] count_1000/count_1000-000_iphone-8_IMG_6694.jpg: 1011 vs 1000 (+11)  $0.610  run $3.94
+budget stop before count_1000/count_1000-001_galaxy-s23_IMG_20261026_185159.jpg (spent $3.94, next ~$1.18)
+
+test v1.0.2 @ 44a553a: 6/10 images done
+MAE 15.83  MAPE 1.58%  bias -5.17  max|err| 58  exact 0  within±5 2  cost all $3.94 (incl. $0.00 earlier failed attempts)
+  barley-w   n=2  errors [11, 11]
+  durum-w    n=1  errors [-58]
+  oats-s     n=1  errors [10]
+  rye-w      n=1  errors [-3]
+  wheat-w    n=1  errors [-2]
+INCOMPLETE: not all planned images were counted
+test exit 3

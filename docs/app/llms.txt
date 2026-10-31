@@ -1,0 +1,33 @@
+# Tausendkorn
+
+> Feld-App für Ackerbaubetriebe: Foto einer zufälligen Handvoll Getreidekörner auf A4 → jedes Korn markiert → Tausendkorngewicht (TKG) → Aussaatmenge in kg/ha je Partie (Hänger) und Sorte. Läuft im Hof-WLAN auf einem Laptop; das iPad ist die Bedienung.
+
+Stand: {build_datum} · Commit {commit}. Diese Datei beschreibt die Installation unter {basis_url}.
+
+<!-- Vorlage. Der Server erzeugt die echte Datei aus den Fähigkeiten, die gerade laufen
+     (API.md 3). Zeilen mit {wenn …} entfallen, wenn die Fähigkeit nicht aktiv ist. -->
+
+Wichtig für Agenten: Eine Zählung kostet Geld. Ein Agent kann sie nur beantragen; ausgeführt wird sie erst nach Freigabe durch einen Menschen in der App. Lesen und Rechnen kosten nichts. Prozentwerte sind Zahlen von 0 bis 100. Jede Zahl hat eine Einheit und eine Herkunft der Unsicherheit (`basis`: als_fest, annahme, gemessen, keine); `annahme` ist eine Faustregel, kein gemessenes Intervall. Die Aussaatmenge ersetzt nicht das Abdrehen der Drillmaschine.
+
+## API
+
+- [OpenAPI-Beschreibung]({basis_url}/openapi.json): alle Endpunkte dieser Installation mit Schemas und Einheiten
+- [Proben]({basis_url}/api/samples): Verlauf aller Proben (Anmeldung nötig)
+- [CSV-Export]({basis_url}/api/export.csv): alle Proben, Semikolon, Dezimalkomma (Anmeldung nötig)
+- {wenn v1} [Kulturen und Vorgaben]({basis_url}/api/v1/kulturen): Saatstärke-Vorgaben je Kultur mit Spannen und Quellen
+- {wenn v1} [Aussaatmenge rechnen]({basis_url}/api/v1/rechner/aussaatmenge): POST, reiner Rechner, speichert nichts
+
+## Fachliches
+
+- [Saatgutrechner]({repo_url}/blob/main/docs/app/SAATGUTRECHNER.md): kg/ha = keimfähige Körner/m² × TKG [g] / Keimfähigkeit [%]; Vorgaben je Kultur mit Quellen
+- [API und Integration]({repo_url}/blob/main/docs/app/API.md): Ressourcen, Auth, Kosten, ISO-XML, MCP (Entwurf)
+
+## Optional
+
+- {wenn mcp} [MCP-Server (stdio)]({repo_url}/blob/main/docs/app/API.md#mcp-server-tausendkorn-entwurf): lokale Tools tk_partien_suchen, tk_saatmenge_fuer_partie, tk_proben_suchen, tk_probe_lesen, tk_aussaatmenge_berechnen
+- [Projekt-Repository]({repo_url}): Code, Messprotokoll, Ergebnisse
+- [Bedienkonzept]({repo_url}/blob/main/docs/app/UX.md): Ablauf der App für Landwirt:innen
+
+## Geplant (noch nicht verfügbar)
+
+- Stabile API unter /api/v1, Betriebs-Tokens mit Scopes, Webhooks, ISO-XML-Export für die Drillmaschine, MCP über HTTP

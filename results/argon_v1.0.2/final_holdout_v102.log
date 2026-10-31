@@ -1,0 +1,39 @@
+[1/40] S02/S02-000_galaxy-s23_20261002_142742.jpg: 252 vs 247 (+5)  $0.186  run $0.19
+[2/40] S02/S02-001_iphone-8_IMG_1261.jpg: 272 vs 267 (+5)  $0.286  run $0.47
+[3/40] S02/S02-002_galaxy-s23_20261002_143045.jpg: 272 vs 273 (-1)  $0.228  run $0.70
+[4/40] S02/S02-003_iphone-8_IMG_1267.jpg: 289 vs 287 (+2)  $0.314  run $1.01
+[5/40] S02/S02-004_galaxy-s23_20261002_143805.jpg: 285 vs 280 (+5)  $0.257  run $1.27
+[6/40] S02/S02-005_iphone-8_IMG_1273.jpg: 290 vs 287 (+3)  $0.336  run $1.61
+[7/40] S02/S02-006_galaxy-s23_20261002_144122.jpg: 256 vs 252 (+4)  $0.209  run $1.82
+[8/40] S02/S02-007_iphone-8_IMG_1279.jpg: 269 vs 265 (+4)  $0.272  run $2.09
+[9/40] S02/S02-008_galaxy-s23_20261002_150020.jpg: 256 vs 253 (+3)  $0.255  run $2.34
+[10/40] S02/S02-009_iphone-8_IMG_1285.jpg: 281 vs 273 (+8)  $0.326  run $2.67
+[11/40] S03/S03-000_galaxy-tab-s6-lite_20260916_123753.jpg: 231 vs 225 (+6)  $0.325  run $2.99
+[12/40] S03/S03-001_iphone-8_IMG_6205.jpg: 346 vs 340 (+6)  $0.479  run $3.47
+[13/40] S03/S03-002_iphone-8_IMG_6211.jpg: 384 vs 370 (+14)  $0.560  run $4.03
+[14/40] S03/S03-003_galaxy-tab-s6-lite_20260916_142504.jpg: 346 vs 339 (+7)  $0.396  run $4.43
+[15/40] S03/S03-004_galaxy-tab-s6-lite_20260916_144322.jpg: 317 vs 311 (+6)  $0.349  run $4.78
+[16/40] S03/S03-005_galaxy-tab-s6-lite_20260916_145013.jpg: 334 vs 323 (+11)  $0.467  run $5.25
+[17/40] S03/S03-006_iphone-8_IMG_6228.jpg: 350 vs 342 (+8)  $0.393  run $5.64
+[18/40] S03/S03-007_iphone-8_IMG_6233.jpg: 332 vs 322 (+10)  $0.349  run $5.99
+[19/40] S03/S03-008_galaxy-tab-s6-lite_20260916_151934.jpg: 307 vs 302 (+5)  $0.386  run $6.37
+[20/40] S03/S03-009_iphone-8_IMG_6241.jpg: 330 vs 316 (+14)  $0.468  run $6.84
+[21/40] S04/S04-000_galaxy-tab-s6-lite_IMG_20261015_131056.jpg: 169 vs 170 (-1)  $0.118  run $6.96
+[22/40] S04/S04-001_galaxy-tab-s6-lite_IMG_20261015_131621.jpg: 208 vs 208 (+0)  $0.180  run $7.14
+[23/40] S04/S04-002_pixel-9_PXL_20261015_112344737.jpg: 326 vs 335 (-9)  $0.254  run $7.39
+[24/40] S04/S04-003_pixel-9_PXL_20261015_112540269.jpg: 297 vs 305 (-8)  $0.307  run $7.70
+[25/40] S04/S04-004_galaxy-tab-s6-lite_IMG_20261015_133419.jpg: 390 vs 395 (-5)  $0.210  run $7.91
+[26/40] S04/S04-005_pixel-9_PXL_20261015_113814728.jpg: 454 vs 458 (-4)  $0.340  run $8.25
+[27/40] S04/S04-006_pixel-9_PXL_20261015_114129212.jpg: 442 vs 448 (-6)  $0.323  run $8.57
+[28/40] S04/S04-007_pixel-9_PXL_20261015_114341113.jpg: 469 vs 475 (-6)  $0.313  run $8.89
+[29/40] S04/S04-008_galaxy-tab-s6-lite_20261015_134851.jpg: 477 vs 482 (-5)  $0.266  run $9.15
+[30/40] S04/S04-009_galaxy-tab-s6-lite_20261015_135433.jpg: 450 vs 457 (-7)  $0.273  run $9.43
+budget stop before S05/S05-000_galaxy-s23_IMG_20261015_112548.jpg (spent $9.43, next ~$0.84)
+
+holdout v1.0.2 @ d2ced75: 30/40 images done
+MAE 5.93  MAPE 1.85%  bias +2.47  max|err| 14  exact 1  within±5 15  cost all $9.43 (incl. $0.00 earlier failed attempts)
+  barley-w   n=10  errors [6, 6, 14, 7, 6, 11, 8, 10, 5, 14]
+  oats-s     n=10  errors [5, 5, -1, 2, 5, 3, 4, 4, 3, 8]
+  wheat-w    n=10  errors [-1, 0, -9, -8, -5, -4, -6, -6, -5, -7]
+INCOMPLETE: not all planned images were counted
+holdout exit 3

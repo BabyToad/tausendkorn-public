@@ -1,0 +1,23 @@
+/* App-spezifische Ergänzungen zum UI-System (tokens.css + tausendkorn.css bleiben
+   unverändert aus design/system/). */
+
+.badge.ok { background: var(--mark-soft); color: var(--mark); }
+
+/* Marken: Position in Bild-px, Größe in Bildschirm-px. Am <svg> stehen
+   --k (Bild-px je Bildschirm-px) und --mk-dot/--mk-halo aus TKMotion.markSize(k),
+   so muss beim Zoomen nur das <svg> neue Werte bekommen, nicht jede Marke. */
+.mk { transform: translate(var(--x), var(--y)) scale(var(--k, 1)); }
+.mk-dot { r: var(--mk-dot, 4px); }
+.mk-halo { r: var(--mk-halo, 6px); }
+.ck-tag { transform: translate(var(--x), var(--y)) scale(var(--k, 1)); }
+.viewer.card-mode .ck:not(.active) { opacity: .2; }  /* aktive Prüfstelle, andere gedimmt (UI_SYSTEM.md §5) */
+
+/* Kornzahl oben im Ergebnis: Vorschaubild + Zahl, als Ganzes antippbar */
+.count-card { display: flex; gap: var(--s3); align-items: center; text-decoration: none; color: inherit; }
+.count-card img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--r-s); flex: 0 0 72px; }
+.count-card .big-num { font-size: var(--fs-num-l); }
+.count-card .big-num small { font: var(--fw-text) var(--fs-body) var(--f-sans); color: var(--ink-2); }
+
+/* Impressum unten, leise */
+.imprint { max-width: var(--page-max); margin: 0 auto; padding: var(--s4) var(--gutter) var(--s5);
+  font: var(--fw-text) var(--fs-small)/1.4 var(--f-sans); color: var(--ink-2); border-top: var(--hair) solid var(--rule); }

@@ -1,0 +1,18 @@
+{
+ "split": "test",
+ "version": "v1.0.2",
+ "fingerprint": "422967946cbd",
+ "commit": "44a553a",
+ "images": [
+  "count_1000/count_1000-000_galaxy-s23_IMG_20261026_122659.jpg",
+  "count_1000/count_1000-001_galaxy-s23_IMG_20261026_165756.jpg",
+  "count_1000/count_1000-004_galaxy-s23_IMG_20261026_190437.jpg",
+  "count_1000/count_1000-002_galaxy-s23_IMG_20261026_184810.jpg",
+  "count_1000/count_1000-003_galaxy-s23_IMG_20261026_190004.jpg",
+  "count_1000/count_1000-000_iphone-8_IMG_6694.jpg",
+  "count_1000/count_1000-001_galaxy-s23_IMG_20261026_185159.jpg",
+  "count_1000/count_1000-004_galaxy-s23_IMG_20261026_190520.jpg",
+  "count_1000/count_1000-002_iphone-8_IMG_6706.jpg",
+  "count_1000/count_1000-003_galaxy-s23_IMG_20261026_190052.jpg"
+ ]
+}

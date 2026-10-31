@@ -1,0 +1,492 @@
+[
+  {
+    "file_name": "S02/S02-021_iphone-8_IMG_1321.jpg",
+    "n": 584,
+    "dominant_size": [
+      93.0,
+      94.0
+    ],
+    "dominant_size_n": 549,
+    "multiple_centres": 434
+  },
+  {
+    "file_name": "S02/S02-022_galaxy-s23_20261002_170449.jpg",
+    "n": 614,
+    "dominant_size": [
+      93.0,
+      71.0
+    ],
+    "dominant_size_n": 572,
+    "multiple_centres": 378
+  },
+  {
+    "file_name": "S02/S02-022_iphone-8_IMG_1325.jpg",
+    "n": 609,
+    "dominant_size": [
+      81.0,
+      79.0
+    ],
+    "dominant_size_n": 585,
+    "multiple_centres": 465
+  },
+  {
+    "file_name": "S02/S02-023_iphone-8_IMG_1327.jpg",
+    "n": 637,
+    "dominant_size": [
+      95.0,
+      84.0
+    ],
+    "dominant_size_n": 604,
+    "multiple_centres": 474
+  },
+  {
+    "file_name": "S02/S02-024_galaxy-s23_20261002_180218.jpg",
+    "n": 666,
+    "dominant_size": [
+      58.5,
+      97.0
+    ],
+    "dominant_size_n": 646,
+    "multiple_centres": 431
+  },
+  {
+    "file_name": "S02/S02-025_iphone-8_IMG_1334.jpg",
+    "n": 675,
+    "dominant_size": [
+      93.5,
+      97.5
+    ],
+    "dominant_size_n": 655,
+    "multiple_centres": 486
+  },
+  {
+    "file_name": "S02/S02-026_galaxy-s23_20261002_180623.jpg",
+    "n": 687,
+    "dominant_size": [
+      98.0,
+      77.0
+    ],
+    "dominant_size_n": 648,
+    "multiple_centres": 554
+  },
+  {
+    "file_name": "S02/S02-026_iphone-8_IMG_1338.jpg",
+    "n": 689,
+    "dominant_size": [
+      87.0,
+      78.0
+    ],
+    "dominant_size_n": 665,
+    "multiple_centres": 510
+  },
+  {
+    "file_name": "S02/S02-027_iphone-8_IMG_1340.jpg",
+    "n": 766,
+    "dominant_size": [
+      127.0,
+      101.0
+    ],
+    "dominant_size_n": 750,
+    "multiple_centres": 636
+  },
+  {
+    "file_name": "S02/S02-028_galaxy-s23_20261002_181551.jpg",
+    "n": 790,
+    "dominant_size": [
+      82.0,
+      80.0
+    ],
+    "dominant_size_n": 735,
+    "multiple_centres": 532
+  },
+  {
+    "file_name": "S02/S02-029_iphone-8_IMG_1346.jpg",
+    "n": 789,
+    "dominant_size": [
+      109.5,
+      103.5
+    ],
+    "dominant_size_n": 759,
+    "multiple_centres": 674
+  },
+  {
+    "file_name": "S02/S02-030_galaxy-s23_20261002_182135.jpg",
+    "n": 755,
+    "dominant_size": [
+      95.0,
+      78.5
+    ],
+    "dominant_size_n": 690,
+    "multiple_centres": 542
+  },
+  {
+    "file_name": "S02/S02-030_iphone-8_IMG_1350.jpg",
+    "n": 754,
+    "dominant_size": [
+      77.0,
+      61.0
+    ],
+    "dominant_size_n": 709,
+    "multiple_centres": 556
+  },
+  {
+    "file_name": "S03/S03-024_galaxy-s23_IMG_20260921_141843.jpg",
+    "n": 648,
+    "dominant_size": [
+      84.0,
+      76.5
+    ],
+    "dominant_size_n": 622,
+    "multiple_centres": 308
+  },
+  {
+    "file_name": "S03/S03-024_iphone-8_IMG_6434.jpg",
+    "n": 646,
+    "dominant_size": [
+      79.5,
+      101.0
+    ],
+    "dominant_size_n": 630,
+    "multiple_centres": 450
+  },
+  {
+    "file_name": "S03/S03-025_galaxy-s23_IMG_20260921_142821.jpg",
+    "n": 730,
+    "dominant_size": [
+      80.0,
+      71.0
+    ],
+    "dominant_size_n": 700,
+    "multiple_centres": 300
+  },
+  {
+    "file_name": "S03/S03-026_galaxy-s23_IMG_20260921_143457.jpg",
+    "n": 705,
+    "dominant_size": [
+      73.0,
+      75.5
+    ],
+    "dominant_size_n": 675,
+    "multiple_centres": 355
+  },
+  {
+    "file_name": "S03/S03-026-2_iphone-8_IMG_6460.jpg",
+    "n": 707,
+    "dominant_size": [
+      107.0,
+      80.0
+    ],
+    "dominant_size_n": 695,
+    "multiple_centres": 517
+  },
+  {
+    "file_name": "S03/S03-027_galaxy-s23_IMG_20260921_144040.jpg",
+    "n": 662,
+    "dominant_size": [
+      42.0,
+      41.0
+    ],
+    "dominant_size_n": 642,
+    "multiple_centres": 16
+  },
+  {
+    "file_name": "S03/S03-027_iphone-8_IMG_6473.jpg",
+    "n": 678,
+    "dominant_size": [
+      79.5,
+      102.5
+    ],
+    "dominant_size_n": 640,
+    "multiple_centres": 377
+  },
+  {
+    "file_name": "S03/S03-028_iphone-8_IMG_6486.jpg",
+    "n": 654,
+    "dominant_size": [
+      94.0,
+      82.0
+    ],
+    "dominant_size_n": 641,
+    "multiple_centres": 389
+  },
+  {
+    "file_name": "S03/S03-029_galaxy-s23_IMG_20260921_145129.jpg",
+    "n": 676,
+    "dominant_size": [
+      87.0,
+      59.0
+    ],
+    "dominant_size_n": 650,
+    "multiple_centres": 196
+  },
+  {
+    "file_name": "S03/S03-029_iphone-8_IMG_6496.jpg",
+    "n": 690,
+    "dominant_size": [
+      112.0,
+      85.0
+    ],
+    "dominant_size_n": 669,
+    "multiple_centres": 389
+  },
+  {
+    "file_name": "S03/S03-030_iphone-8_IMG_6504.jpg",
+    "n": 674,
+    "dominant_size": [
+      73.0,
+      88.0
+    ],
+    "dominant_size_n": 639,
+    "multiple_centres": 386
+  },
+  {
+    "file_name": "S04/S04-021_galaxy-tab-s6-lite_IMG_20261015_142923.jpg",
+    "n": 727,
+    "dominant_size": [
+      56.0,
+      53.0
+    ],
+    "dominant_size_n": 680,
+    "multiple_centres": 189
+  },
+  {
+    "file_name": "S04/S04-022_galaxy-tab-s6-lite_IMG_20261015_143124.jpg",
+    "n": 736,
+    "dominant_size": [
+      52.0,
+      54.5
+    ],
+    "dominant_size_n": 694,
+    "multiple_centres": 214
+  },
+  {
+    "file_name": "S04/S04-023_pixel-9_PXL_20261015_123252853.jpg",
+    "n": 724,
+    "dominant_size": [
+      72.0,
+      70.5
+    ],
+    "dominant_size_n": 668,
+    "multiple_centres": 119
+  },
+  {
+    "file_name": "S04/S04-024_galaxy-tab-s6-lite_IMG_20261015_143544.jpg",
+    "n": 684,
+    "dominant_size": [
+      52.0,
+      48.5
+    ],
+    "dominant_size_n": 638,
+    "multiple_centres": 86
+  },
+  {
+    "file_name": "S04/S04-024_galaxy-tab-s6-lite_IMG_20261015_143546.jpg",
+    "n": 683,
+    "dominant_size": [
+      48.5,
+      45.0
+    ],
+    "dominant_size_n": 635,
+    "multiple_centres": 100
+  },
+  {
+    "file_name": "S04/S04-025_pixel-9_PXL_20261015_123700347.jpg",
+    "n": 765,
+    "dominant_size": [
+      62.0,
+      55.0
+    ],
+    "dominant_size_n": 716,
+    "multiple_centres": 180
+  },
+  {
+    "file_name": "S04/S04-026_galaxy-tab-s6-lite_IMG_20261015_144130.jpg",
+    "n": 789,
+    "dominant_size": [
+      58.0,
+      57.0
+    ],
+    "dominant_size_n": 755,
+    "multiple_centres": 187
+  },
+  {
+    "file_name": "S04/S04-027_pixel-9_PXL_20261015_124248146.jpg",
+    "n": 770,
+    "dominant_size": [
+      67.0,
+      75.0
+    ],
+    "dominant_size_n": 721,
+    "multiple_centres": 189
+  },
+  {
+    "file_name": "S04/S04-028_galaxy-tab-s6-lite_IMG_20261015_144431.jpg",
+    "n": 741,
+    "dominant_size": [
+      46.0,
+      52.0
+    ],
+    "dominant_size_n": 692,
+    "multiple_centres": 172
+  },
+  {
+    "file_name": "S04/S04-029_pixel-9_PXL_20261015_124651547.jpg",
+    "n": 749,
+    "dominant_size": [
+      62.0,
+      69.0
+    ],
+    "dominant_size_n": 692,
+    "multiple_centres": 140
+  },
+  {
+    "file_name": "S04/S04-030_galaxy-tab-s6-lite_IMG_20261015_144818.jpg",
+    "n": 782,
+    "dominant_size": [
+      45.0,
+      46.0
+    ],
+    "dominant_size_n": 740,
+    "multiple_centres": 135
+  },
+  {
+    "file_name": "S04/S04-030_galaxy-tab-s6-lite_IMG_20261015_144822.jpg",
+    "n": 777,
+    "dominant_size": [
+      47.0,
+      45.0
+    ],
+    "dominant_size_n": 736,
+    "multiple_centres": 187
+  },
+  {
+    "file_name": "S05/S05-021_galaxy-s23_IMG_20261015_152659.jpg",
+    "n": 686,
+    "dominant_size": [
+      41.0,
+      43.0
+    ],
+    "dominant_size_n": 603,
+    "multiple_centres": 89
+  },
+  {
+    "file_name": "S05/S05-021_iphone-8_IMG_6649.jpg",
+    "n": 687,
+    "dominant_size": [
+      54.5,
+      56.0
+    ],
+    "dominant_size_n": 623,
+    "multiple_centres": 188
+  },
+  {
+    "file_name": "S05/S05-022_galaxy-s23_IMG_20261015_153422.jpg",
+    "n": 722,
+    "dominant_size": [
+      58.5,
+      42.0
+    ],
+    "dominant_size_n": 614,
+    "multiple_centres": 127
+  },
+  {
+    "file_name": "S05/S05-023_iphone-8_IMG_6658.jpg",
+    "n": 750,
+    "dominant_size": [
+      66.0,
+      60.0
+    ],
+    "dominant_size_n": 640,
+    "multiple_centres": 78
+  },
+  {
+    "file_name": "S05/S05-024_iphone-8_IMG_6662.jpg",
+    "n": 728,
+    "dominant_size": [
+      52.5,
+      67.0
+    ],
+    "dominant_size_n": 678,
+    "multiple_centres": 101
+  },
+  {
+    "file_name": "S05/S05-025_galaxy-s23_IMG_20261015_161949.jpg",
+    "n": 753,
+    "dominant_size": [
+      53.0,
+      38.0
+    ],
+    "dominant_size_n": 663,
+    "multiple_centres": 159
+  },
+  {
+    "file_name": "S05/S05-025_iphone-8_IMG_6667.jpg",
+    "n": 769,
+    "dominant_size": [
+      55.5,
+      58.5
+    ],
+    "dominant_size_n": 703,
+    "multiple_centres": 234
+  },
+  {
+    "file_name": "S05/S05-026_galaxy-s23_IMG_20261015_162042.jpg",
+    "n": 771,
+    "dominant_size": [
+      50.0,
+      44.0
+    ],
+    "dominant_size_n": 676,
+    "multiple_centres": 71
+  },
+  {
+    "file_name": "S05/S05-027_iphone-8_IMG_6675.jpg",
+    "n": 734,
+    "dominant_size": [
+      72.0,
+      67.5
+    ],
+    "dominant_size_n": 636,
+    "multiple_centres": 136
+  },
+  {
+    "file_name": "S05/S05-028_galaxy-s23_IMG_20261015_162423.jpg",
+    "n": 766,
+    "dominant_size": [
+      54.5,
+      56.5
+    ],
+    "dominant_size_n": 646,
+    "multiple_centres": 37
+  },
+  {
+    "file_name": "S05/S05-029_iphone-8_IMG_6684.jpg",
+    "n": 733,
+    "dominant_size": [
+      67.0,
+      74.0
+    ],
+    "dominant_size_n": 656,
+    "multiple_centres": 154
+  },
+  {
+    "file_name": "S05/S05-030_galaxy-s23_IMG_20261015_162805.jpg",
+    "n": 745,
+    "dominant_size": [
+      57.5,
+      60.0
+    ],
+    "dominant_size_n": 601,
+    "multiple_centres": 90
+  },
+  {
+    "file_name": "S05/S05-030_iphone-8_IMG_6688.jpg",
+    "n": 744,
+    "dominant_size": [
+      63.5,
+      58.0
+    ],
+    "dominant_size_n": 650,
+    "multiple_centres": 231
+  }
+]

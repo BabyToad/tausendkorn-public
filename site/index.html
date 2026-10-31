@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F5F3">
+<title>Tausendkorn · Körner zählen mit einem Foto</title>
+<meta name="description" content="Eine Handvoll Getreide auf A4, ein Foto vom Handy: jedes Korn markiert, Tausendkorngewicht und Aussaatmenge in kg/ha. Projekt von Team Goldpfanne beim Tausendkorn-Hackathon 2026, Universität Leipzig.">
+<link rel="canonical" href="https://goldpfanne-tausendkorn.pages.dev/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Tausendkorn · Körner zählen mit einem Foto">
+<meta property="og:description" content="Handvoll aufs Blatt, Foto, jedes Korn markiert. Daraus TKG und Aussaatmenge in kg/ha. Team Goldpfanne, Tausendkorn-Hackathon 2026.">
+<meta property="og:url" content="https://goldpfanne-tausendkorn.pages.dev/">
+<meta property="og:image" content="https://goldpfanne-tausendkorn.pages.dev/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#">Tausendkorn <span class="muted">· Team Goldpfanne</span></a>
+  <nav>
+    <a href="#demo">Demo</a>
+    <a href="#rechner">Rechner</a>
+    <a href="#ergebnisse">Ergebnisse</a>
+    <a href="/pipeline/">Pipeline</a>
+    <a href="#team">Team</a>
+    <a class="pill" href="/pitch/">Pitch</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="label">Tausendkorn-Hackathon 2026 · Smart Farming Lab Leipzig</p>
+    <h1>Tausend Körner zählen.<br>Mit einem Foto.</h1>
+    <p class="lead">Vor der Aussaat braucht jeder Betrieb das Tausendkorngewicht seiner Partie. Heute heißt das: Körner von Hand abzählen. Wir machen daraus ein Handyfoto – jedes Korn bekommt einen Punkt, unsichere Stellen werden gezeigt statt versteckt.</p>
+    <div class="cta">
+      <a class="btn" href="#demo">Gespeicherte Zählung ansehen</a>
+      <a class="btn secondary" href="#rechner">Aussaatmenge rechnen</a>
+    </div>
+  </div>
+  <figure class="hero-photo">
+    <img src="pitch/img/titel_roggen.jpg" width="1200" height="1500" alt="Roggenkörner auf weißem Papier, auf jedem Korn ein blauer Punkt" fetchpriority="high">
+    <figcaption><span class="dot"></span> 997 Marken · Roggen, Testfoto (26.10.) · Soll 1000</figcaption>
+  </figure>
+</section>
+
+<section class="wrap" id="ablauf">
+  <p class="label">So funktioniert es</p>
+  <h2>Vom Sack bis zur Drillmaschine in vier Schritten</h2>
+  <ol class="steps">
+    <li><b class="n">1</b><div><h3>Probe streuen</h3><p>Eine Handvoll aus mehreren Stellen von Sack oder Hänger, locker auf ein weißes A4-Blatt. Keine Auswahl, kein Abzählen.</p></div></li>
+    <li><b class="n">2</b><div><h3>Foto</h3><p>Mit Handy oder iPad von oben. Kein Labor, kein Zubehör.</p></div></li>
+    <li><b class="n">3</b><div><h3>Jedes Korn markiert</h3><p>Das Bild wird in kleine Ausschnitte geteilt, dichter dort, wo die Körner eng liegen. Ein Bildmodell (Gemini 4 Argon) setzt pro Korn einen Punkt und prüft unsichere Ausschnitte ein zweites Mal. Ein zweites, selbst trainiertes Modell (YOLO11s) haben wir offline verglichen; in der App ist es noch nicht eingebaut.</p></div></li>
+    <li><b class="n unsure">4</b><div><h3>Prüfen oder überspringen</h3><p>Unsichere Stellen sind nummeriert. Antippen und korrigieren – oder mit Fehlerspanne weiter. Dann Gewicht und Keimfähigkeit eingeben: heraus kommen Tausendkorngewicht, Aussaatmenge in kg/ha und das Sollgewicht für die Abdrehprobe.</p></div></li>
+  </ol>
+  <div class="card why">
+    <p><span class="num">1 %</span> Zählfehler = 1 % falsche Saatmenge auf dem ganzen Schlag.</p>
+    <p class="muted">Beispiel aus unserem Rechner: Mit dem Sorten-Durchschnitt (49,2 g) statt dem gemessenen TKG (46,3 g) wären es 166 statt 156 kg/ha – 10 kg/ha zu viel Saatgut.</p>
+  </div>
+</section>
+
+<section class="band" id="demo">
+  <div class="wrap">
+    <p class="label">Demo</p>
+    <h2>Eine echte Zählung ansehen</h2>
+    <p class="note"><b>Aufgezeichnet, nicht live.</b> Diese Seite zählt nicht selbst. Sie zeigt Ergebnisse, die unsere eingefrorene Pipeline v1.0.2 bei der finalen Messung gesetzt hat (Holdout und Test, nicht nachjustiert; ein früherer Holdout-Lauf mit 11 Bildern wurde nach Fehlerkorrekturen verworfen und neu gemessen). Tippe auf ein Korn, um eine Marke zu entfernen, auf eine freie Stelle, um eine zu setzen – so wie in der App.</p>
+    <div class="picker" id="picker" role="tablist" aria-label="Beispielfoto wählen"></div>
+  </div>
+  <div class="viewer-wrap">
+    <div class="viewer" id="viewer">
+      <svg id="stage" role="img" aria-label="Foto mit Kornmarken"></svg>
+      <div class="zoom">
+        <button type="button" id="zin" aria-label="Vergrößern">+</button>
+        <button type="button" id="zout" aria-label="Verkleinern">−</button>
+        <button type="button" id="zall" aria-label="Ganzes Blatt">⤢</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="counts" id="counts"></div>
+    <p class="help" id="vhelp">Vergrößern mit + oder zwei Fingern, verschieben mit einem Finger. In der App steht neben der Zahl die Fehlerspanne ±3 %.</p>
+    <div id="checks"></div>
+    <button type="button" class="btn secondary" id="touse">Diese Zahl im Rechner verwenden ↓</button>
+  </div>
+</section>
+
+<section class="wrap" id="app">
+  <p class="label">Feld-App</p>
+  <h2>So sieht die App aus</h2>
+  <p class="small muted">Bildschirmfotos der App für iPad und Handy im Vorführmodus mit gespeichertem Ergebnis, Gewichte sind Beispielwerte. Aufgenommen vor der Umstellung auf die gemessene Fehlerspanne ±3 %.</p>
+  <div class="shots">
+    <figure><img src="img/app/02_foto.jpg" width="390" height="800" loading="lazy" alt="App: Fotoanleitung in drei Sätzen, dann Kamera oder Galerie"><figcaption>Foto aufnehmen</figcaption></figure>
+    <figure><img src="img/app/04_gezaehlt.jpg" width="390" height="800" loading="lazy" alt="App: Kornzahl mit allen Marken und unsicheren Stellen"><figcaption>Gezählt</figcaption></figure>
+    <figure><img src="img/app/05_pruefkarte.jpg" width="390" height="800" loading="lazy" alt="App: Prüfkarte mit vergrößertem Ausschnitt und Kommentar"><figcaption>Stelle prüfen</figcaption></figure>
+    <figure><img src="img/app/07_ergebnis.jpg" width="390" height="800" loading="lazy" alt="App: Ergebnis mit TKG und Aussaatmenge"><figcaption>TKG und kg/ha</figcaption></figure>
+  </div>
+</section>
+
+<section class="wrap" id="rechner">
+  <p class="label">Saatgutrechner</p>
+  <h2>Von der Kornzahl zur Drillmaschine</h2>
+  <form class="calc" id="calc" autocomplete="off" onsubmit="return false">
+    <button type="button" class="btn secondary" id="c-example">Beispiel einsetzen (Winterweizen)</button>
+    <label class="field"><span>Kultur</span>
+      <select id="c-kultur"></select>
+    </label>
+    <div class="row2">
+      <label class="field"><span>Körner gezählt</span><input id="c-n" type="number" inputmode="numeric" min="1" step="1" value=""><i class="unit">Stück</i></label>
+      <label class="field"><span>Gewicht der ganzen Probe</span><input id="c-m" type="number" inputmode="decimal" min="0" step="0.01" value=""><i class="unit">g</i></label>
+    </div>
+    <p class="help">Wiegen Sie die ganze Probe, wie sie ist – mit Bruch und Spreu. Gezählt werden nur ganze Körner. So ergibt sich das Gewicht der Partie pro 1000 Körner – genau das, was die Drillmaschine ausbringt, denn der Besatz ist in Probe und Partie gleich verteilt. (Ein Labor-TKG ohne Besatz liegt etwas niedriger.)</p>
+    <div class="row2">
+      <label class="field"><span>Keimfähigkeit</span><input id="c-kf" type="number" inputmode="decimal" min="50" max="100" step="1" value="" placeholder="Etikett"><i class="unit">%</i></label>
+      <label class="field"><span id="c-s-label">Saatstärke</span><input id="c-s" type="number" inputmode="numeric" min="100" max="600" step="10" value="320"><i class="unit" id="c-s-unit">keimf. Körner/m²</i></label>
+    </div>
+    <p class="help" id="c-s-help"></p>
+    <details id="c-more">
+      <summary>Mehr: Pflanzen-Modus</summary>
+      <label class="check"><input type="checkbox" id="c-plant"> Ziel als Pflanzen/m² mit Feldaufgang rechnen</label>
+      <div class="seg" id="c-fa" role="group" aria-label="Feldaufgang">
+        <button type="button" data-fa="95">gut 95 %</button>
+        <button type="button" data-fa="90" aria-pressed="true">normal 90 %</button>
+        <button type="button" data-fa="85">schwierig 85 %</button>
+      </div>
+      <p class="help">Empfehlungen in keimfähigen Körnern/m² enthalten die üblichen Auflaufverluste schon. Feldaufgang nur hier abziehen, sonst wird zu dick gesät.</p>
+    </details>
+    <div class="result">
+      <div><p class="label">TKG</p><p class="val"><span id="r-tkg">–</span> <i>g</i></p></div>
+      <div><p class="label">Abzulegen</p><p class="val"><span id="r-k">–</span> <i>Körner/m²</i></p></div>
+      <div class="main"><p class="label">Aussaatmenge</p><p class="val xl"><span id="r-a">–</span> <i>kg/ha</i></p></div>
+    </div>
+    <p class="formula" id="r-formula"></p>
+    <p class="warn-line" id="r-warn" hidden></p>
+    <div class="abdreh">
+      <p class="label">Abdrehprobe an der Drillmaschine</p>
+      <div class="seg" id="c-area" role="group" aria-label="Abgedrehte Fläche">
+        <button type="button" data-area="0.025" aria-pressed="true">1/40 ha</button>
+        <button type="button" data-area="0.1">1/10 ha</button>
+      </div>
+      <p class="val"><span id="r-ab">–</span> <i>kg Sollgewicht</i></p>
+      <p class="help">Die Fläche nennt der Hersteller der Drillmaschine. Die Handvoll auf dem Blatt ist keine Abdrehprobe – abgedreht wird an der Maschine.</p>
+    </div>
+  </form>
+  <p class="small muted">Vorgaben je Kultur sind Vorschläge zum Ändern (Quellen: LG Getreidefibel, KWS, Saaten-Union, AELF); die Sortenempfehlung des Züchters geht vor. Formeln: <code>TKG = m / n × 1000</code>, <code>kg/ha = S × TKG / KF</code>.</p>
+</section>
+
+<section class="band" id="ergebnisse">
+  <div class="wrap">
+    <p class="label">Ehrliche Ergebnisse</p>
+    <h2>Wie genau ist das?</h2>
+    <p>Gemessen nach festem Protokoll: Entscheidungen nur auf Entwicklungsbildern, dann die Pipeline eingefroren (v1.0.2) und in dieser Fassung einmal auf zurückgehaltenen Bildern gemessen, ohne Nachjustieren. Ein früherer Holdout-Lauf (v1.0, 11 Bilder) wurde nach Fehlerkorrekturen verworfen und neu gemessen.</p>
+    <div class="stats">
+      <div class="card">
+        <p class="label">Holdout · gleiche Aufnahmetage wie Training</p>
+        <p><span class="num l">1,85</span> <i>% Fehler</i></p>
+        <p class="muted">30 von 40 Fotos mit 170–482 Körnern (Hafer, Gerste, Weizen). Im Mittel 5,9 Körner daneben, höchstens 14. Hartweizen fehlt (Budget-Stopp). Die Fotos stammen von denselben Aufnahmetagen wie die Trainingsbilder – eine Abweichung vom eigenen Protokoll.</p>
+      </div>
+      <div class="card">
+        <p class="label">Test count_1000 · anderer Aufnahmetag (26.10.), Roggen neu</p>
+        <p><span class="num l">15,8</span> <i>Körner MAE</i></p>
+        <p class="muted">Testfotos von einem anderen Aufnahmetag (26.10.; Trainingsfotos 16.9.–15.10.). Nur 6 von 85 Fotos, alle fünf Arten, je 1000 Körner. Roggen war nie im Training: −3. Hartweizen: Label 1000, beide Zähler finden rund 945 Körner. Ursache offen; wir werten gegen das offizielle Label und fragen bei den Veranstaltern nach.</p>
+      </div>
+    </div>
+    <p class="small">Was wir daraus lesen: Innerhalb bekannter Aufnahmebedingungen ist die Zählung auf etwa 2 % genau. Fehler sind je Art gerichtet (Gerste eher zu hoch, Weizen eher zu niedrig). Bei 6 Testbildern ist das noch keine belastbare Aussage über neue Bedingungen. Ein zweites, selbst trainiertes Modell (YOLO11s) haben wir offline verglichen: auf denselben 30 Holdout-Bildern MAE 3,2, auf denselben 6 Testbildern MAE 12,5. Beide können dieselben, etwa verdeckten Körner übersehen. Kombiniert eingesetzt ist es noch nicht.</p>
+    <p class="small">Fehlerspanne in der App: ±3 %. Beobachtet, keine Garantie: Bei 26 von 30 Holdout-Fotos und 5 von 6 Testfotos lag die Zählung innerhalb dieser Spanne; an anderen Tagen kann der Fehler größer sein.</p>
+
+    <h3 class="gal-h">Alle 36 gemessenen Fotos</h3>
+    <p class="small muted">Antippen öffnet das Foto oben in der Demo.</p>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<section class="wrap" id="team">
+  <p class="label">Team Goldpfanne</p>
+  <h2>Leon Böhlau · Jonas Heinke</h2>
+  <div class="people">
+    <div class="person">
+      <img src="img/team/leon.jpg" alt="Leon Böhlau" width="112" height="112" loading="lazy">
+      <div>
+        <b>Leon Böhlau</b>
+        <p class="links"><a href="https://www.linkedin.com/in/leon-b%C3%B6hlau-17b1aa390/" rel="noopener">LinkedIn ↗</a></p>
+      </div>
+    </div>
+    <div class="person">
+      <img src="img/team/jonas.jpg" alt="Jonas Heinke" width="112" height="112" loading="lazy">
+      <div>
+        <b>Jonas Heinke</b>
+        <p class="role">Arbeitet bei <a href="https://playinsightstudios.com/" rel="noopener">PlayInsight Studios</a> und organisiert <a href="https://www.proludens.com/" rel="noopener">ProLudens</a> mit, das Serious-Games-Kollektiv aus Leipzig.</p>
+        <p class="links"><a href="https://www.linkedin.com/in/jonas-heinke/" rel="noopener">LinkedIn ↗</a><a href="https://www.allknivesnobagel.com/" rel="noopener">Website ↗</a></p>
+      </div>
+    </div>
+  </div>
+  <p>Gebaut in einem Tag beim Tausendkorn-Hackathon des Smart Farming Lab, Universität Leipzig, 27.–28.10.2026. Zählpipeline, Feld-App fürs iPad, Saatgutrechner und dieser Pitch.</p>
+  <div class="cta">
+    <a class="btn" href="/pitch/">Pitch-Deck ansehen</a>
+  </div>
+  <p class="small muted">Der Quellcode ist derzeit privat.</p>
+</section>
+
+</main>
+
+<footer class="wrap foot">
+  <p><b>Fotos:</b> Datensatz <a href="https://huggingface.co/datasets/SmartFarmingLab/corn1000">corn1000</a>, Smart Farming Lab, Universität Leipzig, <a href="https://creativecommons.org/licenses/by-nc/4.0/deed.de">CC BY-NC 4.0</a>. Fotos verkleinert, Marken von uns ergänzt.</p>
+  <p>Statische Seite ohne Tracking und ohne Cookies. Für Sprachmodelle: <a href="/llms.txt">llms.txt</a>, <a href="/llms-full.txt">llms-full.txt</a>.</p>
+  <p class="muted" id="stamp"></p>
+</footer>
+
+<script src="calc.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

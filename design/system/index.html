@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tausendkorn UI-System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="tausendkorn.css">
+<style>
+/* Nur für diese Referenzseite, nicht übernehmen. */
+.ref-sec { border-top: var(--line-strong) solid var(--ink); padding-top: var(--s3); margin-top: var(--s6); }
+.ref-sec > .eyebrow { display: block; margin-bottom: var(--s2); }
+.sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s2); }
+.sw div { background: var(--surface); border-radius: var(--r-s); box-shadow: inset 0 0 0 var(--hair) var(--rule); overflow: hidden; font: 400 13px/1.4 var(--f-mono); }
+.sw i { display: block; height: 52px; }
+.sw span { display: block; padding: 6px 8px; color: var(--ink-2); } .sw b { color: var(--ink); font-weight: 600; }
+.type-row { display: grid; grid-template-columns: 90px 1fr; gap: var(--s3); align-items: baseline; padding: var(--s2) 0; border-bottom: var(--hair) solid var(--rule); }
+.type-row code { font: 400 12px var(--f-mono); color: var(--ink-2); }
+.space { display: flex; align-items: flex-end; gap: var(--s3); flex-wrap: wrap; }
+.space div { display: grid; gap: 4px; justify-items: center; font: 400 12px var(--f-mono); color: var(--ink-2); }
+.space i { display: block; background: var(--mark); opacity: .8; }
+.demo-row { display: flex; gap: var(--s2); flex-wrap: wrap; margin-top: var(--s2); }
+.demo-row .btn { width: auto; flex: 1 1 160px; margin: 0; }
+.rule-list { margin: 0; padding-left: 1.2em; } .rule-list li { margin-bottom: var(--s1); }
+</style>
+</head>
+<body>
+<header class="bar"><a class="brand" href="#">Tausendkorn</a><span class="demo">UI-System</span></header>
+<main>
+  <div class="step">Richtung B · Labor · gewählt 27.10.2026</div>
+  <h1>UI-System der Feld-App</h1>
+  <p class="muted">Ruhiges Messinstrument: Graphit auf kühlem Papier, ein Blau für gezählte Körner, viel Luft. Jede Zahl in Mono. Diese Seite nutzt nur <code>tokens.css</code>, <code>tausendkorn.css</code> und <code>motion.js</code> mit den Klassennamen, die <code>app/static/app.js</code> heute schon erzeugt.</p>
+
+  <section class="ref-sec" id="farbe">
+    <span class="eyebrow">Farbe</span>
+    <div class="sw">
+      <div><i style="background:var(--bg)"></i><span><b>--bg</b> #F4F5F3<br>Seitengrund</span></div>
+      <div><i style="background:var(--surface)"></i><span><b>--surface</b> #FFF<br>Karten, Felder</span></div>
+      <div><i style="background:var(--ink)"></i><span><b>--ink</b> #14181B<br>16:1 · Text, Hauptknopf</span></div>
+      <div><i style="background:var(--ink-2)"></i><span><b>--ink-2</b> #434A50<br>8:1 · Nebentext</span></div>
+      <div><i style="background:var(--rule)"></i><span><b>--rule</b> #B9C0C4<br>nur Struktur</span></div>
+      <div><i style="background:var(--mark)"></i><span><b>--mark</b> #005FB8<br>gezählt, bestätigt</span></div>
+      <div><i style="background:var(--unsure)"></i><span><b>--unsure</b> #E08A00<br>unsicher (+ Strich)</span></div>
+      <div><i style="background:var(--unsure-ink)"></i><span><b>--unsure-ink</b> #8A4B00<br>7:1 · Text dazu</span></div>
+      <div><i style="background:var(--bad)"></i><span><b>--bad</b> #A3261B<br>Fehler (+ ✕ + Wort)</span></div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="schrift">
+    <span class="eyebrow">Schrift · IBM Plex Sans + Plex Mono</span>
+    <div class="type-row"><code>h1 34</code><span style="font:600 34px/1.1 var(--f-sans);letter-spacing:-.02em">Körner fotografieren</span></div>
+    <div class="type-row"><code>body 18</code><span>Bruch, Spreu und Steine heraus. Auf weißem A4 glattstreichen.</span></div>
+    <div class="type-row"><code>label 13</code><span class="eyebrow">Gewicht dieser Körner</span></div>
+    <div class="type-row"><code>num-l 54</code><span class="big-num">47,7<small>g TKG</small></span></div>
+    <div class="type-row"><code>num-xl 88</code><span class="big-num" style="font-size:var(--fs-num-xl)">151<small>kg/ha</small></span></div>
+  </section>
+
+  <section class="ref-sec" id="raum">
+    <span class="eyebrow">Raum · 4 / 8 / 16 / 24 / 40 / 64</span>
+    <div class="space">
+      <div><i style="width:4px;height:4px"></i>s1</div><div><i style="width:8px;height:8px"></i>s2</div><div><i style="width:16px;height:16px"></i>s3</div>
+      <div><i style="width:24px;height:24px"></i>s4</div><div><i style="width:40px;height:40px"></i>s5</div><div><i style="width:64px;height:64px"></i>s6</div>
+      <div><i style="width:60px;height:60px;background:none;box-shadow:inset 0 0 0 2px var(--ink);opacity:1"></i>Tippziel 60</div>
+    </div>
+  </section>
+
+  <section class="ref-sec" id="knoepfe">
+    <span class="eyebrow">Knöpfe und Auswahl</span>
+    <button class="btn big">Weiter zum Foto</button>
+    <button class="btn secondary">Nächste Probe, gleiche Sorte</button>
+    <div class="row" style="margin-top:var(--s2)"><button class="btn secondary tool">Rückgängig</button><button class="btn secondary tool" id="zout">−</button><button class="btn secondary tool" id="zin">+</button></div>
+    <button class="btn danger">Probe löschen</button>
+    <button class="link">Trotzdem zählen</button>
+    <div class="chips"><button class="chip">Winterweizen</button><button class="chip on">Wintergerste</button><button class="chip">Winterroggen</button><button class="chip">Hafer</button></div>
+    <div class="seg" role="group" aria-label="Abgedrehte Fläche"><button aria-pressed="true">1/40 ha</button><button aria-pressed="false">1/10 ha</button></div>
+  </section>
+
+  <section class="ref-sec" id="eingabe">
+    <span class="eyebrow">Eingaben</span>
+    <label class="field" for="g">Gewicht dieser Körner <small>Waage mit 0,1 g</small></label>
+    <div class="unit"><input id="g" inputmode="decimal" value="19,6"><span>g</span></div>
+    <label class="field" for="sorte">Sorte <small>optional</small></label>
+    <input id="sorte" type="text" placeholder="z. B. KWS Higgins">
+  </section>
+
+  <section class="ref-sec" id="hinweise">
+    <span class="eyebrow">Hinweise, Fortschritt, Plaketten</span>
+    <div class="card warn">Einige Körner liegen übereinander. Kurz auseinanderstreichen, dann neu fotografieren.</div>
+    <div class="card bad">Das Zählen hat nicht geklappt. Ihr Foto ist gespeichert.</div>
+    <div class="card">Sie können die App schließen. Das Ergebnis erscheint im Verlauf.</div>
+    <div class="progress"><div style="width:62%"></div></div>
+    <div style="display:flex;gap:var(--s2);flex-wrap:wrap"><span class="badge warn">6 Stellen prüfen</span><span class="badge">wartet auf Netz</span><span class="badge bad">nicht geklappt</span><span class="ok">Prüfstellen bestätigt</span></div>
+  </section>
+
+  <section class="ref-sec" id="verlauf">
+    <span class="eyebrow">Verlauf</span>
+    <a class="item" href="#"><img src="../shared/probe.jpg" alt=""><div><div class="t">Wintergerste · Hänger 3</div><div class="s">27.10. 18:42 · 411 K.</div><span class="badge warn">6 Stellen prüfen</span></div><div class="k">—</div></a>
+    <a class="item" href="#"><img src="../shared/probe.jpg" alt=""><div><div class="t">Winterweizen · Hänger 2</div><div class="s">27.10. 16:10 · 982 K.</div></div><div class="k">46,3<small>g TKG</small>156<small>kg/ha</small></div></a>
+  </section>
+
+  <section class="ref-sec" id="pruefen">
+    <span class="eyebrow">Prüfen · Marken und Prüfstellen</span>
+    <div class="count-head"><span class="big-num"><span id="n">411</span><small>Körner</small></span><span class="step" id="tiles">6 Stellen unsicher</span></div>
+    <div class="progress"><div id="prog" style="width:100%"></div></div>
+    <div class="viewer"><svg id="svg" preserveAspectRatio="xMidYMid meet"></svg><div class="hint" id="hint" hidden>Korn antippen: hinzufügen. Punkt antippen: entfernen.</div></div>
+    <div class="demo-row"><button class="btn secondary" id="play">Zählen abspielen</button><button class="btn secondary" id="zoom">Stelle 2 ansehen</button><button class="btn secondary" id="whole">Ganzes Foto</button></div>
+    <button class="spot" id="spot2"><span class="n">2</span><span>Dichter Haufen, alle Körner markiert. Stimmt das?</span></button>
+  </section>
+
+  <section class="ref-sec" id="ergebnis">
+    <span class="eyebrow">Ergebnis</span>
+    <div class="result">
+      <div class="card"><div class="label">Körner</div><div class="val"><span id="rN">411</span></div></div>
+      <div class="card"><div class="label">TKG</div><div class="val">47,7<small>g</small></div></div>
+      <div class="card main"><div class="label">Aussaatmenge</div><div class="val"><span id="rKg">151</span><small>kg/ha</small></div>
+        <div class="scale" id="scale"></div>
+        <div class="help">Spanne 145–157 kg/ha (± 4,0 %, 6 Stellen ungeprüft)</div></div>
+    </div>
+    <div class="formula">300 keimf. K./m² ÷ 95 % × 47,7 g = <b>151 kg/ha</b><br>316 Körner/m² ablegen · Drillmaschine auf 151 kg/ha abdrehen</div>
+    <button class="btn secondary" id="replay" style="margin-top:var(--s3)">Ergebnis abspielen</button>
+  </section>
+
+  <section class="ref-sec" id="regeln">
+    <span class="eyebrow">Fünf Regeln</span>
+    <ol class="rule-list">
+      <li>Ein Blau. Es heißt „gezählt“ oder „bestätigt“, sonst nichts.</li>
+      <li>Unsicher ist immer gestrichelt, nummeriert und benannt, nie nur orange.</li>
+      <li>Jede Zahl in Plex Mono 600, Einheit klein daneben.</li>
+      <li>Haarlinien gliedern, tragen aber nie Inhalt.</li>
+      <li>Bewegung nur für Zählen, Marke, Unsicher, Ergebnis. Gemessene Zahlen zählen nie hoch.</li>
+    </ol>
+  </section>
+</main>
+
+<script src="../shared/sample.js"></script>
+<script src="motion.js"></script>
+<script>
+// Beispiel: Foto mit Marken nach UI_SYSTEM.md §5, gebaut nur mit TKMotion.
+const S = window.TK_SAMPLE, M = window.TKMotion, NS = 'http://www.w3.org/2000/svg';
+const svg = document.getElementById('svg');
+const full = [0, 0, S.w, S.h];
+svg.setAttribute('viewBox', full.join(' '));
+svg.innerHTML = `<image href="../shared/${S.src}" width="${S.w}" height="${S.h}"/><g id="cks"></g><g id="mks"></g>`;
+const marks = S.points.map(([x, y]) => {
+  const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'mk reveal in');
+  g.dataset.x = x; g.dataset.y = y;
+  g.innerHTML = '<circle class="mk-halo"/><circle class="mk-dot"/>';
+  svg.querySelector('#mks').appendChild(g); return g;
+});
+S.checks.forEach((c, i) => {
+  const [x0, y0, x1, y1] = c.region, g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'ck'); g.dataset.x = x0; g.dataset.y = y0;
+  g.innerHTML = `<rect class="ck-back" x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}" rx="6"/><rect class="ck-box" x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}" rx="6"/><g class="ck-tag"><circle r="11"/><text text-anchor="middle" dominant-baseline="central">${i + 1}</text></g>`;
+  svg.querySelector('#cks').appendChild(g);
+});
+function size(k) {
+  const { dot, halo } = M.markSize(k);
+  svg.style.setProperty('--k', k);
+  marks.forEach((g) => {
+    g.setAttribute('transform', `translate(${g.dataset.x} ${g.dataset.y}) scale(${k})`);
+    g.children[0].setAttribute('r', halo); g.children[1].setAttribute('r', dot);
+  });
+  svg.querySelectorAll('.ck').forEach((g) => g.querySelector('.ck-tag').setAttribute('transform', `translate(${g.dataset.x} ${g.dataset.y}) scale(${k})`));
+}
+const curK = () => { const vb = svg.getAttribute('viewBox').split(' ').map(Number); return Math.max(vb[2] / svg.clientWidth, vb[3] / svg.clientHeight); };
+new ResizeObserver(() => size(curK())).observe(svg);
+
+document.getElementById('play').onclick = async () => {
+  await M.zoomViewBox(svg, full, { ms: 0, onFrame: (_, k) => size(k) });
+  marks.forEach((m) => m.classList.remove('in'));
+  document.getElementById('tiles').textContent = 'gefunden';
+  await M.revealMarks(marks, S.points, { onTile: (n, i, tot) => {
+    document.getElementById('prog').style.width = (i / tot * 100) + '%';
+  } });
+  document.getElementById('tiles').textContent = '6 Stellen unsicher';
+};
+const zoom2 = async () => {
+  svg.querySelectorAll('.ck').forEach((g, i) => g.classList.toggle('active', i === 1));
+  await M.zoomViewBox(svg, M.fitRegion(S.checks[1].region, svg), { onFrame: (_, k) => size(k) });
+  document.getElementById('hint').hidden = false;
+  document.getElementById('spot2').classList.add('active');
+};
+document.getElementById('zoom').onclick = zoom2;
+document.getElementById('spot2').onclick = zoom2;
+document.getElementById('whole').onclick = async () => {
+  document.getElementById('hint').hidden = true; document.getElementById('spot2').classList.remove('active');
+  svg.querySelectorAll('.ck').forEach((g) => g.classList.remove('active'));
+  await M.zoomViewBox(svg, full, { onFrame: (_, k) => size(k) });
+};
+
+function scale() {
+  const c = 150.6, lo = c * .88, hi = c * 1.12, X = (v) => ((v - lo) / (hi - lo) * 100) + '%';
+  let h = '<div class="axis"></div>';
+  for (let v = 140; v <= hi; v += 10) h += `<div class="tick" style="left:${X(v)}"><span>${v}</span></div>`;
+  const L = X(144.6), W = `calc(${X(156.6)} - ${L})`;
+  h += `<div class="band" style="left:${L};width:${W}"></div><div class="br" style="left:${L};width:${W}"></div><div class="pt" style="left:${X(c)}"></div>`;
+  document.getElementById('scale').innerHTML = h;
+}
+scale();
+document.getElementById('replay').onclick = () => {
+  document.getElementById('scale').innerHTML = '';
+  // Gemessene Zahlen stehen sofort; nur der Messbalken zeichnet sich auf.
+  requestAnimationFrame(scale);
+};
+document.querySelectorAll('.chip').forEach((c) => c.onclick = () => document.querySelectorAll('.chip').forEach((x) => x.classList.toggle('on', x === c)));
+document.querySelectorAll('.seg button').forEach((b) => b.onclick = () => document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', x === b)));
+</script>
+</body>
+</html>

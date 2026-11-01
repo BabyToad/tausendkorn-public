@@ -16,7 +16,7 @@ Zahlen und Einordnung: [`docs/RESULTS.md`](../docs/RESULTS.md), Messregeln:
 | `befund/` | Bilder zur ungeklärten Hartweizen-Abweichung (`docs/befund/DURUM_COUNT_1000.md`) |
 | `dev4/` | Vergleichsläufe auf 4 Dev-Bildern (`dev4.txt`): Kachel-Varianten (`kacheln-*`, ein JSON pro Bild und Modell), agentischer Zähler (`agent-*`, mit Trace); ältere Overlay-JPGs sind zur Größenreduktion nicht enthalten |
 
-Gewichte des eingefrorenen YOLO11s: `models/yolo11s-dev.pt` (SHA-256 wie in `docs/RESULTS.md`); neue Trainingspipeline mit Unschärfe-Augmentierung noch nicht trainiert/gemessen.
+Gewichte des eingefrorenen YOLO11s werden [vorerst nicht verteilt](../models/README.md) (SHA-256 in `docs/RESULTS.md`). Die Variante mit Unschärfe-Augmentierung wurde nach der Abgabe nur auf `dev` gemessen (`docs/RESULTS.md`) und gehört nicht zum eingefrorenen Benchmark.
 
 ## Overlays und Galerie neu erzeugen
 

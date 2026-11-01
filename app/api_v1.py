@@ -932,7 +932,7 @@ def _commit() -> str:
 
 
 _COMMIT: str | None = None
-REPO = "https://github.com/BabyToad/tausendkorn"
+REPO = "https://github.com/BabyToad/tausendkorn-public"
 
 
 @router.get("/llms.txt", response_class=PlainTextResponse, include_in_schema=False)

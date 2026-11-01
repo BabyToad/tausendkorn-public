@@ -1,18 +1,20 @@
 # Zweitmeinung: Gegenprüfung der Kornzahl mit Ampel
 
+*Issue-Nummern beziehen sich auf das private Entwicklungsarchiv.*
+
 Konzept vom 27.10.2026 (Hackathon, Team 1). **Status: Konzept plus Referenzcode, noch auf
 keinem echten Foto gemessen.** Alle Zahlenwerte unten sind Platzhalter, bis sie nach
 [`PROTOCOL.md`](PROTOCOL.md) kalibriert sind.
 
 Zugehörig: [`PROBLEMFAELLE.md`](PROBLEMFAELLE.md) (bekannte Schwächen und offene Fälle),
 [`../src/tausendkorn/agreement.py`](../src/tausendkorn/agreement.py) (Referenzcode),
-GitHub-Issues mit Label `zweitmeinung` (Sammel-Issue [#1](https://github.com/BabyToad/tausendkorn/issues/1)).
+GitHub-Issues mit Label `zweitmeinung` (Sammel-Issue #1).
 
 > **Abgleich mit `docs/STATUS.md` (18:10):** Der Kurs des Teams ist eine VLM-Pipeline
 > (Gemini auf adaptiven Ausschnitten, `pipeline.py`), die klassische Pipeline dient dort
 > nur noch als Schneidehilfe. Die Rolle des Prüfers (Abschnitt 2) ist damit **offen**:
 > (a) klassische Pipeline als Prüfer behalten, abhängig von der Messung in
-> [#2](https://github.com/BabyToad/tausendkorn/issues/2); (b) die eigene Prüfschleife
+> #2; (b) die eigene Prüfschleife
 > des VLM (Konfidenz je Ausschnitt, Prüfstellen) liefert die Signale S02–S04; (c) ein
 > zweiter, anderer Zähler (GeCo2/YOLO laut `GPU_BRIEF.md` (nicht im öffentlichen Snapshot enthalten)). Die Idee der
 > Ampel aus mehreren Signalen bleibt gültig, der Text unten nennt „Detektor“ und
@@ -154,7 +156,7 @@ ausklappbar. Kein Fachjargon.
 |---|---|
 | Konzept dokumentiert | erledigt (diese Datei) |
 | Referenzcode `agreement.py` mit Selbsttest | erledigt, nur Logik getestet, nicht auf echten Fotos |
-| Baseline B auf `dev` und `test` messen | offen, siehe [#2](https://github.com/BabyToad/tausendkorn/issues/2) |
+| Baseline B auf `dev` und `test` messen | offen, siehe #2 |
 | Signale S02–S04 aus Hauptzähler/Prüfer ausgeben | offen |
 | Schwellen auf `dev` kalibrieren | offen, erst nach erstem Hauptzähler-Lauf |
 | Ampel in die App einbauen | offen |

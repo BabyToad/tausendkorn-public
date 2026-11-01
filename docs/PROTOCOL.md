@@ -20,6 +20,8 @@ Steps 10–13 und 20 sind Puffer und werden nicht benutzt.
 
 SHA-256 zum Festschreiben:
 
+Die Hashes gelten für die Listen mit CRLF-Zeilenenden, wie sie beim Einfrieren auf Windows vorlagen; mit LF-Zeilenenden (Git-Blobs, Linux/macOS) ergeben sich andere Werte.
+
 ```
 f2d3090fe4c8c718c8df061a4b03277fa355bdff5748b625b377bedb19a33683  splits/dev.txt
 06e4757a6dc5c29314f7bb730d1101f3bdca54261a6c36c9916dc3d5a2e7aa84  splits/holdout.txt

@@ -3,7 +3,7 @@
 Tausendkorn-Hackathon, Smart Farming Lab, Universität Leipzig, 27.10.2026.
 Team **Goldpfanne**: Leon Böhlau, Jonas Heinke.
 Code: vollständig im ZIP `goldpfanne_tausendkorn.zip` (Stand `main` zur Abgabe); das
-GitHub-Repo bleibt privat. Live ansehen (Demo, Ergebnisse, Pitch):
+Live ansehen (Demo, Ergebnisse, Pitch):
 <https://goldpfanne-tausendkorn.pages.dev/>.
 
 ## Was die Lösung macht
@@ -55,7 +55,7 @@ wurden nur auf `dev` gewählt. Die finale Pipeline v1.0.2 wurde einmal auf 30 Ho
   dichter) deutlich schlechter. Die YOLO-Werte auf denselben 30 bzw. 6 Bildern sind aus
   den Lauf-Dateien nachgerechnet.
 - Fehler sind je Art gerichtet (Gerste zu hoch, Weizen zu niedrig).
-- **Hartweizen-Testserie (`count_1000-001`):** Die Hartweizen-Abweichung ist ungeklärt: Argon zählt 942, YOLO auf demselben Foto 948; über 17 Fotos zählt YOLO 911–976. Gemeinsame Unterzählung verdeckter Körner und eine Abweichung der Probe vom Label sind nicht ausgeschlossen. Ein fehlender 50er-Becher ist nur eine Hypothese. Gewertet wird unverändert gegen 1000; Test-MAE 15,8 bei n=6. Wir bitten die Veranstalter um Prüfung (`docs/befund/DURUM_COUNT_1000.md`).
+- **Hartweizen-Testserie (`count_1000-001`):** Die Hartweizen-Abweichung ist ungeklärt: Argon zählt 942, YOLO auf demselben Foto 948; über 17 Fotos zählt YOLO 911–976. Gemeinsame Unterzählung verdeckter Körner und eine Abweichung der Probe vom Label sind nicht ausgeschlossen. Ein fehlender 50er-Becher ist nur eine Hypothese. Gewertet wird unverändert gegen 1000; Test-MAE 15,8 bei n=6. Klären ließe sich das nur durch eine physische Nachzählung der Probe (`docs/befund/DURUM_COUNT_1000.md`).
 - **Abweichung vom Protokoll:** Unsere Splits trennen nach Aufnahme-Schritten, nicht
   nach `session` wie gefordert. Holdout ist daher ein Within-Session-Ergebnis; der Test
   vom anderen Tag ist unser unabhängigster Check.

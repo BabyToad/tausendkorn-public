@@ -1,8 +1,10 @@
 # Problemfälle der Zweitmeinung
 
+*Issue-Nummern beziehen sich auf das private Entwicklungsarchiv.*
+
 Bekannte Schwächen, Risiken und offene Fälle zum Konzept
 [`ZWEITMEINUNG.md`](ZWEITMEINUNG.md). Jeder Fall hat eine ID (`PF-xx`), ein GitHub-Issue
-(Label `zweitmeinung`, Sammel-Issue [#1](https://github.com/BabyToad/tausendkorn/issues/1)) und einen **Beleg-Status**:
+(Label `zweitmeinung`, Sammel-Issue #1) und einen **Beleg-Status**:
 
 - **belegt:** steht in Datensatz-Card, Challenge oder bisherigen Messungen
 - **Hypothese:** plausibel, aber noch nicht gemessen. Beim Messen Status hier ändern.
@@ -12,21 +14,21 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 | ID | Titel | Beleg | Schwere | Issue |
 |---|---|---|---|---|
-| PF-01 | Beide Zähler machen denselben Fehler | Hypothese | hoch | [#3](https://github.com/BabyToad/tausendkorn/issues/3) |
-| PF-02 | Prüfer liegt bei dichten Blättern systematisch daneben | Hypothese | hoch | [#4](https://github.com/BabyToad/tausendkorn/issues/4) |
-| PF-03 | Test ist dichter als Training, Roggen kommt nur im Test vor | belegt | hoch | [#5](https://github.com/BabyToad/tausendkorn/issues/5) |
-| PF-04 | Schwellen auf kleinem Dev-Set, `count_1000` ist konstant 1000 | belegt | mittel | [#6](https://github.com/BabyToad/tausendkorn/issues/6) |
-| PF-05 | A4-Blatt wird nicht gefunden, Maßstab fehlt | Hypothese | mittel | [#7](https://github.com/BabyToad/tausendkorn/issues/7) |
-| PF-06 | Kachelränder: Doppelzählung und Auslassung | Hypothese | mittel | [#8](https://github.com/BabyToad/tausendkorn/issues/8) |
-| PF-07 | Punkt-Labels weichen von `count` ab | belegt | niedrig | [#9](https://github.com/BabyToad/tausendkorn/issues/9) |
-| PF-08 | Hinweistexte sind nicht handlungsleitend | Hypothese | mittel | [#10](https://github.com/BabyToad/tausendkorn/issues/10) |
-| PF-09 | Kamera- und Entwicklungsunterschiede verschieben die Signale | belegt | mittel | [#11](https://github.com/BabyToad/tausendkorn/issues/11) |
+| PF-01 | Beide Zähler machen denselben Fehler | Hypothese | hoch | #3 |
+| PF-02 | Prüfer liegt bei dichten Blättern systematisch daneben | Hypothese | hoch | #4 |
+| PF-03 | Test ist dichter als Training, Roggen kommt nur im Test vor | belegt | hoch | #5 |
+| PF-04 | Schwellen auf kleinem Dev-Set, `count_1000` ist konstant 1000 | belegt | mittel | #6 |
+| PF-05 | A4-Blatt wird nicht gefunden, Maßstab fehlt | Hypothese | mittel | #7 |
+| PF-06 | Kachelränder: Doppelzählung und Auslassung | Hypothese | mittel | #8 |
+| PF-07 | Punkt-Labels weichen von `count` ab | belegt | niedrig | #9 |
+| PF-08 | Hinweistexte sind nicht handlungsleitend | Hypothese | mittel | #10 |
+| PF-09 | Kamera- und Entwicklungsunterschiede verschieben die Signale | belegt | mittel | #11 |
 
 ---
 
 ## PF-01 Beide Zähler machen denselben Fehler
 
-- **Issue:** [#3](https://github.com/BabyToad/tausendkorn/issues/3)
+- **Issue:** #3
 - **Symptom:** Ampel ist grün, die Zahl ist trotzdem falsch.
 - **Ursache:** Der Prüfer hilft nur bei *unabhängigen* Fehlern. Gemeinsame Ursachen sind
   z. B. Spreu oder Grannen, die beide mitzählen (sie zählen laut ISO 520 nie), dunkle
@@ -45,7 +47,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 > (zu ungenau). Das spricht dafür, dass dieser Fall eintritt. Prüfer-Rolle neu entscheiden
 > (siehe `ZWEITMEINUNG.md`, Abgleich am Anfang).
 
-- **Issue:** [#4](https://github.com/BabyToad/tausendkorn/issues/4)
+- **Issue:** #4
 - **Symptom:** Ampel ist fast immer rot oder gelb, auch bei guten Fotos.
 - **Ursache:** Die klassische Pipeline wurde bisher **nur an synthetischen Bildern**
   getestet (`wissensbank/README.md`). Bei 1000 Körnern berühren sich viele Körner, ein
@@ -60,7 +62,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-03 Test ist dichter als Training, Roggen kommt nur im Test vor
 
-- **Issue:** [#5](https://github.com/BabyToad/tausendkorn/issues/5)
+- **Issue:** #5
 - **Symptom:** Schwellen, die auf `dev` gut aussehen, passen nicht zu `count_1000`.
 - **Beleg:** `train` hat 170–800 Körner je Bild, `test` genau 1000. Roggen (`rye-w`)
   kommt nur im Test vor ([`CHALLENGE.md`](CHALLENGE.md), [`PROTOCOL.md`](PROTOCOL.md)).
@@ -72,7 +74,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-04 Schwellen auf kleinem Dev-Set, `count_1000` ist konstant 1000
 
-- **Issue:** [#6](https://github.com/BabyToad/tausendkorn/issues/6)
+- **Issue:** #6
 - **Beleg:** `dev` hat 24 Bilder (`PROTOCOL.md`). Jedes Bild in `count_1000` hat 1000
   Körner, ein konstanter Zähler hätte Fehler 0.
 - **Risiko:** Überanpassung der Schwellen. Ampel wirkt gut, weil sie auf wenigen Bildern
@@ -84,7 +86,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-05 A4-Blatt wird nicht gefunden, Maßstab fehlt
 
-- **Issue:** [#7](https://github.com/BabyToad/tausendkorn/issues/7)
+- **Issue:** #7
 - **Symptom:** Prüfer fällt auf das ganze Bild ohne Maßstab zurück
   (`classical_counter.py`: `rectify_a4` liefert `None`). Ohne Maßstab ist die
   Flächenkorrektur schwach und die Größenverteilung nicht in mm.
@@ -96,7 +98,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-06 Kachelränder: Doppelzählung und Auslassung
 
-- **Issue:** [#8](https://github.com/BabyToad/tausendkorn/issues/8)
+- **Issue:** #8
 - **Symptom:** Zählung schwankt, wenn das Kachelraster verschoben wird.
 - **Hintergrund:** `tiles.py` zählt ein Korn in der Kachel, deren Kern seine Mitte
   enthält. Bei Körnern auf der Naht oder bei unscharfen Detektionen am Kachelrand
@@ -108,7 +110,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-07 Punkt-Labels weichen von `count` ab
 
-- **Issue:** [#9](https://github.com/BabyToad/tausendkorn/issues/9)
+- **Issue:** #9
 - **Beleg:** `len(kernel_points)` kann um wenige Körner von `count` abweichen (dichte
   Blätter, Randkörner). `count` bleibt das Label (Dataset-Card, `PROTOCOL.md`).
 - **Folge:** Beim Punktabgleich (Precision/Recall) ist ein kleiner Rest an
@@ -118,7 +120,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-08 Hinweistexte sind nicht handlungsleitend
 
-- **Issue:** [#10](https://github.com/BabyToad/tausendkorn/issues/10)
+- **Issue:** #10
 - **Symptom:** Landwirt sieht "gelb" und weiß nicht, was er tun soll, oder ignoriert die
   Warnung.
 - **Gegenmaßnahmen:** Jeder Hinweis nennt **eine konkrete Handlung** (siehe Texte in
@@ -128,7 +130,7 @@ löschen, sondern Status auf `gelöst` setzen und den Commit nennen.
 
 ## PF-09 Kamera- und Entwicklungsunterschiede verschieben die Signale
 
-- **Issue:** [#11](https://github.com/BabyToad/tausendkorn/issues/11)
+- **Issue:** #11
 - **Beleg:** Vier Kameras (Galaxy S23, iPhone 8, Galaxy Tab S6 Lite, Pixel 9). DNG-Fotos
   wurden mit LibRaw entwickelt, Farben weichen von der Handy-JPEG-Verarbeitung ab. Das
   Tablet verpasste bzw. verdatierte Fotos einzelner Karten (Dataset-Card).

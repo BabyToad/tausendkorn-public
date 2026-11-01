@@ -9,4 +9,4 @@ Training and evaluation code remains in `src/tausendkorn/gpu/`. Measured results
 | Frozen YOLO11s dev | `7c823bf82e1ca24332e77eb08cc282a28d48bfac594bb0c3d8a0070bf5418cbc` |
 | Post-submission YOLO11s blur | `7b3d0d5882b729fe0f81dea9366a42ede19260900a4d4e360cf06c0874e46f22` |
 
-See [Ultralytics licensing](https://www.ultralytics.com/license) and [dataset attribution](../DATA_LICENSE.md). No code license has yet been selected for this snapshot.
+See [Ultralytics licensing](https://www.ultralytics.com/license) and [dataset attribution](../DATA_LICENSE.md). The project code is licensed AGPL-3.0-only (`../LICENSE`); that license does not cover these checkpoints.

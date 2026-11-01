@@ -6,5 +6,5 @@ Hackathon prototype: count cereal kernels in an A4 photo and calculate thousand-
 - Follow `docs/PROTOCOL.md`: choose parameters on dev only. Preserve the frozen v1.0.2 benchmark and report new experiments separately. The reused holdout and small test set are not fresh validation data.
 - Use Python 3.12 and uv. Run `uv run pytest -q` for app/API changes.
 - Keep datasets, runtime databases, uploaded photos, tokens, weights and experiments under ignored `data/`, `models/` or `runs/`. Never commit credentials or pairing QR screenshots.
-- Check `DATA_LICENSE.md` before copying or publishing dataset-derived assets. Code licensing is pending the owner's decision.
+- Check `DATA_LICENSE.md` before copying or publishing dataset-derived assets. Project code is AGPL-3.0-only (`LICENSE`).
 - Known defects and proposed fixes are in `docs/reviews/2026-10-28_astra_roadmap.md`; this snapshot preserves main's implementation.

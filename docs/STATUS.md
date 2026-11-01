@@ -8,4 +8,4 @@ The frozen v1.0.2 benchmark is documented in [RESULTS.md](RESULTS.md), with rule
 
 This is a hackathon prototype that can miss or double-count kernels. Confirmed seam, verification and paper-detection defects remain; see the dated [engineering review](reviews/2026-10-28_astra_roadmap.md). Proposals in roadmap/design documents are not promises of implemented behavior. No open-branch or PR work is included.
 
-Code license and publication date remain the owner's decisions. Dataset-derived assets have a separate [license and provenance record](../DATA_LICENSE.md).
+Project code is licensed [AGPL-3.0-only](../LICENSE). Dataset-derived assets have a separate [license and provenance record](../DATA_LICENSE.md).

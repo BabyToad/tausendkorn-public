@@ -53,7 +53,7 @@ Gemessen nach festem Protokoll: Entscheidungen nur auf Entwicklungsbildern, dann
 
 Source: https://goldpfanne-tausendkorn.pages.dev/#team
 
-Team Goldpfanne: Leon Böhlau (https://www.linkedin.com/in/leon-b%C3%B6hlau-17b1aa390/), Jonas Heinke (https://www.linkedin.com/in/jonas-heinke/, https://www.allknivesnobagel.com/; arbeitet bei PlayInsight Studios, https://playinsightstudios.com/, und organisiert ProLudens mit, das Serious-Games-Kollektiv aus Leipzig, https://www.proludens.com/). Gebaut beim Tausendkorn-Hackathon des Smart Farming Lab, Universität Leipzig, 27.–28.10.2026. Der Quellcode ist derzeit privat.
+Team Goldpfanne: Leon Böhlau (https://www.linkedin.com/in/leon-b%C3%B6hlau-17b1aa390/), Jonas Heinke (https://www.linkedin.com/in/jonas-heinke/, https://www.allknivesnobagel.com/; arbeitet bei PlayInsight Studios, https://playinsightstudios.com/, und organisiert ProLudens mit, das Serious-Games-Kollektiv aus Leipzig, https://www.proludens.com/). Gebaut beim Tausendkorn-Hackathon des Smart Farming Lab, Universität Leipzig, 27.–28.10.2026. Quellcode: https://github.com/BabyToad/tausendkorn-public (AGPL-3.0).
 
 ## Lizenz der Fotos
 

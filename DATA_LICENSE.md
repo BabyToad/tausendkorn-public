@@ -6,7 +6,7 @@
 - License: [Creative Commons Attribution–NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)
 - Modification notice: **modified: resized, cropped, marks/overlays added**. Some images were EXIF-rotated and JPEG-reencoded; screenshots embed these images in the app UI.
 
-Dataset-derived files are CC BY-NC 4.0 and are excluded from any eventual code license. Retain this credit, the dataset and license links, and the modification notice when sharing those assets. The full dataset is excluded as a packaging choice. The code license remains undecided before publication; this document does not license third-party components, model weights, or independently owned code.
+Dataset-derived files are CC BY-NC 4.0 and are excluded from the code license (AGPL-3.0-only, see `LICENSE`). Retain this credit, the dataset and license links, and the modification notice when sharing those assets. The full dataset is excluded as a packaging choice. The code license remains undecided before publication; this document does not license third-party components, model weights, or independently owned code.
 
 The retained JSONs contain model-predicted coordinates, model comments, evaluation statistics, and copied reference counts/metadata. They do not contain the full original `kernel_points`, `broken_points` or `invalid_points` annotation arrays; identically named fields in audit summaries are aggregate totals. Attribution applies to the copied dataset material. We do not assert that every independently generated prediction or statistic acquires a CC license merely because it was evaluated against the dataset.
 

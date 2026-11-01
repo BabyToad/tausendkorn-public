@@ -3,7 +3,7 @@
 Team **Goldpfanne** (Leon Böhlau, Jonas Heinke) · Tausendkorn-Hackathon, Smart Farming Lab,
 Universität Leipzig, 27.–28.10.2026.
 
-License: to be decided before publication
+Code: [AGPL-3.0-only](LICENSE) · Fotos und daraus abgeleitete Dateien: [CC BY-NC 4.0](DATA_LICENSE.md)
 
 Hackathon-Prototyp: Die Zählung kann Körner übersehen oder doppelt zählen. Bekannte
 Fehler an Kachelnähten, im Prüfdurchgang und bei der Blatterkennung sind im
@@ -166,9 +166,8 @@ Astra (OpenAI) als Gegenprüfung.
 
 ## Lizenz und Datenquelle
 
-Code-Lizenz: Entscheidung von Jonas vor Veröffentlichung ausstehend (AGPL-3.0-only
-oder MIT; Rechte an Drittkomponenten bleiben separat zu klären). Es gibt noch keine
-LICENSE-Datei und keine allgemeine Freigabe zur Nutzung des Codes.
+Eigener Code: [GNU AGPL-3.0-only](LICENSE), © 2026 Jonas Heinke, Leon Böhlau. Drittkomponenten
+behalten ihre eigenen Lizenzen; die optionale YOLO-Anbindung nutzt Ultralytics (AGPL-3.0).
 
 Fotos und dataset-abgeleitete Dateien: corn1000 — Smart Farming Lab, Universität
 Leipzig, **CC BY-NC 4.0**. [Lizenzgrenze und vollständiges Provenienzmanifest](DATA_LICENSE.md).
